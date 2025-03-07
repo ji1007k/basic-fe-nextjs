@@ -32,12 +32,16 @@ jobs:
           # ${{ secrets.<SECRET_NAME> }} : GitHub에서 제공하는 보안 환경 변수 (암호화된 저장)
           password: ${{ secrets.GHCR_PAT }}
 
+      # bash 에서 접근
+      #run: echo "$REPO_URL"
+      # GitHub Actions 표현식에서 접근
+      #run: echo "${{ env.REPO_URL }}"
       - name: [4] repository URL을 GitHub Actions의 환경 변수(GITHUB_ENV)에 등록
         run: echo "REPO_URL=ghcr.io/${{ github.repository }}" >> $GITHUB_ENV
-        # bash 에서 접근
-        #run: echo "$REPO_URL"
-        # GitHub Actions 표현식에서 접근
-        #run: echo "${{ env.REPO_URL }}"
+
+      - name: [ 4.5 ] REPO_URL 확인
+        run:
+          echo "REPO_URL is set to: $REPO_URL"
         
       - name: [5] 도커 이미지 빌드 및 GHCR로 푸시
         run: |
