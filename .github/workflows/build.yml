@@ -8,7 +8,7 @@ on:
       - opened
 
 jobs:
-  build_basic-fe-nextjs:
+  buildBasicFeNextjs:
     runs-on: ubuntu-22.04
 
     steps:
