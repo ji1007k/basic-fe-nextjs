@@ -38,10 +38,12 @@ jobs:
       # GitHub Actions 표현식에서 접근
       #run: echo "${{ env.REPO_URL }}"
       - name: "[4] repository URL을 GitHub Actions의 환경 변수(GITHUB_ENV)에 등록"
-        run: echo "REPO_URL=ghcr.io/${{ github.repository }}" >> $GITHUB_ENV
+        run: |
+          echo "REPO_URL=ghcr.io/${{ github.repository }}" >> $GITHUB_ENV
 
+      # >-(폴딩 블록) : 자동으로 줄 바꿈을 무시하면서 하나의 명령어로 해석
       - name: "[4.1] REPO_URL 확인"
-        run:
+        run: >-
           echo "REPO_URL is set to: $REPO_URL"
         
       - name: "[5] 도커 이미지 빌드 및 GHCR로 푸시"
