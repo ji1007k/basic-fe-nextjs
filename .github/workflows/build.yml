@@ -1,0 +1,45 @@
+name: CI for basic-fe-nextjs
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+
+jobs:
+  build_basic-fe-nextjs:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: [1] basic-fe-nextjs 프로젝트 다운로드
+        uses: actions/checkout@v4
+
+      - name: [2] Docker Buildx 사용 설정
+        uses: docker/setup-buildx-action@v2
+        with:
+          version: latest
+
+      #- name: [3] Log in to GHCR
+      #  run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u USERNAME --password-stdin
+
+      - name: [3] Github 컨테이너 레지스트리 로그인
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          # ${{ github.<property> }} : GitHub에서 제공하는 기본 컨텍스트 값을 참조
+          username: ${{ github.actor }}
+          # ${{ secrets.<SECRET_NAME> }} : GitHub에서 제공하는 보안 환경 변수 (암호화된 저장)
+          password: ${{ secrets.GHCR_PAT }}
+
+      - name: [4] repository URL을 GitHub Actions의 환경 변수(GITHUB_ENV)에 등록
+        run: echo "REPO_URL=ghcr.io/${{ github.repository }}" >> $GITHUB_ENV
+        # bash 에서 접근
+        #run: echo "$REPO_URL"
+        # GitHub Actions 표현식에서 접근
+        #run: echo "${{ env.REPO_URL }}"
+        
+      - name: [5] 도커 이미지 빌드 및 GHCR로 푸시
+        run: |
+          docker build -t $REPO_URL:latest .
+          docker push $REPO_URL:latest
