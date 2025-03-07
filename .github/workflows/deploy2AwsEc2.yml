@@ -16,6 +16,7 @@ jobs:
         with:
           # ${{ secrets.<SECRET_NAME> }} : GitHub에서 제공하는 보안 환경 변수 (암호화된 저장)
           # Github Repository Settings > Security > Secrets and variables > Actions
+          # SSH_HOST: HOST IP
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           # RSA 키페어 중 pem 파일 내용
