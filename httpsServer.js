@@ -13,9 +13,9 @@ const handle = app.getRequestHandler();
 
 // SSL 인증서 옵션
 const httpsOptions = {
-    key: fs.readFileSync("./app/config/https/localhost-key.pem"),   // 개인 키
-    cert: fs.readFileSync("./app/config/https/localhost.pem"),      // 인증서
-    ca: fs.readFileSync("./app/config/https/ec2-public-ip.crt"),    // EC2 인증서 (필요하면 추가)
+    key: fs.readFileSync("app/config/https/localhost-key.pem"),   // 개인 키
+    cert: fs.readFileSync("app/config/https/localhost.pem"),      // 인증서
+    ca: fs.readFileSync("app/config/https/ec2-public-ip.crt"),    // EC2 인증서 (필요하면 추가)
 };
 
 // Express 서버 생성
