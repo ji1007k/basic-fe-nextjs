@@ -1,21 +1,27 @@
 import { createServer } from "https";
 import next from "next";
 import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import express from "express";
 import * as https from "node:https";
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+// 현재 모듈의 디렉토리 경로 구하기
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // SSL 인증서 옵션
 const httpsOptions = {
-    key: fs.readFileSync("app/config/https/localhost-key.pem"),   // 개인 키
-    cert: fs.readFileSync("app/config/https/localhost.pem"),      // 인증서
-    ca: fs.readFileSync("app/config/https/ec2-public-ip.crt"),    // EC2 인증서 (필요하면 추가)
+    key: fs.readFileSync(path.join(__dirname, "app/config/https/localhost-key.pem")),   // 개인 키
+    cert: fs.readFileSync(path.join(__dirname, "app/config/https/localhost.pem")),      // 인증서
+    ca: fs.readFileSync(path.join(__dirname, "app/config/https/ec2-public-ip.crt")),    // EC2 인증서 (필요하면 추가)
 };
 
 // Express 서버 생성
