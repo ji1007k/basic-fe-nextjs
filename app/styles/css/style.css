@@ -151,6 +151,7 @@ header {
 
 /* 드롭다운 메뉴 항목 스타일 */
 #dropdown a {
+    cursor: pointer;
     color: #333;
     padding: 12px 18px;
     text-decoration: none;
@@ -161,6 +162,7 @@ header {
 
 /* 드롭다운 메뉴 Hover 효과 */
 #dropdown a:hover {
+    cursor: pointer;
     background-color: #f1f1f1;
 }
 
