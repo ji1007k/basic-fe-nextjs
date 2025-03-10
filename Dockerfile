@@ -53,6 +53,12 @@ COPY httpsServer.js ./
 COPY app/config ./app/config
 
 RUN ls -al ./
+RUN ls -al ./app/config/https
+
+# SSL 인증키 파일에 읽기 권한 부여
+RUN chmod +r ./app/config/https/localhost-key.pem
+RUN chmod +r ./app/config/https/localhost.pem
+RUN chmod +r ./app/config/https/ec2-public-ip.crt
 
 # Copy node_modules and built .next
 COPY --from=deps /projects/basic-fe-nextjs/node_modules ./node_modules
