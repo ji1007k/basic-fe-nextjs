@@ -59,6 +59,18 @@ header {
     text-decoration: underline;
 }
 
+.header-container .api-docs-link {
+    color: white;
+    text-decoration: none;
+    padding-left: 20px;
+    transition: color 0.3s ease;
+}
+
+.header-container .api-docs-link:hover {
+    color: #ff5722; /* 오렌지 색상으로 강조 */
+    text-decoration: underline;
+}
+
 
 /* ================================
    사용자 정보 영역 스타일

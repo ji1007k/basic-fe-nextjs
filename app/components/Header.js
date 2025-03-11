@@ -12,9 +12,11 @@ export default function Header() {
         <header>
             <div className="header-container">
                 {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-                <a href="/" className="main-link">
-                    My Website
-                </a>
+                <div>
+                    {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                    <a href="/" className="main-link">My Website</a>
+                    <a href="/api/swagger-ui/index.html" className="api-docs-link">API Docs</a>
+                </div>
                 <div className="user-info">
                     {username ? (
                         <UserInfo username={username} expirationTime={expirationTime} />
