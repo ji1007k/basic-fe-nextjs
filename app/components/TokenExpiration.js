@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { logout as apiLogout } from "../utils/api.js";
 
 export default function TokenExpiration() {
-    const { expirationTime, refreshToken } = useAuth();
+    const { expirationTime, refreshToken, logout } = useAuth();
     const [timeLeft, setTimeLeft] = useState(null);
 
     // 만료 시간 계산
@@ -13,6 +14,7 @@ export default function TokenExpiration() {
                 const timeRemaining = expirationDate - new Date();
                 if (timeRemaining <= 0) {
                     setTimeLeft(0);  // 토큰 만료
+                    handleLogout();
                 } else {
                     const minutes = Math.floor(timeRemaining / 60000);
                     const seconds = Math.floor((timeRemaining % 60000) / 1000);
@@ -24,14 +26,16 @@ export default function TokenExpiration() {
         }
     }, [expirationTime]);
 
+    const handleLogout = async (e) => {
+        await apiLogout();
+
+        logout();
+    }
+
     return (
         <span id="tokenExpirationTimeArea">
             <span id="tokenExpirationTime">
-                {timeLeft === 0 ? (
-                    'Token Expired'
-                ) : (
-                    timeLeft
-                )}
+                { timeLeft }
             </span>
             <button className="refresh-token-btn" onClick={refreshToken}>갱신</button>
         </span>
