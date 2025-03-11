@@ -6,7 +6,7 @@ export async function login(username, password) {
     try {
 
         const response = await fetch("/api/auth/login", {
-            method: "POST",
+            method: "GET",
             headers: {
                 "Authorization": `Basic ${btoa(utf8Encoded)}`,
                 "Content-Type": "application/json",
