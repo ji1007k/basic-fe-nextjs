@@ -2,9 +2,9 @@
  * 전체 레이아웃
  */
 import { Geist, Geist_Mono } from "next/font/google";
-import "./styles/css/style.css";
-import Header from "@/app/components/Header.js";
-import { AuthProvider } from "./context/AuthContext.js";
+import "@/styles/css/style.css";
+import Header from "@/components/Header.js";
+import { AuthProvider } from "@/context/AuthContext.js";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -14,14 +14,14 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 // 현재 모듈의 디렉토리 경로 구하기
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 // SSL 인증서 옵션
 const httpsOptions = {
-    key: fs.readFileSync(path.join(__dirname, "app/config/https/localhost-key.pem")),   // 개인 키
-    cert: fs.readFileSync(path.join(__dirname, "app/config/https/localhost.pem")),      // 인증서
-    ca: fs.readFileSync(path.join(__dirname, "app/config/https/ec2-public-ip.crt")),    // EC2 인증서 (필요하면 추가)
+    key: fs.readFileSync(path.resolve("src/config/https/localhost-key.pem")),   // 개인 키
+    cert: fs.readFileSync(path.resolve("src/config/https/localhost.pem")),      // 인증서
+    ca: fs.readFileSync(path.resolve("src/config/https/ec2-public-ip.crt")),    // EC2 인증서 (필요하면 추가)
 };
 
 // Express 서버 생성
@@ -71,11 +71,13 @@ httpsServer.all("*", (req, res) => {
     return handle(req, res);    // Next.js에서 클라이언트 요청을 처리하는 기본 함수
 });
 
+const port = 3000;
+
 // HTTPS 서버 실행
 app.prepare().then(() => {
-    createServer(httpsOptions, httpsServer).listen(3000, (err) => {
+    createServer(httpsOptions, httpsServer).listen(port, (err) => {
         if (err) throw err;
-        console.log("🚀 Server running at https://localhost:3000");
+        console.log("🚀 Server running at https://localhost:" + port);
     });
 });
 

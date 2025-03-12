@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAuth } from "../context/AuthContext.js";  // useAuth 훅을 사용
+import { useAuth } from "@/context/AuthContext.js";  // useAuth 훅을 사용
 import UserInfo from "./UserInfo.js";  // UserInfo 컴포넌트
 import LoginLink from "./LoginLink.js"; // LoginLink 컴포넌트
 
