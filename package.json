@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
-    "dev-http": "node httpServer.js",
-    "dev-https": "node httpsServer.js",
+    "dev-http": "node src/server/httpServer.js",
+    "dev-https": "node src/server/httpsServer.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

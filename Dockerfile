@@ -47,16 +47,17 @@ ENV NODE_ENV=production
 # Run as non-root
 USER node
 
-# Copy package.json and httpsServer.js to the current working directory (inside /projects/basic-fe-nextjs)
+# Copy package.json and httpsServer.js, config to the current working directory (inside /projects/basic-fe-nextjs)
 COPY package.json ./
-COPY httpsServer.js ./
-COPY app/config ./app/config
+COPY src/server/httpsServer.js ./src/server/
+COPY src/config ./src/config
 
-RUN ls -al ./
-RUN ls -al ./app/config/https
+RUN ls -al ./src
+RUN ls -al ./src/config/https
 
 # Copy node_modules and built .next
 COPY --from=deps /projects/basic-fe-nextjs/node_modules ./node_modules
+# 빌드한 페이지, 서버 컴포넌트, 클라이언트 컴포넌트 등을 저장하는 디렉토리
 COPY --from=build /projects/basic-fe-nextjs/.next ./.next
 
 # Expose application port

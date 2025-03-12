@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext.js";
-import TokenExpiration from "@/app/components/TokenExpiration";
-import { logout as apiLogout } from "../utils/api.js";
+import { useAuth } from "@/context/AuthContext.js";
+import TokenExpiration from "@/components/TokenExpiration";
+import { logout as apiLogout } from "@/utils/api.js";
 
 export default function UserInfo({ username, expirationTime }) {
     const [dropdownActive, setDropdownActive] = useState(false);
