@@ -2,13 +2,12 @@ import { createServer } from "https";
 import next from "next";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import express from "express";
 import * as https from "node:https";
-import dotenv from 'dotenv';
 
-// .env.local 파일을 로드 (EXPRESS)
-dotenv.config({ path: '.env.local' });
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -20,9 +19,9 @@ const handle = app.getRequestHandler();
 
 // SSL 인증서 옵션
 const httpsOptions = {
-    key: fs.readFileSync(path.resolve(process.env.SSL_KEY_PATH)),   // 개인 키
-    cert: fs.readFileSync(path.resolve(process.env.SSL_CERT_PATH)),      // 인증서
-    ca: fs.readFileSync(path.resolve(process.env.SSL_CA_PATH)),    // EC2 인증서 (필요하면 추가)
+    key: fs.readFileSync(path.resolve("src/config/https/localhost-key.pem")),   // 개인 키
+    cert: fs.readFileSync(path.resolve("src/config/https/localhost.pem")),      // 인증서
+    ca: fs.readFileSync(path.resolve("src/config/https/ec2-public-ip.crt")),    // EC2 인증서 (필요하면 추가)
 };
 
 // Express 서버 생성
