@@ -8,7 +8,7 @@ import * as https from "node:https";
 import dotenv from 'dotenv';
 
 // .env.local 파일을 로드 (EXPRESS)
-dotenv.config({ path: '.env.local' });
+dotenv.config({ path: '.env.production' });
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
