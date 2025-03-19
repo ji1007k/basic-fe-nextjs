@@ -44,6 +44,8 @@ export const AuthProvider = ({ children }) => {
         setExpirationTime(null);
         localStorage.removeItem('username');
         localStorage.removeItem('expirationTime');
+
+        window.location.href = "/"; // "/" 페이지로 이동
     };
 
     // 로그인 상태 초기화
