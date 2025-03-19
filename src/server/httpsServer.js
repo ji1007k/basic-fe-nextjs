@@ -46,7 +46,7 @@ httpsServer.use("/api", (req, res, next) => {
 
 // 🔥 **프록시 설정** (배포환경에서 비활성화)
 const proxyOptions = {
-    target: process.env.NEXT_PUBLIC_API_URL || 'https://ec2-3-36-70-95.ap-northeast-2.compute.amazonaws.com', // API 서버
+    target: process.env.NEXT_PUBLIC_API_URL, // API 서버
     changeOrigin: true,  // 프록시 요청의 Origin 헤더를 타겟 서버의 도메인으로 바꿈
     // pathRewrite: { "^/api": "/api" },
     pathRewrite: (path, req) => {
