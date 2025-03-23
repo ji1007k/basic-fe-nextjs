@@ -44,21 +44,30 @@ httpsServer.use("/api", (req, res, next) => {
     next();
 });
 
-// 🔥 **프록시 설정** (배포환경에서 비활성화)
 const proxyOptions = {
     target: process.env.NEXT_PUBLIC_API_URL, // API 서버
     changeOrigin: true,  // 프록시 요청의 Origin 헤더를 타겟 서버의 도메인으로 바꿈
-    // pathRewrite: { "^/api": "/api" },
-    pathRewrite: (path, req) => {
-        // req.originalUrl는 "/api/auth/login"을 포함함.
-        return req.originalUrl;
-    },
     logLevel: 'debug',  // 로그 레벨을 설정하여 프록시 로그 확인 가능,
-    secure: false, // SSL 인증서 검증 비활성화 (로컬 개발용)
-    agent: new https.Agent({ rejectUnauthorized: false }), // 자체 서명 SSL 허용
+};
+
+// 🔥 **프록시 설정** (배포환경에서 비활성화)
+if (process.env.NEXT_PUBLIC_API_URL.startsWith("https")) {
+    Object.assign(proxyOptions, {
+        pathRewrite: (path, req) => {
+            // req.originalUrl는 "/api/auth/login"을 포함함.
+            return req.originalUrl;
+        },
+        secure: false, // SSL 인증서 검증 비활성화 (로컬 개발용)
+        agent: new https.Agent({ rejectUnauthorized: false }), // 자체 서명 SSL 허용
+    });
+} else {
+    Object.assign(proxyOptions, {
+        pathRewrite: { "^/api": "" },
+    });
 }
 
-console.log(process.env.NODE_ENV, dev);
+console.log("Mode: ", process.env.NODE_ENV);
+console.log("API Server URL: ", process.env.NEXT_PUBLIC_API_URL);
 
 if (dev) {
     httpsServer.use(

@@ -2,6 +2,8 @@
 import path from 'path';
 
 const nextConfig = {
+    // 개발환경에서 렌더링을 2번 유도 -> 잠재적 버그 발견 용이성. nextjs 에선 기본적으로 활성화됨
+    reactStrictMode: true,
    /* async rewrites() {
         return [
             {

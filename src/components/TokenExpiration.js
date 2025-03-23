@@ -27,9 +27,8 @@ export default function TokenExpiration() {
     }, [expirationTime]);
 
     const handleLogout = async (e) => {
-        await apiLogout();
-
         logout();
+        await apiLogout();
     }
 
     return (
