@@ -66,7 +66,7 @@ if (process.env.NEXT_PUBLIC_API_URL.startsWith("https")) {
     });
 }
 
-console.log("Mode: ", process.env.NODE_ENV, dev);
+console.log("Mode: ", process.env.NODE_ENV);
 console.log("API Server URL: ", process.env.NEXT_PUBLIC_API_URL);
 
 if (dev) {

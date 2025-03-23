@@ -11,7 +11,7 @@ const Chat = () => {
     const [isChatOpen, setIsChatOpen] = useState(false); // 채팅창 열림/닫힘 상태
 
     useEffect(() => {
-        const isDev = process.env.NODE_ENV != 'production';
+        const isDev = process.env.NEXT_PUBLIC_NODE_ENV != 'production';
 
         // WebSocket 연결
         let ws = null;
