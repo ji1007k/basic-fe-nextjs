@@ -1,19 +1,28 @@
 "use client"
 
 import { useState, useEffect } from 'react';
+import { useAuth } from "@/context/AuthContext.js";
 
 const Chat = () => {
+    const { username } = useAuth();
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
     const [socket, setSocket] = useState(null);
     const [isChatOpen, setIsChatOpen] = useState(false); // 채팅창 열림/닫힘 상태
 
     useEffect(() => {
+        const isDev = process.env.NODE_ENV != 'production';
+
         // WebSocket 연결
-        const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-        const host = process.env.NEXT_PUBLIC_API_SERVER_HOST;
-        const ws = new WebSocket(`${protocol}://${host}/ws/`);
-        // const ws = new WebSocket(`ws://localhost:8080/chat`);
+        let ws = null;
+        if (isDev) {
+            // 이거 쓰려면 세션쿠키의 sameSite 속성 None 설정 필요함
+            ws = new WebSocket(`ws://localhost:8080/chat`);
+        } else {
+            const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+            const host = process.env.NEXT_PUBLIC_API_SERVER_HOST;
+            ws = new WebSocket(`${protocol}://${host}/ws/`);
+        }
 
         setSocketEvent(ws);
 
@@ -37,7 +46,13 @@ const Chat = () => {
 
         // 서버에서 받은 메시지 처리
         ws.onmessage = (event) => {
-            const data = { text: event.data, sender: "other" };
+            console.log(event.data);
+            const response = JSON.parse(event.data);
+            const userId = response.userId;
+            const message = response.message;
+            console.log("메시지 수신: ", userId, message);
+
+            const data = { text: message, sender: userId };
             setMessages((prevMessages) => [...prevMessages, data]);
         };
 
@@ -62,7 +77,7 @@ const Chat = () => {
             if (inputMessage.trim() === "") return;
 
             // 새 메시지 추가 (내 메시지라고 가정)
-            setMessages([...messages, { text: inputMessage, sender: "me" }]);
+            setMessages([...messages, { text: inputMessage, sender: username }]);
             socket.send(inputMessage);      // 서버로 메시지 전송
             setInputMessage('');         // 입력 필드 초기화
         } else {
@@ -85,7 +100,7 @@ const Chat = () => {
                         {messages.map((message, index) => (
                             <div
                                 key={index}
-                                className={`message ${message.sender === "me" ? "sent" : "received"}`}
+                                className={`message ${message.sender === username ? "sent" : "received"}`}
                             >
                                 {message.text}
                             </div>
