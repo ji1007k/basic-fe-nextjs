@@ -35,8 +35,7 @@ const Chat = () => {
         // 서버에서 받은 메시지 처리
         ws.onmessage = (event) => {
             console.log(event.data);
-            const response = JSON.parse(event.data);
-            const { userId, message, time } = response;
+            const { userId, message, time } = JSON.parse(event.data);
             console.log("메시지 수신: ", userId, message, time);
 
             const data = { text: message, sender: userId, time: time };
