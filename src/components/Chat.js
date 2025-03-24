@@ -36,11 +36,10 @@ const Chat = () => {
         ws.onmessage = (event) => {
             console.log(event.data);
             const response = JSON.parse(event.data);
-            const userId = response.userId;
-            const message = response.message;
-            console.log("메시지 수신: ", userId, message);
+            const { userId, message, time } = response;
+            console.log("메시지 수신: ", userId, message, time);
 
-            const data = { text: message, sender: userId };
+            const data = { text: message, sender: userId, time: time };
             setMessages((prevMessages) => [...prevMessages, data]);
         };
 
@@ -65,7 +64,7 @@ const Chat = () => {
             if (inputMessage.trim() === "") return;
 
             // 새 메시지 추가 (내 메시지라고 가정)
-            setMessages([...messages, { text: inputMessage, sender: username }]);
+            // setMessages([...messages, { text: inputMessage, sender: username }]);
             socket.send(inputMessage);      // 서버로 메시지 전송
             setInputMessage('');         // 입력 필드 초기화
         } else {
@@ -90,7 +89,8 @@ const Chat = () => {
                                 key={index}
                                 className={`message ${message.sender === username ? "sent" : "received"}`}
                             >
-                                {message.text}
+                                <div>{message.text}</div>
+                                <div className="time">{message.time || '오전 10:07'}</div>
                             </div>
                         ))}
                     </div>
