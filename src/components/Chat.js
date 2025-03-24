@@ -11,18 +11,8 @@ const Chat = () => {
     const [isChatOpen, setIsChatOpen] = useState(false); // 채팅창 열림/닫힘 상태
 
     useEffect(() => {
-        const isDev = process.env.NEXT_PUBLIC_NODE_ENV != 'production';
-
         // WebSocket 연결
-        let ws = null;
-        if (isDev) {
-            // 이거 쓰려면 세션쿠키의 sameSite 속성 None 설정 필요함
-            ws = new WebSocket(`ws://localhost:8080/chat`);
-        } else {
-            const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-            const host = process.env.NEXT_PUBLIC_API_SERVER_HOST;
-            ws = new WebSocket(`${protocol}://${host}/ws/`);
-        }
+        const ws = new WebSocket(`/ws/`);
 
         setSocketEvent(ws);
 
@@ -40,8 +30,6 @@ const Chat = () => {
     const setSocketEvent = (ws) => {
         ws.onopen = () => {
             console.log('WebSocket Connected');
-            // TODO
-            //  연결 성공 후에만 메시지를 보내도록 활성화
         };
 
         // 서버에서 받은 메시지 처리
