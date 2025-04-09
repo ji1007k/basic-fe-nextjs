@@ -4,6 +4,9 @@ export default {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+
+    './src/**/lol/**/*.{js,ts,jsx,tsx}',
+    './node_modules/react-big-calendar/lib/css/*.css',
   ],
   theme: {
     extend: {
