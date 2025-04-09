@@ -1,0 +1,28 @@
+/* calendar-tailwind.css */
+.rbc-calendar {
+    @apply text-sm font-sans;
+}
+
+.rbc-month-view {
+    @apply border border-gray-200 rounded-lg overflow-hidden shadow-md;
+}
+
+.rbc-header {
+    @apply bg-gray-100 text-gray-700 text-center py-2 border-b border-gray-300;
+}
+
+.rbc-today {
+    @apply bg-yellow-100;
+}
+
+.rbc-event {
+    @apply bg-indigo-500 text-white px-2 py-1 rounded-md text-xs;
+}
+
+.rbc-toolbar {
+    @apply flex justify-between items-center mb-4;
+}
+
+.rbc-toolbar-label {
+    @apply font-bold text-lg;
+}
