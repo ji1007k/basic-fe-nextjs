@@ -4,7 +4,7 @@
     메인 달력 스타일 (반응형)
  */
 .home-container {
-    max-width: 700px;
+    width: 700px;
 }
 
 @media (max-width: 768px) {
@@ -12,5 +12,54 @@
         width: 90%;
     }
 
+}
 
+@media (max-width: 768px) {
+    .rbc-toolbar {
+        flex-direction: row;
+    }
+
+}
+
+@media (max-width: 500px) {
+    .rbc-toolbar {
+        flex-direction: column;
+    }
+
+}
+
+
+/**
+    버튼 툴바
+ */
+.custom-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.custom-toolbar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    margin: 0 5px;
+}
+
+.custom-toolbar button:hover {
+    color: #007bff;
+}
+
+.rbc-calendar .custom-toolbar .label-area {
+    display: flex;
+}
+
+.rbc-calendar .rbc-time-view .rbc-row.rbc-time-header-cell {
+    display: flex;
+    align-items: baseline;
+}
+
+.rbc-calendar .rbc-time-view .rbc-allday-cell {
+    height: fit-content;
 }
