@@ -43,6 +43,18 @@ header {
     font-family: 'Roboto', sans-serif;
 }
 
+
+@media (max-width: 500px) {
+    .header-container > div {
+        display: inline-grid;
+    }
+
+    .header-container > div .api-docs-link {
+        padding-left: 0;
+        width: fit-content;
+    }
+}
+
 /* Main Link 스타일 */
 .header-container .main-link {
     color: white;
