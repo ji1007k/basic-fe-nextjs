@@ -9,7 +9,7 @@
     padding-top: 30px;
 }
 
-.home-container > div {
+.home-container > div:not(.chat-container) {
     height: 100% !important;
 }
 
