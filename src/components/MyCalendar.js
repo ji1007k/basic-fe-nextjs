@@ -9,7 +9,7 @@ import { format, parse, startOfWeek, getDay } from 'date-fns';
 import ko from 'date-fns/locale/ko';
 import { getFavoritTeamSchedule } from '@utils/api-lol.js';
 import CustomToolbar from '@components/CustomToolbar.js';
-import CustomEventComponent from "@components/CustomEventComponent.js";
+import CustomEventWrapper from "@components/CustomEventWrapper.js";
 
 const locales = { ko };
 
@@ -116,15 +116,8 @@ const MyCalendar = ({ events }) => {
     };
 
 
-
-    const MyCustomEventComponent = ({ event }) => {
-        return (
-            <CustomEventComponent event={event}/>
-        )
-    };
-
     return (
-        <div style={{ height: '600px' }}>
+        <div>
             <Calendar
                 localizer={localizer}
                 formats={formats}
@@ -135,10 +128,10 @@ const MyCalendar = ({ events }) => {
                 onView={(view) => setCurrentView(view)}
                 views={['month', 'week', 'day']}
                 style={{ height: '100%' }}
-                dayPropGetter={dayPropGetter}
+                // dayPropGetter={dayPropGetter}
                 components={{
                     toolbar: CustomToolbar,
-                    event: MyCustomEventComponent,
+                    eventWrapper: CustomEventWrapper,
                 }}
             />
         </div>

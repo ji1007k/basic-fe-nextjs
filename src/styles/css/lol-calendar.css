@@ -5,11 +5,18 @@
  */
 .home-container {
     width: 700px;
+    margin: auto;
+    padding-top: 30px;
+}
+
+.home-container > div {
+    height: 100% !important;
 }
 
 @media (max-width: 768px) {
     .home-container {
         width: 90%;
+        height: 75%;
     }
 
 }
@@ -39,6 +46,14 @@
     margin-bottom: 10px;
 }
 
+@media (max-width: 500px) {
+    .custom-toolbar {
+        margin-top: 25px;
+        display: inline-grid;
+        justify-content: center;
+    }
+}
+
 .custom-toolbar button {
     background: none;
     border: none;
@@ -53,6 +68,7 @@
 
 .rbc-calendar .custom-toolbar .label-area {
     display: flex;
+    justify-content: center;
 }
 
 .rbc-calendar .rbc-time-view .rbc-row.rbc-time-header-cell {
@@ -63,3 +79,18 @@
 .rbc-calendar .rbc-time-view .rbc-allday-cell {
     height: fit-content;
 }
+
+
+/*.rbc-event-content {*/
+/*    pointer-events: none;*/
+/*}*/
+
+
+/**
+    reactjs popup style
+ */
+/*.popup-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+}*/
