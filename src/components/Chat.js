@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from "@/context/AuthContext.js";
 
 const Chat = () => {
-    const { username } = useAuth();
+    const { userId } = useAuth();
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
     const [socket, setSocket] = useState(null);
@@ -35,10 +35,10 @@ const Chat = () => {
         // 서버에서 받은 메시지 처리
         ws.onmessage = (event) => {
             console.log(event.data);
-            const { userId, message, time } = JSON.parse(event.data);
-            console.log("메시지 수신: ", userId, message, time);
+            const { userId, username, message, time } = JSON.parse(event.data);
+            console.log("메시지 수신: ", userId, username, message, time);
 
-            const data = { text: message, sender: userId, time: time };
+            const data = { text: message, sender: userId, name: username, time: time };
             setMessages((prevMessages) => [...prevMessages, data]);
         };
 
@@ -86,7 +86,7 @@ const Chat = () => {
                         {messages.map((message, index) => (
                             <div
                                 key={index}
-                                className={`message ${message.sender === username ? "sent" : "received"}`}
+                                className={`message ${message.sender === userId ? "sent" : "received"}`}
                             >
                                 <div>{message.text}</div>
                                 <div className="time">{message.time || '오전 10:07'}</div>

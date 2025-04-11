@@ -25,7 +25,8 @@ export async function login(username, password) {
             success: true,
             mainPageUrl: data.mainPageUrl,
             expirationTime: data.expirationTime,
-            username: username,  // 사용자명 추가
+            userId: data.userId,    // 사용자 ID
+            username: username,     // 사용자명
         };
     } catch (err) {
         console.error("로그인 오류:", err);

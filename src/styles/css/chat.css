@@ -1,4 +1,5 @@
 .chat-container {
+    z-index: 999;
     position: fixed;
     bottom: 80px; /* 버튼 위에 배치 */
     right: 20px;
@@ -145,4 +146,18 @@
 .chat-container .message.sent .time {
     left: -55px;
     text-align: right;
+}
+
+
+@media (max-width: 768px) {
+    .chat-container {
+        height: 600px;
+    }
+}
+
+@media (max-width: 500px) {
+    .chat-container {
+        height: calc(100% - 210px);
+        width: 90%;
+    }
 }
