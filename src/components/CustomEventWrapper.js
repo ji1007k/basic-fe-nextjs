@@ -3,21 +3,21 @@ import 'reactjs-popup/dist/index.css';
 import { format } from 'date-fns';
 
 
-const CustomEventComponent = ({ event }) => {
+const CustomEventWrapper = ({ event, children }) => {
     return (
         <Popup
-            trigger={
-                <div className="text-xs text-white bg-red-500 px-1 py-0.5 rounded cursor-pointer">
-                    {event.title}
-                </div>
-            }
-            position="top center"
+            trigger={<div>{children}</div>}
+            modal
             closeOnDocumentClick
-            arrow={true}
             contentStyle={{
-                padding: '10px',
-                borderRadius: '8px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                width: '90vw',
+                maxWidth: '400px',
+                maxHeight: '90vh',
+                overflowY: 'auto',
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)'
             }}
         >
             <div className="text-sm">
@@ -35,4 +35,4 @@ const CustomEventComponent = ({ event }) => {
     );
 };
 
-export default CustomEventComponent;
+export default CustomEventWrapper;
