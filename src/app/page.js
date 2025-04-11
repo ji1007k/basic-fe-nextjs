@@ -9,7 +9,7 @@ import MyCalendar from "@components/MyCalendar.js";
 
 
 export default function Home({ Component, pageProps }) {
-    const { username } = useAuth();
+    const { userId } = useAuth();
     const router = useRouter();
 
     const handleChatBtnClick = () => {
@@ -23,7 +23,7 @@ export default function Home({ Component, pageProps }) {
             <MyCalendar />
 
             {/* 로그인 여부에 따라 버튼을 감싸서 Chat 표시 */}
-            {username ? (
+            {userId ? (
                 <Chat />
             ) : (
                 <button onClick={ handleChatBtnClick }

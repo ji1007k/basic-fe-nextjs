@@ -19,7 +19,7 @@ export default function LoginForm() {
             const result = await apiLogin(username, password); // login API 호출
             if (result.success) {
                 // 로그인 성공 시 받은 데이터로 Context 상태 업데이트
-                login(username, result.expirationTime);
+                login(result.userId, username, result.expirationTime);
 
                 // 로그인 성공 후 받은 URL로 리디렉션
                 router.push(result.mainPageUrl);
