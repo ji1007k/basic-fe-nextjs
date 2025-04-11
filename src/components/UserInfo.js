@@ -40,7 +40,6 @@ export default function UserInfo({ username, expirationTime }) {
             <span className="username username-clickable" onClick={toggleDropdown}>
                 {username}
             </span>
-            {" | "}
             <TokenExpiration />
 
             {dropdownActive && (

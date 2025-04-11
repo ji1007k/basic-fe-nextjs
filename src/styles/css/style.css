@@ -39,7 +39,7 @@ header {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    /*padding: 0 20px;*/
     font-family: 'Roboto', sans-serif;
 }
 
@@ -595,4 +595,24 @@ header {
 
 .cancel-btn:hover {
     background-color: #bbb;
+}
+
+
+
+/**
+    모바일) 헤더 > 로그인 사용자 정보
+ */
+#tokenExpirationTime::before {
+    content: " | ";
+}
+
+@media (max-width: 500px) {
+    #username-area {
+        display: inline-grid;
+        justify-items: end;
+    }
+
+    #tokenExpirationTime::before {
+        content: none;
+    }
 }
