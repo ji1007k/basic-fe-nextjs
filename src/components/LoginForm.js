@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext.js";  // useAuth 훅을 사용
 
 export default function LoginForm() {
-    const [username, setUsername] = useState("admin");
-    const [password, setPassword] = useState("admin");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const router = useRouter();
     const { login } = useAuth();  // AuthContext에서 login 함수 가져오기
