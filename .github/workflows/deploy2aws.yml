@@ -18,6 +18,7 @@ jobs:
           # Github Repository Settings > Security > Secrets and variables > Actions
           # SSH_HOST: HOST IP
           host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}  # SSH 포트 지정
           username: ${{ secrets.SSH_USER }}
           # RSA 키페어 중 pem 파일 내용
           key: ${{ secrets.SSH_PRIV_KEY }}

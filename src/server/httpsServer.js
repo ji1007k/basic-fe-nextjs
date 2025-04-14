@@ -34,7 +34,6 @@ const handle = app.getRequestHandler();
 const httpsOptions = {
     key: fs.readFileSync(path.resolve(process.env.SSL_KEY_PATH)),       // 개인 키
     cert: fs.readFileSync(path.resolve(process.env.SSL_CERT_PATH)),     // 인증서
-    ca: fs.readFileSync(path.resolve(process.env.SSL_CA_PATH)),         // EC2 인증서 (필요하면 추가)
 };
 
 // Express 서버 생성
