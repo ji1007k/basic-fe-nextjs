@@ -2,7 +2,9 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { format } from 'date-fns';
 
-
+/**
+ * 일정 클릭 팝업 이벤트
+ */
 const CustomEventWrapper = ({ event, children }) => {
     return (
         <Popup
