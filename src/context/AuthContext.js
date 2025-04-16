@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }) => {
         setUsername(username);
         setExpirationTime(expirationDate);  // ISO 형식의 문자열로 저장
         localStorage.setItem("userId", userId);
+        localStorage.setItem("username", username);
         localStorage.setItem("expirationTime", expirationDate.toISOString());  // 문자열로 저장
     };
 
@@ -52,6 +53,7 @@ export const AuthProvider = ({ children }) => {
         setUsername(null);
         setExpirationTime(null);
         localStorage.removeItem('userId');
+        localStorage.removeItem('username');
         localStorage.removeItem('expirationTime');
 
         window.location.href = "/"; // "/" 페이지로 이동
@@ -60,10 +62,12 @@ export const AuthProvider = ({ children }) => {
     // 로그인 상태 초기화
     useEffect(() => {
         const storedUserId = localStorage.getItem('userId');
+        const storedUsername = localStorage.getItem('username');
         const storedExpirationTime = localStorage.getItem('expirationTime');
 
-        if (storedUserId && storedExpirationTime) {
+        if (storedUserId && storedUsername && storedExpirationTime) {
             setUserId(storedUserId);
+            setUsername(storedUsername);
             setExpirationTime(new Date(storedExpirationTime));
         }
     }, []);
