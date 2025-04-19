@@ -49,6 +49,7 @@ USER node
 
 # Copy package.json and httpsServer.js, config to the current working directory (inside /projects/basic-fe-nextjs)
 COPY package.json ./
+COPY next.config.mjs ./
 COPY .env.production ./
 COPY src/server/httpsServer.js ./src/server/
 COPY src/config ./src/config
