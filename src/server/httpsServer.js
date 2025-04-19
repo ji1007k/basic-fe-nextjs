@@ -6,6 +6,7 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 import express from "express";
 import * as https from "node:https";
 import dotenv from 'dotenv';
+import nextConfig from "../../next.config.mjs";
 
 // 1. 항상  .env.local 파일을 로드 (EXPRESS)
 dotenv.config({ path: '.env.local' });
@@ -122,10 +123,13 @@ httpsServer.all("*", (req, res) => {
 // HTTPS 서버 실행
 const PORT = process.env.PORT || 3000;
 
+// 💡 basePath 접근
+const basePath = nextConfig.basePath || '/';
+
 app.prepare().then(() => {
     createServer(httpsOptions, httpsServer).listen(PORT, (err) => {
         if (err) throw err;
-        console.log("🚀 Server running at https://localhost:" + PORT);
+        console.log(`🚀 Server running at https://localhost:${PORT}${basePath}`);
     });
 });
 
