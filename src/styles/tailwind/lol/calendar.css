@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* calendar-tailwind.css */
 .rbc-calendar {
     @apply text-sm font-sans;
@@ -26,3 +30,97 @@
 .rbc-toolbar-label {
     @apply font-bold text-lg;
 }
+
+/**
+    즐겨찾기 버튼
+ */
+.button {
+    @apply flex items-center gap-1 text-sm transition duration-200;
+}
+
+.button-hovered {
+    @apply text-orange-500;
+}
+
+.button-default {
+    @apply text-gray-700;
+}
+
+/* 기본 별 아이콘 색상 */
+.star-icon {
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.star-icon.favorited,
+.star-icon.hovered {
+    color: #fbbf24; /* yellow-400 */
+}
+
+.star-icon.not-favorited {
+    color: #9ca3af; /* gray-400 */
+}
+
+/* Hovered 상태일 때 아이콘 확대 */
+.star-icon.hovered {
+    transform: scale(1.1);
+}
+
+
+/* 팀별 아이콘 버튼 스타일  */
+.team-btn-container{
+    @apply flex gap-3 overflow-x-auto px-2 py-3;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; /* 부드러운 스크롤 (iOS) */
+}
+
+.team-btn-container::-webkit-scrollbar {
+    display: none; /* 스크롤바 숨김 */
+}
+
+.team-button {
+    @apply w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all duration-300 overflow-hidden;
+    flex: 0 0 auto; /* 크기 고정, 줄어들지 않도록 */
+    background-color: #333333;
+}
+
+.team-button.selected {
+    background-color: #dedede;
+}
+
+.team-button.favorited {
+    @apply border-yellow-500;
+}
+
+.team-button:not(.favorited) {
+    @apply border-gray-300;
+}
+
+.team-button.hovered {
+    background-color: #dedede;
+}
+
+.team-image {
+    @apply w-6 h-6 object-contain;
+}
+
+.favorite-icon {
+    @apply absolute top-0 left-0 p-1;
+}
+
+.star-wrapper {
+    @apply absolute -top-2 -left-2 z-10 p-1 bg-white rounded-full;
+    cursor: pointer;
+}
+.star-icon {
+    @apply text-lg transition-transform duration-150;
+}
+.star-icon.active {
+    @apply text-yellow-400;
+}
+.star-icon.inactive {
+    @apply text-gray-400;
+}
+.star-icon.hover {
+    @apply scale-110;
+}
+

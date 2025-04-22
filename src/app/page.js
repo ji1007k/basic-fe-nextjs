@@ -6,6 +6,7 @@ import "@/styles/css/chat.css";
 import { useAuth } from "@/context/AuthContext.js";
 import { useRouter } from "next/navigation";
 import MyCalendar from "@components/MyCalendar.js";
+import {CalandarProvider} from "@/context/CalandarContext.js";
 
 
 export default function Home({ Component, pageProps }) {
@@ -20,7 +21,9 @@ export default function Home({ Component, pageProps }) {
 
     return (
         <main className="home-container">
-            <MyCalendar />
+            <CalandarProvider>
+                <MyCalendar />
+            </CalandarProvider>
 
             {/* 로그인 여부에 따라 버튼을 감싸서 Chat 표시 */}
             {userId ? (
