@@ -15,6 +15,16 @@ export default function LoginForm() {
     const handleLogin = async () => {
         setError(null);
 
+        if (!username.trim().length) {
+            alert("username 입력하기")
+            return;
+        }
+
+        if (!password.trim().length) {
+            alert("password 입력하기")
+            return;
+        }
+
         try {
             const result = await apiLogin(username, password); // login API 호출
             if (result.success) {
@@ -31,6 +41,12 @@ export default function LoginForm() {
         }
     };
 
+    const handleEnterPress = (e) => {
+        if (e.key === 'Enter') {
+            handleLogin();
+        }
+    }
+
     return (
         <div>
             {error && <p className="error-message">{error}</p>}
@@ -41,6 +57,7 @@ export default function LoginForm() {
                     id="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    onKeyDown={handleEnterPress}
                     required
                     placeholder="Enter your username"
                 />
@@ -52,6 +69,7 @@ export default function LoginForm() {
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleEnterPress}
                     required
                     placeholder="Enter your password"
                 />
