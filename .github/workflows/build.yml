@@ -1,11 +1,11 @@
 name: "[CI] Build Basic FE Next.js"
 
 on:
+  # PR 처음 열렸을 때, PR에 커밋 추가될 떄, PR 다시 열렸을 떄
   pull_request:
     branches:
-      - main
-    types:
-      - opened
+      - main  # main 브랜치 대상
+    types: [opened, synchronize, reopened]
 
 jobs:
   buildBasicFeNextjs:
