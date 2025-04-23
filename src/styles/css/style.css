@@ -24,7 +24,7 @@ header {
     background-color: #333; /* 다크한 색상으로 고급스러운 느낌 */
     color: white;
     padding: 20px 30px;
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
@@ -208,10 +208,8 @@ header {
     max-width: 380px; /* 최대 너비 설정 */
     text-align: center;
     position: relative;
-    margin-top: 100px; /* 헤더 높이만큼 여백 추가 */
+    margin: auto;
     font-family: 'Roboto', sans-serif;
-    margin-left: auto;
-    margin-right: auto;
     box-sizing: border-box; /* padding과 border를 포함한 전체 너비 설정 */
 }
 
@@ -311,9 +309,10 @@ header {
 =============================== */
 @media (max-width: 768px) {
     .login-container {
-        padding: 25px;
+        padding: 30px;
         width: 100%;
         max-width: 90%;
+        margin: auto;
     }
 
     .login-container h2 {
