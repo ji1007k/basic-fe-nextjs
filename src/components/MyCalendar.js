@@ -63,17 +63,22 @@ const MyCalendar = ({ events }) => {
         if (!schedules) return [];
 
         return view === 'month'
-            ? schedules.map((schedule) => {
-                const participants = schedule.participants;
-                return {
-                    ...schedule,
-                    title: [participants[0].teamCode, participants[1].teamCode].join(' vs '),
-                    start: new Date(schedule.startTime),
-                    end: new Date(schedule.startTime),
-                    allDay: true
-                }
-            })
-            : schedules.flatMap((schedule) => {
+            ? schedules
+                .filter(schedule => schedule.participants.length > 0)
+                .map((schedule) => {
+                    const participants = schedule.participants;
+
+                    return {
+                        ...schedule,
+                        title: [participants[0].teamCode, participants[1].teamCode].join(' vs '),
+                        start: new Date(schedule.startTime),
+                        end: new Date(schedule.startTime),
+                        allDay: true
+                    }
+                })
+            : schedules
+                .filter(schedule => schedule.participants.length > 0)
+                .flatMap((schedule) => {
                 const participants = schedule.participants;
                 const startTime = new Date(schedule.startTime);
                 return [
