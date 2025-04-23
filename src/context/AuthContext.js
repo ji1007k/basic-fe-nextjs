@@ -56,7 +56,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('username');
         localStorage.removeItem('expirationTime');
 
-        window.location.href = "/"; // "/" 페이지로 이동
+        const basePath = process.env.NEXT_PUBLIC_BASE_PATH;
+        window.location.href = `${basePath}/`; // 메인 페이지로 이동 (새로고침)
     };
 
     // 로그인 상태 초기화

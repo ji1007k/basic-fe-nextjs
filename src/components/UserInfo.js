@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext.js";
 import TokenExpiration from "@/components/TokenExpiration";
 import { logout as apiLogout } from "@/utils/api.js";
+import Link from "next/link";
 
-export default function UserInfo({ username, expirationTime }) {
+export default function UserInfo({ username }) {
     const [dropdownActive, setDropdownActive] = useState(false);
     const { logout } = useAuth();  // AuthContext에서 logout 함수 가져오기
 
@@ -44,7 +45,7 @@ export default function UserInfo({ username, expirationTime }) {
 
             {dropdownActive && (
                 <div id="dropdown" className="dropdown-content">
-                    <a href="/mypage">마이페이지</a>
+                    <Link href="/users/mypage">마이페이지</Link>
                     <a onClick={handleLogout} className="logout-btn">
                         로그아웃
                     </a>
