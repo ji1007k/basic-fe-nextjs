@@ -112,7 +112,7 @@ const MyCalendar = ({ events }) => {
                 defaultView="month"
                 onView={(view) => setCurrentView(view)}
                 views={['month', 'week', 'day']}
-                style={{ height: '100%' }}
+                style={{height: 'calc(100% - 70px)'}}
                 eventPropGetter={(event, start, end, isSelected) => {
                     // console.log('경기 정보: ', event);
                     const teamCodes = event.participants?.map(team => team.teamCode);

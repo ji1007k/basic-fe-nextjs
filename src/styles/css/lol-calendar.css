@@ -7,7 +7,6 @@
     width: 700px;
     height: 75%;
     margin: auto;
-    padding-top: 30px;
 }
 
 .home-container > div:not(.chat-container) {
@@ -44,12 +43,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 5px;
     margin-bottom: 10px;
 }
 
 @media (max-width: 500px) {
     .custom-toolbar {
-        margin-top: 25px;
         display: inline-grid;
         justify-content: center;
     }

@@ -24,7 +24,7 @@ header {
     background-color: #333; /* 다크한 색상으로 고급스러운 느낌 */
     color: white;
     padding: 20px 30px;
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;

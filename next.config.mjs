@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 // import path from 'path';
 
-const basePath = '/jikimi'; // 이 값을 고정하거나 .env에서 읽을 수도 있음
+const basePath = '/jikimi';
 
 const nextConfig = {
     // 개발환경에서 렌더링을 2번 유도 -> 잠재적 버그 발견 용이성. nextjs 에선 기본적으로 활성화됨
