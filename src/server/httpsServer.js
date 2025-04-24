@@ -68,15 +68,21 @@ const proxyOptions = {
 if (API_URL.startsWith("https")) {
     Object.assign(proxyOptions, {
         pathRewrite: (path, req) => {
-            // req.originalUrl는 "/api/auth/login"을 포함함.
-            return req.originalUrl;
+            return req.originalUrl; // req.originalUrl는 "/api/auth/login"을 포함함.
         },
-        secure: false, // SSL 인증서 검증 비활성화 (로컬 개발용)
-        agent: new https.Agent({ rejectUnauthorized: false }), // 자체 서명 SSL 허용
+        secure: false,  // SSL 인증서 검증 비활성화 (로컬 개발용)
+        agent: new https.Agent({ rejectUnauthorized: false }),  // 자체 서명 SSL 허용
     });
 } else {
     Object.assign(proxyOptions, {
-        pathRewrite: { "^/api": "" },
+        pathRewrite: (path, req) => {
+            // swagger 관련 요청에선 그대로 사용
+            if (["swagger", "/v3/api-docs"].some(keyword => path.includes(keyword))) {
+                return req.originalUrl;
+            }
+            // 그 외 url에서 api 제거
+            return path.replace(/^\/api/, "");
+        }
     });
 }
 
