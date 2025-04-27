@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useRef} from 'react';
 import { useAuth } from "@/context/AuthContext.js";
 
 const Chat = () => {
@@ -9,6 +9,7 @@ const Chat = () => {
     const [inputMessage, setInputMessage] = useState('');
     const [socket, setSocket] = useState(null);
     const [isChatOpen, setIsChatOpen] = useState(false); // 채팅창 열림/닫힘 상태
+    const messagesEndRef = useRef(null);  // 메시지 끝을 참조하는 ref
 
     useEffect(() => {
         // WebSocket 연결
@@ -26,6 +27,11 @@ const Chat = () => {
         console.log("socket state changed", socket);
     }, [socket]);
 
+    // 새 메시지가 추가될 때마다 스크롤을 맨 아래로
+    useEffect(() => {
+        // 메시지가 변경될 때마다 실행
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]); // messages가 변경될 때마다 실행
 
     const setSocketEvent = (ws) => {
         ws.onopen = () => {
@@ -92,6 +98,8 @@ const Chat = () => {
                                 <div className="time">{message.time || '오전 10:07'}</div>
                             </div>
                         ))}
+                        {/* 메시지 목록 끝에 ref를 연결하여 스크롤을 맨 아래로 */}
+                        <div ref={messagesEndRef} />
                     </div>
                     <div className="chat-input">
                         <input
