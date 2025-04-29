@@ -53,7 +53,7 @@ export async function apiRemoveFavoriteTeam(teamId) {
 }
 
 export async function getAllSchedules() {
-    const response = await fetch('/api/lol/comps', {
+    const response = await fetch('/api/lol/matches', {
         method: 'GET',
         credentials: 'include'
     });
@@ -66,7 +66,7 @@ export async function getAllSchedules() {
 }
 
 export async function getFavoritTeamSchedule(favoriteTeamCode) {
-    const response = await fetch(`/api/lol/comps/${favoriteTeamCode}`, {
+    const response = await fetch(`/api/lol/matches/${favoriteTeamCode}`, {
         method: 'GET',
     });
 
