@@ -7,6 +7,7 @@
     width: 700px;
     height: 75%;
     margin: auto;
+    margin-top: 145px;
 }
 
 .home-container > div:not(.chat-container) {
@@ -17,6 +18,7 @@
     .home-container {
         width: 90%;
         height: 75%;
+        margin-top: 170px;
     }
 
 }
@@ -45,12 +47,14 @@
     align-items: center;
     margin-top: 5px;
     margin-bottom: 10px;
+    gap: 0.5rem;
 }
 
 @media (max-width: 500px) {
     .custom-toolbar {
         display: inline-grid;
         justify-content: center;
+        gap: 0.5rem;
     }
 }
 
@@ -80,17 +84,45 @@
     height: fit-content;
 }
 
+.calandar-container {
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-/*.rbc-event-content {*/
-/*    pointer-events: none;*/
-/*}*/
+.calandar-container .rbc-calendar .date-selectors select {
+    width: 100%;
+    max-width: fit-content;
+    padding: 5px 25px 5px 10px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L0.803848 0.5H11.1962L6 8Z' fill='%23999'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    transition: border-color 0.3s ease;
+}
 
+.calandar-container .rbc-calendar .date-selectors select:not(:last-child) {
+    margin-right: 3px;
+}
 
-/**
-    reactjs popup style
- */
-/*.popup-content {
-    max-width: 90vw;
-    max-height: 90vh;
-    overflow: auto;
-}*/
+.calandar-container .rbc-calendar .date-selectors select:hover {
+    cursor: pointer;
+}
+
+.calandar-container .rbc-calendar .date-selectors select:focus {
+    border-color: #ff5722;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 87, 34, 0.2);
+}

@@ -1,13 +1,9 @@
 import React from 'react';
-import { FaChevronLeft, FaChevronRight, FaCalendarDay, FaCalendarWeek, FaCalendarAlt } from 'react-icons/fa';
-import { addDays, startOfWeek, format } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import {FaCalendarAlt, FaCalendarDay, FaChevronLeft, FaChevronRight} from 'react-icons/fa';
+import {format} from 'date-fns';
 
-const formatWeekRange = (date) => {
-    const start = startOfWeek(date, { weekStartsOn: 1 }); // 월요일 시작
-    const end = addDays(start, 6);
-    return `${format(start, 'yyyy년 M월 d일', { locale: ko })} ~ ${format(end, 'M월 d일', { locale: ko })}`;
-};
+const years = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - 5 + i);
+const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
 const CustomToolbar = (toolbar) => {
     const goToBack = () => toolbar.onNavigate('PREV');
@@ -15,22 +11,51 @@ const CustomToolbar = (toolbar) => {
     const goToToday = () => toolbar.onNavigate('TODAY');
     const goToView = (view) => toolbar.onView(view);
 
-    const label =
-        toolbar.view === 'week'
-            ? formatWeekRange(toolbar.date)
-            : format(toolbar.date, 'yyyy년 M월', { locale: ko });
+    const handleYearChange = (e) => {
+        const newDate = new Date(toolbar.date);
+        newDate.setFullYear(parseInt(e.target.value));
+        toolbar.onNavigate('DATE', newDate);
+    };
+
+    const handleMonthChange = (e) => {
+        const newDate = new Date(toolbar.date);
+        newDate.setMonth(parseInt(e.target.value) - 1); // 0-indexed
+        toolbar.onNavigate('DATE', newDate);
+    };
 
     return (
         <div className="custom-toolbar">
             <div className="label-area">
                 <button onClick={goToBack}><FaChevronLeft /></button>
-                <span>{label}</span>
+                <div className="date-selectors">
+                    {toolbar.view === 'month' && (
+                        <>
+                            <select value={toolbar.date.getFullYear()} onChange={handleYearChange}>
+                                {years.map((year) => (
+                                    <option key={year} value={year}>{year}년</option>
+                                ))}
+                            </select>
+                            <select value={toolbar.date.getMonth() + 1} onChange={handleMonthChange}>
+                                {months.map((month) => (
+                                    <option key={month} value={month}>{month}월</option>
+                                ))}
+                            </select>
+                        </>
+                    )}
+                    {(toolbar.view === 'week' || toolbar.view === 'day') && (
+                        <input
+                            type="date"
+                            value={format(toolbar.date, 'yyyy-MM-dd')}
+                            onChange={(e) => toolbar.onNavigate('DATE', new Date(e.target.value))}
+                        />
+                    )}
+                </div>
                 <button onClick={goToNext}><FaChevronRight /></button>
             </div>
-            <div>
+            <div className="toolbar-controls">
                 <button onClick={goToToday}>Today</button>
                 <button onClick={() => goToView('month')}><FaCalendarAlt /></button>
-                <button onClick={() => goToView('week')}><FaCalendarWeek /></button>
+                {/*<button onClick={() => goToView('week')}><FaCalendarWeek /></button>*/}
                 <button onClick={() => goToView('day')}><FaCalendarDay /></button>
             </div>
         </div>

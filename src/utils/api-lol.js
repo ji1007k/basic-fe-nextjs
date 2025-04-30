@@ -76,3 +76,27 @@ export async function getFavoritTeamSchedule(favoriteTeamCode) {
 
     return await response.json();
 }
+
+export async function apiFetchTournaments() {
+    const response = await fetch(`/api/lol/tournaments`, {
+        method: 'GET',
+    })
+
+    if (!response.ok) {
+        throw new Error('토너먼트 조회 실패');
+    }
+
+    return await response.json();
+}
+
+export async function apiFetchStandings(tournamentId) {
+    const response = await fetch(`/api/lol/standings/${tournamentId}`, {
+        method: 'GET',
+    })
+
+    if (!response.ok) {
+        throw new Error('순위 조회 실패');
+    }
+
+    return await response.json();
+}
