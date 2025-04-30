@@ -1,0 +1,269 @@
+
+
+/**
+스탠딩 영역
+ */
+.ranking-container {
+    padding: 1rem;
+}
+
+.ranking-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+@media (min-width: 500px) {
+    .ranking-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 499px) {
+    .ranking-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.team-card {
+    border: 1px solid #eee;
+    padding: 0.75rem;
+    border-radius: 8px;
+    text-align: center;
+    background: #fafafa;
+}
+
+.team-card img {
+    height: 45px;
+}
+
+.team-rank {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.team-name {
+    font-size: 14px;
+    margin: 0.5rem 0;
+}
+
+.team-record {
+    font-size: 12px;
+    color: #666;
+}
+
+.no-ranking {
+    padding: 1rem;
+    text-align: center;
+    color: #999;
+}
+
+/**
+
+ */
+/* 전체 컨테이너 스타일 */
+.tournament-container {
+    max-width: 1200px; /* 최대 너비 제한 */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* 배경색 */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+}
+
+/* 토너먼트 셀렉트박스 스타일 */
+.tournament-select-wrapper {
+    margin-bottom: 10px;
+    text-align: end;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+.tournament-select-wrapper span {
+    font-weight: bold;
+    font-size: 15px;
+    padding: 0 15px;
+}
+
+.tournament-select-wrapper .tournament-select {
+    width: 100%;
+    max-width: fit-content;
+    padding: 7px 39px 7px 15px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L0.803848 0.5H11.1962L6 8Z' fill='%23999'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    transition: border-color 0.3s ease;
+}
+
+.tournament-select-wrapper .tournament-select:hover {
+    cursor: pointer;
+}
+
+.tournament-select-wrapper .tournament-select:focus {
+    border-color: #ff5722;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 87, 34, 0.2);
+}
+
+/**
+ 순위표 - 스테이지 버튼
+ */
+.stage-buttons {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.stage-buttons button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.stage-buttons .active {
+    background: #333;
+    color: white;
+    border-color: #333;
+}
+
+/* 순위표 스타일 */
+.ranking-container {
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.ranking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.team-card {
+    padding: 10px 15px;
+    background-color: #f9fafb;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    display: inline-flex;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.team-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.team-rank {
+    display: inline-flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 6px 12px;
+    background-color: #e0e7ff;
+    color: #1f2937;
+    border-radius: 20px;
+}
+
+.team-rank-badge {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 50%;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 16px;
+    margin: auto 0;
+    background-color: white;
+    color: #333;
+    border-bottom: 2px solid #333;
+}
+
+.team-rank-badge span {
+    flex-direction: column;
+}
+
+.team-rank-badge span:not(:first-child) {
+    font-size: 11px;
+    color: #444;
+    margin-top: -5px;
+}
+
+.team-icon {
+    border: 1px solid gray;
+    border-radius: 20%;
+    width: 65px;
+    height: 65px;
+    margin: auto 0;
+    background-color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.team-info {
+    width: 130px;
+    margin: 0;
+}
+
+.team-info .team-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 8px 0;
+}
+
+.team-info .team-record {
+    font-size: 14px;
+    color: #444;
+}
+
+.team-info .team-record span {
+    font-size: 12px;
+}
+
+
+.team-info .team-record .win {
+    color: #2e8b57; /* 승리 - 녹색 */
+    font-weight: 500;
+}
+
+.team-info .team-record .loss {
+    color: #c0392b; /* 패배 - 빨간색 */
+    font-weight: 500;
+}
+
+.team-info .team-record span:not(:last-child)::after {
+    content: ' | ';
+    color: #333;
+}
+
+.no-ranking {
+    text-align: center;
+    font-size: 18px;
+    color: #b0b0b0;
+    margin-top: 40px;
+}
+

@@ -39,11 +39,11 @@ const formats = {
 const MyCalendar = ({ events }) => {
     const { userId } = useAuth();
     const { selectedTeam, favoriteTeamCodes, setFavoriteTeamCodes } = useCalandar();
+    const [currentDate, setCurrentDate] = useState(new Date());
     const [currentView, setCurrentView] = useState('month');
     const [rawSchedules, setRawSchedules] = useState([]);
     const [refinedSchedules, setRefinedSchedules] = useState([]);
 
-    // FIXME 즐겨찾기 여러개 가능하게
     useEffect(() => {
         const fetchSchedule = async () => {
             if (userId) {
@@ -105,9 +105,63 @@ const MyCalendar = ({ events }) => {
         setRefinedSchedules(refineTeamSchedule(rawSchedules, currentView));
     }, [rawSchedules, refineTeamSchedule, currentView, selectedTeam]);
 
+    // 경기 일정별 스타일
+    const eventPropGetter = (event, start, end, isSelected) => {
+        // console.log('경기 정보: ', event);
+        const teamCodes = event.participants?.map(team => team.teamCode);
+        const isFavoriteMatch = teamCodes.some(teamCode =>
+            favoriteTeamCodes?.includes(teamCode)
+        );
+
+        const isSelectedTeamMatch = selectedTeam && teamCodes.includes(selectedTeam.teamCode);
+        const isUnstarted = event.state === 'unstarted';
+
+        let style = {
+            borderRadius: '6px',
+            padding: '2px 6px',
+        };
+
+        // 🎯 즐겨찾기 + 선택된 팀 → 더 강조
+        if (isFavoriteMatch && isSelectedTeamMatch) {
+            style.backgroundColor = '#f4511e';
+            style.border = '2px solid #ffd54f';
+            style.color = '#fffaf0';
+            style.fontWeight = '600';
+            style.boxShadow = '0 0 0 2px #ffeb3b66';
+        }
+        // ⭐ 즐겨찾기만
+        else if (isFavoriteMatch) {
+            style.backgroundColor = '#f4511e';
+            style.border = '1px solid #d84315';
+            style.color = '#fffaf0';
+            style.fontWeight = '600';
+        }
+        // 🔷 선택된 팀만
+        else if (isSelectedTeamMatch) {
+            style.backgroundColor = '#fffde7';
+            style.border = '2px dashed #1976d2'; // 파란 점선 강조
+            style.color = '#0d47a1';
+            style.fontWeight = '500';
+        }
+        // ⏳ 시작 안 한 경기
+        else if (isUnstarted) {
+            style.backgroundColor = '#e3f2fd';
+            style.border = '1px dashed #64b5f6';
+            style.color = '#1e88e5';
+            style.fontStyle = 'italic';
+        }
+        // 🕓 기본 경기
+        else {
+            style.backgroundColor = '#f0f2f5';
+            style.border = '1px solid #cfd8dc';
+            style.color = '#37474f';
+        }
+
+        return { style };
+    }
 
     return (
-        <div>
+        <div className="calandar-container">
             <Calendar
                 localizer={localizer}
                 formats={formats}
@@ -118,63 +172,14 @@ const MyCalendar = ({ events }) => {
                 onView={(view) => setCurrentView(view)}
                 views={['month', 'week', 'day']}
                 style={{height: 'calc(100% - 70px)'}}
-                eventPropGetter={(event, start, end, isSelected) => {
-                    // console.log('경기 정보: ', event);
-                    const teamCodes = event.participants?.map(team => team.teamCode);
-                    const isFavoriteMatch = teamCodes.some(teamCode =>
-                        favoriteTeamCodes?.includes(teamCode)
-                    );
-
-                    const isSelectedTeamMatch = selectedTeam && teamCodes.includes(selectedTeam.teamCode);
-                    const isUnstarted = event.state === 'unstarted';
-
-                    let style = {
-                        borderRadius: '6px',
-                        padding: '2px 6px',
-                    };
-
-                    // 🎯 즐겨찾기 + 선택된 팀 → 더 강조
-                    if (isFavoriteMatch && isSelectedTeamMatch) {
-                        style.backgroundColor = '#f4511e';
-                        style.border = '2px solid #ffd54f';
-                        style.color = '#fffaf0';
-                        style.fontWeight = '600';
-                        style.boxShadow = '0 0 0 2px #ffeb3b66';
-                    }
-                    // ⭐ 즐겨찾기만
-                    else if (isFavoriteMatch) {
-                        style.backgroundColor = '#f4511e';
-                        style.border = '1px solid #d84315';
-                        style.color = '#fffaf0';
-                        style.fontWeight = '600';
-                    }
-                    // 🔷 선택된 팀만
-                    else if (isSelectedTeamMatch) {
-                        style.backgroundColor = '#fffde7';
-                        style.border = '2px dashed #1976d2'; // 파란 점선 강조
-                        style.color = '#0d47a1';
-                        style.fontWeight = '500';
-                    }
-                    // ⏳ 시작 안 한 경기
-                    else if (isUnstarted) {
-                        style.backgroundColor = '#e3f2fd';
-                        style.border = '1px dashed #64b5f6';
-                        style.color = '#1e88e5';
-                        style.fontStyle = 'italic';
-                    }
-                    // 🕓 기본 경기
-                    else {
-                        style.backgroundColor = '#f0f2f5';
-                        style.border = '1px solid #cfd8dc';
-                        style.color = '#37474f';
-                    }
-
-                    return { style };
-                }}
+                eventPropGetter={eventPropGetter}
                 components={{
                     toolbar: CustomToolbar,
                     eventWrapper: CustomEventWrapper,
                 }}
+                selectable
+                date={currentDate}
+                onNavigate={(date) => setCurrentDate(date)}
             />
 
             <FavoriteTeamList />

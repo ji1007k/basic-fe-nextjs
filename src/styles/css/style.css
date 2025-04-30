@@ -20,20 +20,21 @@ body {
    헤더 스타일 (세련된 디자인)
 =============================== */
 header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.header-container {
     box-sizing: border-box;
     background-color: #333; /* 다크한 색상으로 고급스러운 느낌 */
     color: white;
     padding: 20px 30px;
-    position: sticky;
-    top: 0;
-    left: 0;
     width: 100%;
-    z-index: 1000;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* 더 부드러운 그림자 */
     border-bottom: 2px solid #444; /* 헤더 하단 경계선 */
-}
-
-.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -614,4 +615,50 @@ header {
     #tokenExpirationTime::before {
         content: none;
     }
+}
+
+
+/**
+    nav, section
+ */
+.nav-container nav ul {
+    list-style-type: none;
+    display: flex;
+    background-color: #333;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.nav-container nav ul li {
+    padding: 10px;
+    margin-right: 10px;
+}
+
+.nav-container nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-container nav ul li.active {
+    padding: 10px 15px 5px 15px;
+    border-bottom: 2px solid #ff5722;
+}
+
+
+.nav-container nav ul li.active a {
+    color: #ff5722;
+    font-weight: bold;
+}
+
+/* 각 섹션 스타일 */
+div.section {
+    /*background-color: lightgray;*/
+    /*border:1px solid gray;*/
+    display: flow-root;
+    scroll-margin-top: 170px; /* 헤더 크기만큼 스크롤 위치 아래로 */
+}
+div.section:not(:first-child) {
+    margin-top: 30px;
 }
