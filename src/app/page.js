@@ -6,19 +6,20 @@ import { useRouter } from "next/navigation";
 import MyCalendar from "@components/MyCalendar.js";
 import { CalandarProvider } from "@/context/CalandarContext.js";
 import Standings from "@components/Standings.js";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { apiFetchTournaments } from "@utils/api-lol.js";
 import Loading from "@components/Loading.js";
 import "@/styles/css/chat.css";
 import "@/styles/css/standings.css";
 
 export default function Home({ Component, pageProps }) {
-    const { userId } = useAuth();
+    const { userId, devLogin } = useAuth();
     const router = useRouter();
 
     const [tournaments, setTournaments] = useState([]);
     const [activeTournamentId, setActiveTournamentId] = useState('');
     const [isLoading, setIsLoading] = useState(true); // ✅ 로딩 상태 추가
+    const lastTap = useRef(null);
 
     useEffect(() => {
         const fetchTournaments = async () => {
@@ -35,7 +36,21 @@ export default function Home({ Component, pageProps }) {
     }, []);
 
     const handleChatBtnClick = () => {
-        router.push("/auth/login");
+        setTimeout(() => {
+            router.push("/auth/login");
+        }, 1000); // ← 더블탭 감지보다 살짝 늦게 이동
+    };
+
+    const handleChatBtnDoubleClick = () => {
+        devLogin();
+    };
+
+    const handleTouchStart = () => {
+        const now = Date.now();
+        if (lastTap.current && now - lastTap.current < 500) {
+            handleChatBtnDoubleClick(); // 더블탭 처리
+        }
+        lastTap.current = now;
     };
 
     const handleTournamentBtnClick = (tournamentId) => {
@@ -83,6 +98,8 @@ export default function Home({ Component, pageProps }) {
             ) : (
                 <button
                     onClick={handleChatBtnClick}
+                    onDoubleClick={handleChatBtnDoubleClick}
+                    onTouchStart={handleTouchStart}   // 모바일용
                     className="chat-toggle-button"
                     title="로그인 필요"
                 >

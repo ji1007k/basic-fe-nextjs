@@ -2,7 +2,8 @@
 
 // src/context/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { refreshToken as refreshTokenApi } from "../utils/api"; // API 로직 분리된 곳에서 import
+import { refreshToken as refreshTokenApi, login as apiLogin } from "@/utils/api";
+import {useRouter} from "next/navigation.js"; // API 로직 분리된 곳에서 import
 
 // TODO userid, username 객체로 합치기
 // 기본 값 설정
@@ -13,6 +14,7 @@ const AuthContext = createContext({
     login: () => {},
     logout: () => {},
     refreshToken: () => {},
+    devLogin: () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -21,6 +23,7 @@ export const AuthProvider = ({ children }) => {
     const [userId, setUserId] = useState(null);
     const [username, setUsername] = useState(null);
     const [expirationTime, setExpirationTime] = useState(null);
+    const router = useRouter();
 
     // FIXME 서버에서 설정한 토큰 만료시간 사용하도록 수정
     // 액세스 토큰 갱신 요청
@@ -71,10 +74,33 @@ export const AuthProvider = ({ children }) => {
             setUsername(storedUsername);
             setExpirationTime(new Date(storedExpirationTime));
         }
+
+        // TODO prod 환경에서는 로그인 못하도록
+        // 개발용 이스터에그
+        const handler = (e) => {
+            if (e.ctrlKey && e.altKey && e.code === 'KeyA') {
+                devLogin();
+            }
+        };
+        
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
     }, []);
 
+    const devLogin = async () => {
+        try {
+            const result = await apiLogin("admin", "admin");
+            if (result.success) {
+                login(result.userId, "admin", result.expirationTime);
+                router.push(result.mainPageUrl);
+            }
+        } catch (err) {
+            console.error("관리자 로그인 실패", err);
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ userId, username, expirationTime, login, logout, refreshToken }}>
+        <AuthContext.Provider value={{ userId, username, expirationTime, login, logout, refreshToken, devLogin }}>
             {children}
         </AuthContext.Provider>
     );
