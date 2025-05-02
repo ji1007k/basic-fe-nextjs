@@ -46,8 +46,8 @@ const Standings = ({ tournamentId }) => {
             const isMobile = containerWidth <= 630;
             const rows = isMobile ? rankings.length : Math.ceil(rankings.length / 2);
             setRowCount(rows);
-            console.log("Container Width: ", containerWidth); // 상태 변경 후 확인
-            console.log("Row Count Updated: ", rows); // 상태 변경 후 확인
+            // console.log("Container Width: ", containerWidth); // 상태 변경 후 확인
+            // console.log("Row Count Updated: ", rows); // 상태 변경 후 확인
         };
 
         updateRowCount(); // 초기 실행
