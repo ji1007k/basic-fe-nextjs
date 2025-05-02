@@ -7,7 +7,7 @@ import '@/styles/tailwind/lol/calendar.css';
 import '@/styles/css/lol-calendar.css';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import ko from 'date-fns/locale/ko';
-import {fetchFavoriteTeam, getAllSchedules} from '@utils/api-lol.js';
+import {fetchFavoriteTeam, getAllSchedules, getMatchesByYear} from '@utils/api-lol.js';
 import CustomToolbar from '@components/CustomToolbar.js';
 import CustomEventWrapper from "@components/CustomEventWrapper.js";
 import { useAuth } from "@/context/AuthContext.js";
@@ -52,7 +52,9 @@ const MyCalendar = ({ events }) => {
                 setFavoriteTeamCodes(data.map(team => team.teamCode));
             }
 
-            setRawSchedules(await getAllSchedules()); // 로그인 여부와 상관없이 전체 일정 조회
+            // 로그인 여부와 상관없이 전체/연도별 일정 조회
+            // setRawSchedules(await getAllSchedules());
+            setRawSchedules(await getMatchesByYear());
         };
 
         fetchSchedule();
