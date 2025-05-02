@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { apiFetchStandings } from "@utils/api-lol.js";
 import Loading from "@components/Loading.js";
 
@@ -6,6 +6,7 @@ const Standings = ({ tournamentId }) => {
     const [stages, setStages] = useState([]);
     const [activeStageId, setActiveStageId] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const gridContainerRef = useRef(null); // useRef를 사용하여 DOM에 접근
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,7 +52,7 @@ const Standings = ({ tournamentId }) => {
             )}
 
             {activeStage.rankings?.length > 0 ? (
-                <div className="ranking-grid">
+                <div className="ranking-grid" ref={gridContainerRef}>
                     {activeStage.rankings.map((team) => {
                         const [wins, losses] = team.record.split(',');
 

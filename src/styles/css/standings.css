@@ -4,12 +4,21 @@
 스탠딩 영역
  */
 .ranking-container {
-    padding: 1rem;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .ranking-grid {
     display: grid;
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr); /* 2열 */
+    gap: 10px;
+    margin-top: 10px;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(5, auto);
 }
 
 @media (min-width: 500px) {
@@ -20,7 +29,8 @@
 
 @media (max-width: 499px) {
     .ranking-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+        grid-template-rows: repeat(10, auto);
     }
 }
 
@@ -57,9 +67,6 @@
     color: #999;
 }
 
-/**
-
- */
 /* 전체 컨테이너 스타일 */
 .tournament-container {
     max-width: 1200px; /* 최대 너비 제한 */
@@ -139,21 +146,6 @@
 }
 
 /* 순위표 스타일 */
-.ranking-container {
-    padding: 15px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.ranking-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 10px;
-    margin-top: 10px;
-}
 
 .team-card {
     padding: 10px 15px;
@@ -165,7 +157,6 @@
     transition: transform 0.2s, box-shadow 0.2s;
 
     display: inline-flex;
-    align-content: center;
     justify-content: space-between;
 }
 
