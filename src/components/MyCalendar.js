@@ -38,7 +38,7 @@ const formats = {
 // 로그인 안했으면 전체 일정 조회
 const MyCalendar = ({ events }) => {
     const { userId } = useAuth();
-    const { selectedTeam, favoriteTeamSlugs, setFavoriteTeamSlugs } = useCalandar();
+    const { selectedTeam, favoriteTeamIds, setFavoriteTeamIds } = useCalandar();
     const [currentDate, setCurrentDate] = useState(new Date());
     const [currentView, setCurrentView] = useState('month');
     const [rawSchedules, setRawSchedules] = useState([]);
@@ -48,8 +48,8 @@ const MyCalendar = ({ events }) => {
         const fetchSchedule = async () => {
             if (userId) {
                 const data = await fetchFavoriteTeam(); // displayOrder, slug, name
-                console.log(data.map(team => team.slug))
-                setFavoriteTeamSlugs(data.map(team => team.slug));
+                console.log(data.map(team => team.teamId))
+                setFavoriteTeamIds(data.map(team => team.teamId));
             }
 
             // 로그인 여부와 상관없이 전체/연도별 일정 조회
@@ -110,12 +110,12 @@ const MyCalendar = ({ events }) => {
     // 경기 일정별 스타일
     const eventPropGetter = (event, start, end, isSelected) => {
         // console.log('경기 정보: ', event);
-        const slugs = event.participants?.map(participant => participant.team.slug);
-        const isFavoriteMatch = slugs.some(slug =>
-            favoriteTeamSlugs?.includes(slug)
+        const Ids = event.participants?.map(participant => participant.team.teamId);
+        const isFavoriteMatch = Ids.some(teamId =>
+            favoriteTeamIds?.includes(teamId)
         );
 
-        const isSelectedTeamMatch = selectedTeam && slugs.includes(selectedTeam.slug);
+        const isSelectedTeamMatch = selectedTeam && Ids.includes(selectedTeam.teamId);
         const isUnstarted = event.state === 'unstarted';
 
         let style = {

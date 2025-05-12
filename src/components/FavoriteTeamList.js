@@ -4,7 +4,7 @@ import {useCalandar} from "@/context/CalandarContext.js";
 
 const FavoriteTeamList = () => {
     const [teams, setTeams] = useState([]);
-    const { favoriteTeamSlugs } = useCalandar();
+    const { favoriteTeamIds } = useCalandar();
 
     // 팀 정보 불러오기 (fetch)
     useEffect(() => {
@@ -18,8 +18,8 @@ const FavoriteTeamList = () => {
 
                 // 🎯 즐겨찾기 팀 먼저 정렬
                 const sortedData = [...data].sort((a, b) => {
-                    const aIndex = favoriteTeamSlugs.indexOf(a.code);
-                    const bIndex = favoriteTeamSlugs.indexOf(b.code);
+                    const aIndex = favoriteTeamIds.indexOf(a.teamId);
+                    const bIndex = favoriteTeamIds.indexOf(b.teamId);
 
                     // 둘 다 즐겨찾기에 있음 → 순서 비교
                     if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
@@ -38,7 +38,7 @@ const FavoriteTeamList = () => {
         };
 
         fetchTeams();
-    }, [favoriteTeamSlugs]); // 🔁 즐겨찾기 바뀌면 다시 fetch & 정렬
+    }, [favoriteTeamIds]); // 🔁 즐겨찾기 바뀌면 다시 fetch & 정렬
 
     return (
         <div className="team-btn-container">
@@ -46,7 +46,7 @@ const FavoriteTeamList = () => {
                 <FavoriteTeamButton
                     key={team.teamId}
                     teamId={team.teamId}
-                    code={team.code}
+                    // code={team.code}
                     name={team.name}
                     slug={team.slug}
                     image={team.image}
