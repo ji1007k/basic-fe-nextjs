@@ -122,10 +122,10 @@ const Standings = ({ tournamentId }) => {
                                     {isSharedRank && <span> 공동</span>}
                                 </div>
                                 <div className="team-icon">
-                                    <img src={team.image} alt={team.teamName} />
+                                    <img src={team.image} alt={team.name} />
                                 </div>
                                 <div className="team-info">
-                                    <div className="team-name">{team.teamCode}</div>
+                                    <div className="team-name">{team.code}</div>
                                     <div className="team-record">
                                         <span className="win">승: {wins}</span>
                                         <span className="loss">패: {losses}</span>

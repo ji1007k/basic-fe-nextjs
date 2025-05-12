@@ -2,11 +2,12 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { format } from 'date-fns';
 
+// TODO CODE -> SLUG 또는 TEAM_ID 사용
 /**
  * 일정 클릭 팝업 이벤트
  */
 const CustomEventWrapper = ({ event, children }) => {
-    const teamCodes = event.participants?.map(team => team.teamCode);
+    const codes = event.participants?.map(participant => participant.team.code);
 
     return (
         <Popup
@@ -26,11 +27,11 @@ const CustomEventWrapper = ({ event, children }) => {
         >
             <div className="text-sm">
                 <div>
-                    <strong>{teamCodes
-                        .map(teamCode => {
-                            return event.winningTeamCode === teamCode
-                                ? teamCode + '(승)'
-                                : teamCode;
+                    <strong>{codes
+                        .map(code => {
+                            return event.winningTeamCode === code
+                                ? code + '(승)'
+                                : code;
                         })
                         .join(' vs ')}
                     </strong>

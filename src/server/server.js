@@ -1,5 +1,7 @@
-import { createServer } from "http";
+import { createServer } from "https";
 import next from "next";
+import fs from "fs";
+import path from "path";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import express from "express";
 import * as https from "node:https";
@@ -11,7 +13,7 @@ dotenv.config({ path: '.env.local' });
 
 // 2. 환경별 `.env` 파일 추가 로드
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
-dotenv.config({ path: envFile });
+dotenv.config({ path: envFile, override: true });
 
 const useRemoteAPI = process.env.USE_REMOTE_API == 'true';
 const API_URL = useRemoteAPI ? process.env.API_URL_PROD : process.env.API_URL_LOCAL;
@@ -23,8 +25,11 @@ console.log("API Server: ", API_URL);
 console.log("WebSocket URL: ", WS_URL);
 
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
+const app = next({ dev });  // dev 값이 true 인 경우, Next.js 자체가 파일 감시(HMR 포함)를 수행 (Nextjs 영역만)
 const handle = app.getRequestHandler();
+// 현재 모듈의 디렉토리 경로 구하기
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 // Express 서버 생성
 const server = express();
@@ -45,6 +50,8 @@ server.use("/api", (req, res, next) => {
     next();
 });
 
+
+// ==========================================
 // 🔥 **프록시 설정** (배포환경에서 비활성화)
 const proxyOptions = {
     target: API_URL, // API 서버
@@ -113,17 +120,31 @@ server.all("*", (req, res) => {
     return handle(req, res);    // Next.js에서 클라이언트 요청을 처리하는 기본 함수
 });
 
-// HTTPS 서버 실행
+// 서버 실행
+const USE_HTTPS = process.env.USE_HTTPS === 'true';
 const PORT = process.env.PORT || 3000;
 
 // 💡 basePath 접근
 const basePath = nextConfig.basePath || '/';
 
 app.prepare().then(() => {
-    createServer(server).listen(PORT, (err) => {
-        if (err) throw err;
-        console.log(`🚀 Server running at http://localhost:${PORT}${basePath}`);
-    });
+    if (USE_HTTPS) {
+        // HTTPS 서버 실행
+        // SSL 인증서 옵션
+        const httpsOptions = {
+            key: fs.readFileSync(path.resolve(process.env.SSL_KEY_PATH)),       // 개인 키
+            cert: fs.readFileSync(path.resolve(process.env.SSL_CERT_PATH)),     // 인증서
+        };
+        createServer(httpsOptions, server).listen(PORT, (err) => {
+            if (err) throw err;
+            console.log(`🚀 [HTTPS] Server running at https://localhost:${PORT}${basePath}`);
+        });
+    } else {
+        // HTTP 서버 실행
+        server.listen(PORT, () => {
+            console.log(`🚀 [HTTP] Server running at http://localhost:${PORT}${basePath}`);
+        });
+    }
 });
 
 

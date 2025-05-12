@@ -47,11 +47,11 @@ ENV NODE_ENV=production
 # Run as non-root
 USER node
 
-# Copy package.json and httpsServer.js, config to the current working directory (inside /projects/basic-fe-nextjs)
+# Copy package.json and server.js, config to the current working directory (inside /projects/basic-fe-nextjs)
 COPY package.json ./
 COPY next.config.mjs ./
 COPY .env.production ./
-COPY src/server/httpsServer.js ./src/server/
+COPY src/server/server.js ./src/server/
 COPY src/config ./src/config
 
 RUN ls -al ./src
@@ -66,5 +66,5 @@ COPY --from=build /projects/basic-fe-nextjs/.next ./.next
 EXPOSE 3000
 
 # Run the app
-#CMD npm run dev-https
-CMD ["npm", "run", "dev-https"]
+#CMD npm run start
+CMD ["npm", "run", "start"]
