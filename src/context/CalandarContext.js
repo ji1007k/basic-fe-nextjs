@@ -5,29 +5,29 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 
 const CalandarContext = createContext({
     selectedTeam: null, // ✅ 현재 선택된 팀
-    favoriteTeamSlugs: [],
+    favoriteTeamIds: [],
     setSelectedTeam: () => {},
-    setFavoriteTeamSlugs: () => {}
+    setFavoriteTeamIds: () => {}
 });
 
 export const useCalandar = () => useContext(CalandarContext);
 
 export const CalandarProvider = ({ children }) => {
     const [selectedTeam, setSelectedTeam] = useState(null);
-    const [favoriteTeamSlugs, setFavoriteTeamSlugs] = useState([]);
+    const [favoriteTeamIds, setFavoriteTeamIds] = useState([]);
 
     useEffect(() => {
-        console.log('selectedTeam 변경됨:', selectedTeam);
+        // console.log('selectedTeam 변경됨:', selectedTeam);
     }, [selectedTeam]);
 
     useEffect(() => {
-        console.log('favoriteTeamSlugs 변경됨:', favoriteTeamSlugs);
-    }, [favoriteTeamSlugs]);
+        // console.log('favoriteTeamIds 변경됨:', favoriteTeamIds);
+    }, [favoriteTeamIds]);
 
     return (
         <CalandarContext.Provider value={{
             selectedTeam, setSelectedTeam,
-            favoriteTeamSlugs, setFavoriteTeamSlugs
+            favoriteTeamIds, setFavoriteTeamIds
         }}>
             {children}
         </CalandarContext.Provider>

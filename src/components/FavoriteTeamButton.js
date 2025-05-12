@@ -4,15 +4,15 @@ import { useCalandar } from "@/context/CalandarContext.js";
 import { apiAddFavoriteTeam, apiRemoveFavoriteTeam } from "@utils/api-lol.js";
 import { useAuth } from "@/context/AuthContext.js";  // userId가 있는 곳
 
-const FavoriteTeamButton = ({ teamId, code, name, slug, image }) => {
+const FavoriteTeamButton = ({ teamId, name, slug, image }) => {
     const { userId } = useAuth(); // userId 가져오기
-    const { selectedTeam, setSelectedTeam, favoriteTeamSlugs, setFavoriteTeamSlugs } = useCalandar(); // ⬅️ context에서 함수 가져오기
+    const { selectedTeam, setSelectedTeam, favoriteTeamIds, setFavoriteTeamIds } = useCalandar(); // ⬅️ context에서 함수 가져오기
     const [hovered, setHovered] = useState(false); // 버튼 개별 상태
-    const [isFavorited, setIsFavorited] = useState(favoriteTeamSlugs.includes(slug));
+    const [isFavorited, setIsFavorited] = useState(favoriteTeamIds.includes(teamId));
 
     useEffect(() => {
-        setIsFavorited(favoriteTeamSlugs.includes(slug));
-    }, [favoriteTeamSlugs, slug]);
+        setIsFavorited(favoriteTeamIds.includes(teamId));
+    }, [favoriteTeamIds, teamId]);
 
     // 즐겨찾기 토글 핸들러
     const handleFavoriteToggle = async () => {
@@ -21,7 +21,7 @@ const FavoriteTeamButton = ({ teamId, code, name, slug, image }) => {
             return;  // 인증되지 않으면 즐겨찾기 기능을 수행하지 않음
         }
 
-        const isAlreadyFavorited = favoriteTeamSlugs.includes(slug);
+        const isAlreadyFavorited = favoriteTeamIds.includes(teamId);
 
         // csrf 토큰 발급
         await fetch('/api/csrf', { method: 'GET', credentials: 'include' });
@@ -36,10 +36,10 @@ const FavoriteTeamButton = ({ teamId, code, name, slug, image }) => {
             setIsFavorited(!isFavorited);
 
             // UI 상태 업데이트
-            setFavoriteTeamSlugs((prevFavorites) => {
+            setFavoriteTeamIds((prevFavorites) => {
                 return isAlreadyFavorited
-                    ? prevFavorites.filter((slug) => slug !== slug)
-                    : [slug, ...prevFavorites];
+                    ? prevFavorites.filter((tId) => tId !== teamId)
+                    : [teamId, ...prevFavorites];
             });
         } catch (error) {
             console.error("즐겨찾기 토글 실패:", error);
@@ -48,7 +48,7 @@ const FavoriteTeamButton = ({ teamId, code, name, slug, image }) => {
 
     // 팀 선택 버튼 (해당 팀 경기 일정 하이라이트)
     const handleTeamBtnClick = () => {
-        setSelectedTeam({ code, name, slug }); // 선택한 팀 정보 저장
+        setSelectedTeam({ teamId, name, slug }); // 선택한 팀 정보 저장
     };
 
     return (
@@ -76,7 +76,7 @@ const FavoriteTeamButton = ({ teamId, code, name, slug, image }) => {
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
                 className={`team-button ${isFavorited ? 'favorited' : ''} 
-                    ${selectedTeam?.slug === slug ? 'selected' : ''} 
+                    ${selectedTeam?.teamId === teamId ? 'selected' : ''} 
                     ${hovered ? 'hovered' : ''}`
                 }
             >
