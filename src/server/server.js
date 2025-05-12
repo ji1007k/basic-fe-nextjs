@@ -15,7 +15,7 @@ dotenv.config({ path: '.env.local' });
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
 dotenv.config({ path: envFile, override: true });
 
-const useRemoteAPI = process.env.USE_REMOTE_API == 'true';
+const useRemoteAPI = process.env.USE_REMOTE_API === 'true';
 const API_URL = useRemoteAPI ? process.env.API_URL_PROD : process.env.API_URL_LOCAL;
 const WS_URL = useRemoteAPI ? process.env.WS_URL_PROD : process.env.WS_URL_LOCAL;
 
