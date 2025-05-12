@@ -69,7 +69,7 @@ export async function getAllSchedules() {
 export async function getMatchesByYear(year) {
     const currentYear = year || new Date().getFullYear();
 
-    const response = await fetch(`/api/lol/matches/year/${currentYear}`, {
+    const response = await fetch(`/api/lol/matches?year=${currentYear}`, {
         method: 'GET',
         credentials: 'include'
     });

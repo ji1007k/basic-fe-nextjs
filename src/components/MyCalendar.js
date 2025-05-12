@@ -5,7 +5,7 @@ import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@/styles/tailwind/lol/calendar.css';
 import '@/styles/css/lol-calendar.css';
-import { format, parse, startOfWeek, getDay } from 'date-fns';
+import { format, parse, startOfWeek, getDay, addDays, isSameDay } from 'date-fns';
 import ko from 'date-fns/locale/ko';
 import {fetchFavoriteTeam, getAllSchedules, getMatchesByYear} from '@utils/api-lol.js';
 import CustomToolbar from '@components/CustomToolbar.js';
@@ -38,7 +38,7 @@ const formats = {
 // 로그인 안했으면 전체 일정 조회
 const MyCalendar = ({ events }) => {
     const { userId } = useAuth();
-    const { selectedTeam, favoriteTeamCodes, setFavoriteTeamCodes } = useCalandar();
+    const { selectedTeam, favoriteTeamSlugs, setFavoriteTeamSlugs } = useCalandar();
     const [currentDate, setCurrentDate] = useState(new Date());
     const [currentView, setCurrentView] = useState('month');
     const [rawSchedules, setRawSchedules] = useState([]);
@@ -47,9 +47,9 @@ const MyCalendar = ({ events }) => {
     useEffect(() => {
         const fetchSchedule = async () => {
             if (userId) {
-                const data = await fetchFavoriteTeam(); // displayOrder, teamCode, teamName
-                console.log(data.map(team => team.teamCode))
-                setFavoriteTeamCodes(data.map(team => team.teamCode));
+                const data = await fetchFavoriteTeam(); // displayOrder, slug, name
+                console.log(data.map(team => team.slug))
+                setFavoriteTeamSlugs(data.map(team => team.slug));
             }
 
             // 로그인 여부와 상관없이 전체/연도별 일정 조회
@@ -72,7 +72,7 @@ const MyCalendar = ({ events }) => {
 
                     return {
                         ...schedule,
-                        title: [participants[0].teamCode, participants[1].teamCode].join(' vs '),
+                        title: [participants[0].team.code, participants[1].team.code].join(' vs '),
                         start: new Date(schedule.startTime),
                         end: new Date(schedule.startTime),
                         allDay: true
@@ -86,14 +86,14 @@ const MyCalendar = ({ events }) => {
                 return [
                     {
                         ...schedule,
-                        title: [participants[0].teamCode, participants[1].teamCode].join(' vs '),
+                        title: [participants[0].team.code, participants[1].team.code].join(' vs '),
                         start: startTime,
                         end: new Date(startTime.getTime() + 60 * 60 * 1000),
                         allDay: true,
                     },
                     {
                         ...schedule,
-                        title: [participants[0].teamCode, participants[1].teamCode].join(' vs '),
+                        title: [participants[0].team.code, participants[1].team.code].join(' vs '),
                         start: startTime,
                         end: new Date(startTime.getTime() + 60 * 60 * 1000),
                         allDay: false,
@@ -110,12 +110,12 @@ const MyCalendar = ({ events }) => {
     // 경기 일정별 스타일
     const eventPropGetter = (event, start, end, isSelected) => {
         // console.log('경기 정보: ', event);
-        const teamCodes = event.participants?.map(team => team.teamCode);
-        const isFavoriteMatch = teamCodes.some(teamCode =>
-            favoriteTeamCodes?.includes(teamCode)
+        const slugs = event.participants?.map(participant => participant.team.slug);
+        const isFavoriteMatch = slugs.some(slug =>
+            favoriteTeamSlugs?.includes(slug)
         );
 
-        const isSelectedTeamMatch = selectedTeam && teamCodes.includes(selectedTeam.teamCode);
+        const isSelectedTeamMatch = selectedTeam && slugs.includes(selectedTeam.slug);
         const isUnstarted = event.state === 'unstarted';
 
         let style = {

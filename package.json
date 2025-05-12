@@ -4,12 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "dev-http": "node src/server/httpServer.js",
-    "dev-https": "node src/server/httpsServer.js",
+    "dev": "cross-env NODE_ENV=development node src/server/server.js",
+    "start": "cross-env NODE_ENV=production node src/server/server.js",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "nextdev": "next dev --turbopack"
   },
   "dependencies": {
     "@stomp/stompjs": "^7.0.1",
@@ -29,6 +28,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "cross-env": "^7.0.3",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
     "postcss": "^8",

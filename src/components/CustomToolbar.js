@@ -1,6 +1,7 @@
 import React from 'react';
-import {FaCalendarAlt, FaCalendarDay, FaChevronLeft, FaChevronRight} from 'react-icons/fa';
+import {FaCalendarAlt, FaCalendarWeek, FaCalendarDay, FaChevronLeft, FaChevronRight} from 'react-icons/fa';
 import {format} from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 const years = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - 5 + i);
 const months = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -42,12 +43,15 @@ const CustomToolbar = (toolbar) => {
                             </select>
                         </>
                     )}
+
                     {(toolbar.view === 'week' || toolbar.view === 'day') && (
-                        <input
-                            type="date"
-                            value={format(toolbar.date, 'yyyy-MM-dd')}
-                            onChange={(e) => toolbar.onNavigate('DATE', new Date(e.target.value))}
-                        />
+                        <div>
+                            <input
+                                type="date"
+                                value={format(toolbar.date, 'yyyy-MM-dd')}
+                                onChange={(e) => toolbar.onNavigate('DATE', new Date(e.target.value))}
+                            />
+                        </div>
                     )}
                 </div>
                 <button onClick={goToNext}><FaChevronRight /></button>
