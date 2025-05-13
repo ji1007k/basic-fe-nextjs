@@ -96,7 +96,6 @@ const TeamSelector = () => {
             {/* 📅 리그별 팀 목록 영역 */}
             <div
                 className={`nonfavorite-teams-section scroll-hidden${nonFavoriteTeams.length === 0 ? ' empty' : ''}`}
-                style={userId ? {} : { maxWidth: 'calc(100% - 90px)' }}
             >
                 <div className="team-btn-container">
                     {nonFavoriteTeams.map(team => (
