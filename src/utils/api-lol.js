@@ -66,16 +66,16 @@ export async function getAllSchedules() {
 }
 
 // TODO 달력에서 조회중인 날짜 기준으로 데이터 조회하도록 수정
-export async function getMatchesByYear(year) {
+export async function getMatchesByYearAndLeagueId(year, leagueId) {
     const currentYear = year || new Date().getFullYear();
 
-    const response = await fetch(`/api/lol/matches?year=${currentYear}`, {
+    const response = await fetch(`/api/lol/matches?year=${currentYear}&leagueId=${leagueId}`, {
         method: 'GET',
         credentials: 'include'
     });
 
     if (!response.ok) {
-        throw new Error('연도별 경기 일정 조회 실패');
+        throw new Error('경기 일정 조회 실패');
     }
 
     return await response.json();

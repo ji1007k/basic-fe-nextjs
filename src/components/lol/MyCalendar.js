@@ -7,7 +7,7 @@ import '@/styles/tailwind/lol/calendar.css';
 import '@/styles/css/lol-calendar.css';
 import { format, parse, startOfWeek, getDay, addDays, isSameDay } from 'date-fns';
 import ko from 'date-fns/locale/ko';
-import {fetchFavoriteTeam, getAllSchedules, getMatchesByYear} from '@utils/api-lol.js';
+import {fetchFavoriteTeam, getMatchesByYearAndLeagueId} from '@utils/api-lol.js';
 import CustomToolbar from '@components/lol/CustomToolbar.js';
 import CustomEventWrapper from "@components/lol/CustomEventWrapper.js";
 import { useAuth } from "@/context/AuthContext.js";
@@ -34,31 +34,50 @@ const formats = {
     dayHeaderFormat: 'yyyy-MM-d',
 };
 
-// 로그인 했으면 즐겨찾는 팀 일정 조회 / 즐찾 팀 일정 색상 다르게만?
-// 로그인 안했으면 전체 일정 조회
 const MyCalendar = ({ events }) => {
     const { userId } = useAuth();
-    const { selectedTeam, favoriteTeamIds, setFavoriteTeamIds } = useCalandar();
+    const { selectedLeague, setSelectedLeague, selectedTeam, favoriteTeamIds, setFavoriteTeamIds } = useCalandar();
     const [currentDate, setCurrentDate] = useState(new Date());
     const [currentView, setCurrentView] = useState('month');
     const [rawSchedules, setRawSchedules] = useState([]);
     const [refinedSchedules, setRefinedSchedules] = useState([]);
+    const [leagues, setLeagues] = useState([]);
+
+    // 🎯 리그 목록 가져오기
+    useEffect(() => {
+        const fetchLeagues = async () => {
+            try {
+                const res = await fetch(`/api/lol/leagues`);
+                const data = await res.json();
+                setLeagues(data);
+
+                if (!selectedLeague && data.length > 0) {
+                    setSelectedLeague(data[0]);
+                }
+            } catch (e) {
+                console.error("리그 로딩 실패", e);
+            }
+        };
+
+        fetchLeagues();
+    }, []);
 
     useEffect(() => {
         const fetchSchedule = async () => {
+            if (!selectedLeague) return; // 👈 selectedLeague 없으면 skip
+
             if (userId) {
                 const data = await fetchFavoriteTeam(); // displayOrder, slug, name
                 // console.log(data.map(team => team.teamId))
                 setFavoriteTeamIds(data.map(team => team.teamId));
             }
 
-            // 로그인 여부와 상관없이 전체/연도별 일정 조회
-            // setRawSchedules(await getAllSchedules());
-            setRawSchedules(await getMatchesByYear());
+            // 로그인 여부와 상관없이 일정 조회
+            setRawSchedules(await getMatchesByYearAndLeagueId(null, selectedLeague?.id));
         };
 
         fetchSchedule();
-    }, [userId]);
+    }, [userId, selectedLeague]);
 
     // 🔄 스케줄 포맷팅 함수 (view에 따라 변형)
     const refineTeamSchedule = useCallback((schedules, view) => {
@@ -183,7 +202,8 @@ const MyCalendar = ({ events }) => {
                 date={currentDate}
                 onNavigate={(date) => setCurrentDate(date)}
             />
-            <LeagueAndTeamSelector />
+
+            <LeagueAndTeamSelector leagues={leagues}/>
         </div>
     );
 };
