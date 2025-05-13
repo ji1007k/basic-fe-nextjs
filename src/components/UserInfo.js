@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext.js";
-import TokenExpiration from "@/components/TokenExpiration";
+import TokenExpiration from "@/components/auth/TokenExpiration";
 import { logout as apiLogout } from "@/utils/api.js";
 import Link from "next/link";
 

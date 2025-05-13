@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { login as apiLogin } from "../utils/api.js"; // 로그인 API 호출 분리
+import { login as apiLogin } from "@/utils/api.js"; // 로그인 API 호출 분리
 import { useRouter } from "next/navigation";
-import { useAuth } from "../context/AuthContext.js";  // useAuth 훅을 사용
+import { useAuth } from "@/context/AuthContext.js";  // useAuth 훅을 사용
 
 export default function LoginForm() {
     const [username, setUsername] = useState("");

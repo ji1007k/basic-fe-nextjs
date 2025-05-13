@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signup as signupApi } from "../utils/api"; // API 로직 분리된 곳에서 import
+import { signup as signupApi } from "@/utils/api"; // API 로직 분리된 곳에서 import
 import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
