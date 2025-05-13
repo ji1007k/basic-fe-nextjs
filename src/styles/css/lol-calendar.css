@@ -126,3 +126,128 @@
     outline: none;
     box-shadow: 0 0 0 2px rgba(255, 87, 34, 0.2);
 }
+
+
+
+/**
+    리그별 팀 즐겨찾기 및 필터 스타일
+ */
+.team-selector-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background-color: #f9f9f9;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 5px 10px 90px;
+    position: relative;
+}
+
+.league-dropdown {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: fit-content;
+    font-family: sans-serif;
+    padding: 12px 3px;
+}
+
+.dropdown-toggle {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.dropdown-toggle .dropdown-img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 8px;
+    background-color: #333;
+    padding: 3px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: auto;
+    left: 0;
+    width: max-content;
+    margin-top: 4px;
+    background-color: #333;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown-menu li {
+    border: 1px solid #333;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+    border: 1px solid #fff;
+}
+
+.dropdown-menu li span {
+    color: #fff;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.dropdown-menu .dropdown-img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.arrow {
+    margin-left: auto;
+    font-size: 10px;
+    color: #888;
+}
+
+/* 즐겨찾기 버튼 그룹 */
+.favorite-teams-section {
+    gap: 8px;
+    background-color: #f0f8ff;
+    padding: 2px;
+    border-radius: 8px;
+    overflow: auto;
+    flex: 0 1 auto;   /* grow:0, shrink:1, basis:auto */
+    min-width: 0;
+}
+
+/* 리그 팀 버튼 영역 */
+.team-btn-container {
+    width: fit-content;
+    gap: 8px;
+    flex-shrink: 0;
+    overflow-x: auto;         /* ✅ 가로 스크롤 */
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.nonfavorite-teams-section {
+    overflow: auto;
+    flex: 1 1 auto;   /* grow:1, shrink:1, basis:auto */
+    min-width: 120px; /* 필요 시 조절 */
+}
+
+.favorite-teams-section.empty,
+.nonfavorite-teams-section.empty {
+    display: none;
+}
+
+

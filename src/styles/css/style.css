@@ -663,3 +663,14 @@ div.section {
 div.section:not(:first-child) {
     margin-top: 30px;
 }
+
+
+/* 전체 요소에 적용 */
+.scroll-hidden {
+    scrollbar-width: none;        /* Firefox */
+    -ms-overflow-style: none;     /* IE, Edge */
+}
+
+.scroll-hidden::-webkit-scrollbar {
+    display: none;                /* Chrome, Safari */
+}

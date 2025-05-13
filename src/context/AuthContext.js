@@ -31,8 +31,8 @@ export const AuthProvider = ({ children }) => {
         const result = await refreshTokenApi();
         console.log('Token Expiration Time:', result.expirationTime);
         // setExpirationTime(new Date(result.expirationTime)); // 만료 시간 업데이트
-        const newExpriationDate = new Date(Date.now() + 10 * 60 * 1000);
-        setExpirationTime(newExpriationDate); // 토큰 유효시간 10분 연장
+        const newExpriationDate = new Date(Date.now() + 30 * 60 * 1000);
+        setExpirationTime(newExpriationDate); // 토큰 유효시간 30분 연장
         localStorage.setItem("expirationTime", newExpriationDate.toISOString());  // 문자열로 저장
     };
 
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     // 로그인 처리 함수
     const login = (userId, username, expirationTimeStr) => {
         // const expirationDate = new Date(expirationTimeStr);  // 문자열을 Date 객체로 변환
-        const expirationDate = new Date(Date.now() + 10 * 60 * 1000); // 유효시간 10분
+        const expirationDate = new Date(Date.now() + 30 * 60 * 1000); // 유효시간 30분
         setUserId(userId);
         setUsername(username);
         setExpirationTime(expirationDate);  // ISO 형식의 문자열로 저장
