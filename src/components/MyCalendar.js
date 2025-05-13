@@ -11,8 +11,8 @@ import {fetchFavoriteTeam, getAllSchedules, getMatchesByYear} from '@utils/api-l
 import CustomToolbar from '@components/CustomToolbar.js';
 import CustomEventWrapper from "@components/CustomEventWrapper.js";
 import { useAuth } from "@/context/AuthContext.js";
-import FavoriteTeamList from "@components/FavoriteTeamList.js";
 import {useCalandar} from "@/context/CalandarContext.js";
+import TeamSelector from "@components/TeamSelector.js";
 
 const locales = { ko };
 
@@ -48,7 +48,7 @@ const MyCalendar = ({ events }) => {
         const fetchSchedule = async () => {
             if (userId) {
                 const data = await fetchFavoriteTeam(); // displayOrder, slug, name
-                console.log(data.map(team => team.teamId))
+                // console.log(data.map(team => team.teamId))
                 setFavoriteTeamIds(data.map(team => team.teamId));
             }
 
@@ -183,8 +183,7 @@ const MyCalendar = ({ events }) => {
                 date={currentDate}
                 onNavigate={(date) => setCurrentDate(date)}
             />
-
-            <FavoriteTeamList />
+            <TeamSelector />
         </div>
     );
 };
