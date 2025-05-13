@@ -4,8 +4,10 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 
 const CalandarContext = createContext({
-    selectedTeam: null, // ✅ 현재 선택된 팀
+    selectedLeague: null,   // 현재 선택된 리그
+    selectedTeam: null,     // 현재 선택된 팀
     favoriteTeamIds: [],
+    setSelectedLeague: () => {},
     setSelectedTeam: () => {},
     setFavoriteTeamIds: () => {}
 });
@@ -13,6 +15,7 @@ const CalandarContext = createContext({
 export const useCalandar = () => useContext(CalandarContext);
 
 export const CalandarProvider = ({ children }) => {
+    const [selectedLeague, setSelectedLeague] = useState(null);
     const [selectedTeam, setSelectedTeam] = useState(null);
     const [favoriteTeamIds, setFavoriteTeamIds] = useState([]);
 
@@ -26,6 +29,7 @@ export const CalandarProvider = ({ children }) => {
 
     return (
         <CalandarContext.Provider value={{
+            selectedLeague, setSelectedLeague,
             selectedTeam, setSelectedTeam,
             favoriteTeamIds, setFavoriteTeamIds
         }}>

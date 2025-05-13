@@ -5,8 +5,8 @@ const LeagueDropdown = ({ leagues, selectedLeague, onChange }) => {
     const dropdownRef = useRef(null);
 
     const toggleDropdown = () => setIsOpen(!isOpen);
-    const handleSelect = (leagueId) => {
-        onChange(leagueId);
+    const handleSelect = (league) => {
+        onChange(league);
         setIsOpen(false);
     };
 
@@ -21,21 +21,19 @@ const LeagueDropdown = ({ leagues, selectedLeague, onChange }) => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const selected = leagues.find(l => l.id === selectedLeague);
-
     return (
         <div className="league-dropdown" ref={dropdownRef}>
             <button className="dropdown-toggle" onClick={toggleDropdown}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={selected?.image} alt={selected?.name} title={selected?.name} className="dropdown-img" />
-                {/*<span>{selected?.name}</span>*/}
+                <img src={selectedLeague?.image} alt={selectedLeague?.name} title={selectedLeague?.name} className="dropdown-img" />
+                {/*<span>{selectedLeague?.name}</span>*/}
                 <span className="arrow">{isOpen ? '▲' : '▼'}</span>
             </button>
 
             {isOpen && (
                 <ul className="dropdown-menu">
                     {leagues.map(league => (
-                        <li key={league.id} onClick={() => handleSelect(league.id)}>
+                        <li key={league.id} onClick={() => handleSelect(league)}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={league.image} alt={league.name} title={league.name} className="dropdown-img" />
                             <span>{league.name}</span>
