@@ -8,11 +8,11 @@ import '@/styles/css/lol-calendar.css';
 import { format, parse, startOfWeek, getDay, addDays, isSameDay } from 'date-fns';
 import ko from 'date-fns/locale/ko';
 import {fetchFavoriteTeam, getAllSchedules, getMatchesByYear} from '@utils/api-lol.js';
-import CustomToolbar from '@components/CustomToolbar.js';
-import CustomEventWrapper from "@components/CustomEventWrapper.js";
+import CustomToolbar from '@components/lol/CustomToolbar.js';
+import CustomEventWrapper from "@components/lol/CustomEventWrapper.js";
 import { useAuth } from "@/context/AuthContext.js";
 import {useCalandar} from "@/context/CalandarContext.js";
-import TeamSelector from "@components/TeamSelector.js";
+import LeagueAndTeamSelector from "@components/lol/LeagueAndTeamSelector.js";
 
 const locales = { ko };
 
@@ -183,7 +183,7 @@ const MyCalendar = ({ events }) => {
                 date={currentDate}
                 onNavigate={(date) => setCurrentDate(date)}
             />
-            <TeamSelector />
+            <LeagueAndTeamSelector />
         </div>
     );
 };

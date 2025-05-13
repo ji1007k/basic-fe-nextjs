@@ -3,12 +3,12 @@
 import Chat from "@/components/Chat";
 import { useAuth } from "@/context/AuthContext.js";
 import { useRouter } from "next/navigation";
-import MyCalendar from "@components/MyCalendar.js";
+import MyCalendar from "@components/lol/MyCalendar.js";
 import { CalandarProvider } from "@/context/CalandarContext.js";
-import Standings from "@components/Standings.js";
+import Standings from "@components/lol/Standings.js";
 import {useEffect, useRef, useState} from "react";
 import { apiFetchTournaments } from "@utils/api-lol.js";
-import Loading from "@components/Loading.js";
+import Loading from "@components/common/Loading.js";
 import "@/styles/css/chat.css";
 import "@/styles/css/standings.css";
 

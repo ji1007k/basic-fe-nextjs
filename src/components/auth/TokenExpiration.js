@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { logout as apiLogout } from "../utils/api.js";
+import { useAuth } from '@/context/AuthContext';
+import { logout as apiLogout } from "@/utils/api.js";
 
 export default function TokenExpiration() {
     const { expirationTime, refreshToken, logout } = useAuth();

@@ -175,15 +175,15 @@
 
 .dropdown-menu {
     position: absolute;
-    top: auto;
     left: 0;
+    bottom: 70px;
     width: max-content;
     margin-top: 4px;
     background-color: #333;
     border: 1px solid #ccc;
     border-radius: 6px;
     z-index: 1000;
-    max-height: 200px;
+    max-height: 300px;
     overflow-y: auto;
 }
 

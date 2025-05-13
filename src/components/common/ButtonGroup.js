@@ -1,6 +1,6 @@
 "use client";
 
-import { testAdminScope, testUserScope, testUserScopeToAdmin } from "../utils/api";
+import { testAdminScope, testUserScope, testUserScopeToAdmin } from "@/utils/api";
 
 export default function ButtonGroup() {
     return (

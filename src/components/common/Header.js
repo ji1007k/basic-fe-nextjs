@@ -1,8 +1,8 @@
 "use client";
 
 import {useAuth} from "@/context/AuthContext.js"; // useAuth 훅을 사용
-import UserInfo from "./UserInfo.js"; // UserInfo 컴포넌트
-import LoginLink from "./LoginLink.js"; // LoginLink 컴포넌트
+import UserInfo from "@/components/UserInfo.js"; // UserInfo 컴포넌트
+import LoginLink from "@/components/auth/LoginLink.js"; // LoginLink 컴포넌트
 import Link from 'next/link';
 import {usePathname} from "next/navigation.js";
 import {useEffect, useState} from "react";

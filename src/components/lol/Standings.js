@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { apiFetchStandings } from "@utils/api-lol.js";
-import Loading from "@components/Loading.js";
+import Loading from "@components/common/Loading.js";
 
 const Standings = ({ tournamentId }) => {
     const [standings, setStandings] = useState([]);
