@@ -100,6 +100,10 @@ const MyCalendar = ({ events }) => {
                 .map((schedule) => {
                     const participants = schedule.participants;
 
+                    if (participants.length == 1) { // TBD인 경우 하나만 들어간 경우가 있음. 임시로 추가
+                        participants.push(Object.assign(participants[0]));
+                    }
+
                     return {
                         ...schedule,
                         title: [participants[0].team.code, participants[1].team.code].join(' vs '),
