@@ -73,11 +73,22 @@ const MyCalendar = ({ events }) => {
             }
 
             // 로그인 여부와 상관없이 일정 조회
-            setRawSchedules(await getMatchesByYearAndLeagueId(null, selectedLeague?.id));
+            setRawSchedules(await getMatchesByYearAndLeagueId(currentDate.getFullYear(), selectedLeague?.id));
         };
 
         fetchSchedule();
     }, [userId, selectedLeague]);
+
+    useEffect(() => {
+        const fetchScheduleByDate = async () => {
+            const year = currentDate.getFullYear();
+            const matches = await getMatchesByYearAndLeagueId(year, selectedLeague?.id);
+
+            setRawSchedules(matches);
+        }
+
+        fetchScheduleByDate();
+    }, [currentDate]);
 
     // 🔄 스케줄 포맷팅 함수 (view에 따라 변형)
     const refineTeamSchedule = useCallback((schedules, view) => {
