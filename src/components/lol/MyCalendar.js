@@ -19,7 +19,7 @@ const locales = { ko };
 const localizer = dateFnsLocalizer({
     format,
     parse,
-    startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 1 }),
+    startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 0 }),    // 일요일
     getDay,
     locales,
 });
@@ -192,12 +192,44 @@ const MyCalendar = ({ events }) => {
                 defaultView="month"
                 onView={(view) => setCurrentView(view)}
                 views={['month', 'week', 'day']}
-                style={{height: 'calc(100% - 70px)'}}
+                dayPropGetter={(date) => {
+                    // 일요일 날짜 색상 붉은색
+                    const isSunday = date.getDay() === 0;
+                    if (isSunday) {
+                        return {
+                            style: {
+                                color: 'red',
+                            },
+                        };
+                    }
+                    return {};
+                }}
                 eventPropGetter={eventPropGetter}
                 components={{
                     toolbar: CustomToolbar,
                     eventWrapper: CustomEventWrapper,
+                    header: ({ date, label }) => {
+                        // 헤더 일요일 명칭 색상 붉은색
+                        const isSunday = date.getDay() === 0;
+                        return (
+                            <div style={{color: isSunday ? 'red' : 'inherit'}}>
+                                {label}
+                            </div>
+                        );
+                    },
+                    month: {
+                        // 월간 뷰에서 일요일 날짜 색상 붉은색
+                        dateHeader: ({ date, label }) => {
+                            const isSunday = date.getDay() === 0;
+                            return (
+                                <div style={{ color: isSunday ? 'red' : undefined }}>
+                                    {label}
+                                </div>
+                            );
+                        },
+                    },
                 }}
+                // 날짜 선택
                 selectable
                 date={currentDate}
                 onNavigate={(date) => setCurrentDate(date)}

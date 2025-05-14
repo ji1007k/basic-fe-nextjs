@@ -57,10 +57,10 @@ const CustomToolbar = (toolbar) => {
                 <button onClick={goToNext}><FaChevronRight /></button>
             </div>
             <div className="toolbar-controls">
-                <button onClick={goToToday}>Today</button>
-                <button onClick={() => goToView('month')}><FaCalendarAlt /></button>
-                {/*<button onClick={() => goToView('week')}><FaCalendarWeek /></button>*/}
-                <button onClick={() => goToView('day')}><FaCalendarDay /></button>
+                <button title="오늘 날짜로 이동" onClick={goToToday}>Today</button>
+                <button title="월간" onClick={() => goToView('month')}><FaCalendarAlt /></button>
+                {/*<button title="주간" onClick={() => goToView('week')}><FaCalendarWeek /></button>*/}
+                <button title="일간" onClick={() => goToView('day')}><FaCalendarDay /></button>
             </div>
         </div>
     );

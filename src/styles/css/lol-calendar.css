@@ -16,9 +16,9 @@
 
 @media (max-width: 768px) {
     .home-container {
-        width: 90%;
-        height: 75%;
-        margin-top: 170px;
+        width: 95%;
+        height: 77%;
+        margin-top: 155px;
     }
 
 }
@@ -31,10 +31,32 @@
 }
 
 @media (max-width: 500px) {
+    .calandar-container {
+        padding: 10px 10px 0 10px;
+    }
+
     .rbc-toolbar {
         flex-direction: column;
     }
 
+    /* 월간뷰 */
+    .rbc-month-view .rbc-header {
+        padding-top: 0.2rem;
+        padding-bottom: 0.2rem;
+    }
+
+    .rbc-month-view .rbc-event {
+        padding: 0 2px !important;
+    }
+
+}
+
+.rbc-event-content {
+    font-size: 11px;
+}
+
+.rbc-button-link, .rbc-date-cell {
+    font-size: 11px;
 }
 
 
@@ -45,12 +67,21 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     gap: 0.5rem;
 }
 
 @media (max-width: 500px) {
+    .rbc-calendar {
+        height: calc(100% - 60px) !important;
+    }
+
+    .custom-toolbar {
+    }
+}
+
+
+@media (max-width: 350px) {
     .custom-toolbar {
         display: inline-grid;
         justify-content: center;
@@ -62,12 +93,16 @@
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     margin: 0 5px;
 }
 
 .custom-toolbar button:hover {
     color: #007bff;
+}
+
+.rbc-calendar {
+    height: calc(100% - 70px);
 }
 
 .rbc-calendar .custom-toolbar .label-area {
@@ -139,7 +174,7 @@
     background-color: #f9f9f9;
     align-items: center;
     gap: 5px;
-    padding: 10px 5px 10px 90px;
+    padding: 5px 0 5px 80px;
     position: relative;
 }
 
@@ -149,14 +184,14 @@
     top: 0;
     width: fit-content;
     font-family: sans-serif;
-    padding: 12px 3px;
+    padding: 8px 0;
 }
 
 .dropdown-toggle {
     width: 100%;
     background-color: #fff;
     border: 1px solid #ccc;
-    padding: 8px 12px;
+    padding: 8px;
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -226,7 +261,7 @@
     border-radius: 8px;
     overflow: auto;
     flex: 0 1 auto;   /* grow:0, shrink:1, basis:auto */
-    min-width: 0;
+    min-width: 60px;
 }
 
 /* 리그 팀 버튼 영역 */
