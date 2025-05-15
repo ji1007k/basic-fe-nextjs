@@ -84,6 +84,32 @@ header {
     text-decoration: underline;
 }
 
+@media (max-width: 500px) {
+    .header-container {
+        padding: 10px 20px;
+    }
+
+    .header-container .main-link {
+        font-size: 20px;
+    }
+
+    .header-container .api-docs-link {
+        font-size: 14px;
+    }
+
+    .header-container .user-info {
+        font-size: 14px;
+    }
+
+    .nav-container nav ul li {
+        padding: 8px;
+    }
+
+    .nav-container nav ul li.active {
+        padding: 8px 15px 5px 15px;
+    }
+}
+
 
 /* ================================
    사용자 정보 영역 스타일
@@ -608,7 +634,6 @@ header {
 
 @media (max-width: 500px) {
     #username-area {
-        display: inline-grid;
         justify-items: end;
     }
 
