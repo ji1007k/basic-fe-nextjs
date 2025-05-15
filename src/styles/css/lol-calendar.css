@@ -285,4 +285,21 @@
     display: none;
 }
 
+/**
+    경기일정 상세 팝업
+ */
+.live-badge {
+    color: red;
+    font-weight: bold;
+    animation: fadeBlink 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeBlink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
 

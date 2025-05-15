@@ -2,7 +2,9 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { format } from 'date-fns';
 
-// TODO CODE -> SLUG 또는 TEAM_ID 사용
+// TODO 
+//  - CODE -> SLUG 또는 TEAM_ID 사용
+//  - 날짜 칸 클릭 시 해당 날짜의 전체 경기 일정 정보 팝업으로 표시
 /**
  * 일정 클릭 팝업 이벤트
  */
@@ -26,6 +28,10 @@ const CustomEventWrapper = ({ event, children }) => {
             }}
         >
             <div className="text-sm">
+                <div>{format(new Date(event.start), 'yyyy년 M월 d일 HH:mm')}</div>
+                { event.state === 'inProgress' &&
+                    <div className="live-badge">LIVE</div>
+                }
                 <div>
                     <strong>{codes
                         .map(code => {
@@ -36,9 +42,7 @@ const CustomEventWrapper = ({ event, children }) => {
                         .join(' vs ')}
                     </strong>
                 </div>
-                <div>{format(new Date(event.start), 'yyyy년 M월 d일 HH:mm')}</div>
-                {/*<div>경기 ID: {event.id}</div>*/}
-                {/* 필요 시 버튼도 추가 가능 */}
+                <div>{event.participants?.map(participant => participant.gameWins).join(" : ")}</div>
             </div>
         </Popup>
     );
