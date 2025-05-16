@@ -9,12 +9,12 @@ import '@/styles/css/lol-calendar.css';
 import {format, getDay, parse, startOfWeek} from 'date-fns';
 import ko from 'date-fns/locale/ko';
 
-import CustomToolbar from '@/components/lol/CustomToolbar';
-import CustomEventWrapper from '@/components/lol/CustomEventWrapper';
-import {useCalendarLogic} from '@/components/lol/calendar/useCalendarLogic';
+import CustomToolbar from '@components/lol/calendar/CustomToolbar';
+import CustomEventWrapper from '@components/lol/calendar/CustomEventWrapper';
+import {useCalendarLogic} from '@/components/lol/calendar/hooks/useCalendarLogic';
 import {eventPropGetter} from '@/components/lol/calendar/utils/calendarEventStyles';
 import {formats} from '@/components/lol/calendar/config/formats';
-import LeagueAndTeamSelector from '@/components/lol/LeagueAndTeamSelector';
+import LeagueAndTeamSelector from '@components/lol/calendar/LeagueAndTeamSelector';
 import {useCalandar} from "@/context/CalandarContext.js";
 
 const localizer = dateFnsLocalizer({
@@ -44,6 +44,11 @@ const MyCalendar = ({ events }) => {
                 endAccessor="end"
                 defaultView="month"
                 views={['month', 'week', 'day']}
+                /*views={{
+                    month: true,        // 기본 월간 뷰
+                    day: true,          // 기본 일간 뷰
+                    week: CustomVerticalWeekView, // 커스텀 주간 뷰 (요일 세로)
+                }}*/
                 date={currentDate}
                 onNavigate={setCurrentDate}
                 onView={setCurrentView}
