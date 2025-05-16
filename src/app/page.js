@@ -1,16 +1,16 @@
 "use client";
 
-import Chat from "@/components/Chat";
-import { useAuth } from "@/context/AuthContext.js";
-import { useRouter } from "next/navigation";
-import MyCalendar from "@components/lol/calendar/MyCalendar.jsx";
-import { CalandarProvider } from "@/context/CalandarContext.js";
-import Standings from "@components/lol/Standings.js";
-import {useEffect, useRef, useState} from "react";
-import { apiFetchTournaments } from "@utils/api-lol.js";
-import Loading from "@components/common/Loading.js";
 import "@/styles/css/chat.css";
 import "@/styles/css/standings.css";
+import {useEffect, useRef, useState} from "react";
+import { useAuth } from "@/context/AuthContext.js";
+import { useRouter } from "next/navigation";
+import { CalandarProvider } from "@/context/CalandarContext.js";
+import MyCalendar from "@components/lol/calendar/MyCalendar";
+import Standings from "@components/lol/standings/Standings.jsx";
+import Chat from "@/components/Chat";
+import Loading from "@components/common/Loading.js";
+import { apiFetchTournaments } from "@utils/api-lol.js";
 
 export default function Home({ Component, pageProps }) {
     const { userId, devLogin } = useAuth();

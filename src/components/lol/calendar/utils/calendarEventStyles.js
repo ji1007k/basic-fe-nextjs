@@ -1,5 +1,3 @@
-import { useCalandar } from '@/context/CalandarContext';
-
 /**
  * [스타일 유틸] 대문자 or 소문자 (혼재되어 있음)
  * @param event

@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
-import FavoriteTeamButton from "@components/lol/FavoriteTeamButton";
 import {useCalandar} from "@/context/CalandarContext";
 import {useAuth} from "@/context/AuthContext.js";
-import LeagueDropdown from "@components/lol/LeagueDropdown.js";
+import FavoriteTeamButton from "@components/lol/calendar/FavoriteTeamButton.jsx";
+import LeagueDropdown from "@components/lol/calendar/LeagueDropdown.jsx";
 
 const LeagueAndTeamSelector = ({ leagues }) => {
     const [rawTeams, setRawTeams] = useState([]); // 👈 fetch 결과만 보관
