@@ -306,7 +306,7 @@
         font-weight: bold;
         animation: fadeBlink 1.5s ease-in-out infinite;
         font-size: smaller;
-        margin-right: 2px;
+        margin-right: 1px;
     }
 }
 
