@@ -13,7 +13,11 @@ const CustomEventWrapper = ({ event, children }) => {
 
     return (
         <Popup
-            trigger={<div>{children}</div>}
+            trigger={
+                <div>
+                    {children}  {/*refineTeamSchedule > title*/}
+                </div>
+            }
             modal
             closeOnDocumentClick
             contentStyle={{
@@ -30,7 +34,7 @@ const CustomEventWrapper = ({ event, children }) => {
             <div className="text-sm">
                 <div>{format(new Date(event.start), 'yyyy년 M월 d일 HH:mm')}</div>
                 { event.state === 'inProgress' &&
-                    <div className="live-badge">LIVE</div>
+                    <div className="live-badge"></div>
                 }
                 <div>
                     <strong>{codes
