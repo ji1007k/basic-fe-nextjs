@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import { useCalandar } from "@/context/CalandarContext.js";
+import { useCalendar } from "@/context/CalendarContext.js";
 import { apiAddFavoriteTeam, apiRemoveFavoriteTeam } from "@utils/api-lol.js";
 import { useAuth } from "@/context/AuthContext.js";  // userId가 있는 곳
 
 const FavoriteTeamButton = ({ teamId, name, slug, image }) => {
     const { userId } = useAuth(); // userId 가져오기
-    const { selectedTeam, setSelectedTeam, favoriteTeamIds, setFavoriteTeamIds } = useCalandar(); // ⬅️ context에서 함수 가져오기
+    const { selectedTeam, setSelectedTeam, favoriteTeamIds, setFavoriteTeamIds } = useCalendar(); // ⬅️ context에서 함수 가져오기
     const [hovered, setHovered] = useState(false); // 버튼 개별 상태
     const [isFavorited, setIsFavorited] = useState(favoriteTeamIds.includes(teamId));
 

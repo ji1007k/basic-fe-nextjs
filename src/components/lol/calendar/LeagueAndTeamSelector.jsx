@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useCalandar} from "@/context/CalandarContext";
+import {useCalendar} from "@/context/CalendarContext.js";
 import {useAuth} from "@/context/AuthContext.js";
 import FavoriteTeamButton from "@components/lol/calendar/FavoriteTeamButton.jsx";
 import LeagueDropdown from "@components/lol/calendar/LeagueDropdown.jsx";
@@ -8,7 +8,7 @@ const LeagueAndTeamSelector = ({ leagues }) => {
     const [rawTeams, setRawTeams] = useState([]); // 👈 fetch 결과만 보관
     const [teams, setTeams] = useState([]);       // 👈 정렬된 최종 데이터
 
-    const {selectedLeague, setSelectedLeague, favoriteTeamIds} = useCalandar();
+    const {selectedLeague, setSelectedLeague, favoriteTeamIds} = useCalendar();
     const {userId} = useAuth();
 
 

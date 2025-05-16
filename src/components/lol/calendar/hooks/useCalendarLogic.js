@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { getMatchesByYearAndLeagueId, fetchFavoriteTeam } from '@utils/api-lol';
 import { useAuth } from '@/context/AuthContext';
-import { useCalandar } from '@/context/CalandarContext';
+import { useCalendar } from '@/context/CalendarContext.js';
 import { refineTeamSchedule } from '@/components/lol/calendar/utils/refineTeamSchedule';
 
 /**
@@ -10,14 +10,13 @@ import { refineTeamSchedule } from '@/components/lol/calendar/utils/refineTeamSc
 export const useCalendarLogic = () => {
     const { userId } = useAuth();
     const {
-        selectedLeague,
-        setSelectedLeague,
+        selectedLeague, setSelectedLeague,
         selectedTeam,
-        favoriteTeamIds,
-        setFavoriteTeamIds
-    } = useCalandar();
+        favoriteTeamIds, setFavoriteTeamIds,
+        selectedDate, setSelectedDate
+    } = useCalendar();
 
-    const [currentDate, setCurrentDate] = useState(new Date());
+    // const [currentDate, setCurrentDate] = useState(new Date());
     const [currentView, setCurrentView] = useState('month');
     const [rawSchedules, setRawSchedules] = useState([]);
     const [refinedSchedules, setRefinedSchedules] = useState([]);
@@ -48,11 +47,11 @@ export const useCalendarLogic = () => {
                 const data = await fetchFavoriteTeam();
                 setFavoriteTeamIds(data.map((team) => team.teamId));
             }
-            const matches = await getMatchesByYearAndLeagueId(currentDate.getFullYear(), selectedLeague?.id);
+            const matches = await getMatchesByYearAndLeagueId(selectedDate.getFullYear(), selectedLeague?.id);
             setRawSchedules(matches);
         };
         fetchSchedule();
-    }, [userId, selectedLeague, currentDate]);
+    }, [userId, selectedLeague, selectedDate]);
 
     useEffect(() => {
         setRefinedSchedules(refineTeamSchedule(rawSchedules, currentView));
@@ -60,8 +59,6 @@ export const useCalendarLogic = () => {
 
     return {
         leagues,
-        currentDate,
-        setCurrentDate,
         currentView,
         setCurrentView,
         refinedSchedules
