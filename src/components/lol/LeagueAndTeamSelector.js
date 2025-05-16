@@ -12,7 +12,7 @@ const LeagueAndTeamSelector = ({ leagues }) => {
     const {userId} = useAuth();
 
 
-    // 🎯 리그 변경 시 팀 fetch
+    // 리그 변경 시 팀 fetch
     useEffect(() => {
         const fetchTeams = async () => {
             try {
