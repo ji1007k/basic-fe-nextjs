@@ -8,7 +8,7 @@ export const eventPropGetter = (event, selectedTeam, favoriteTeamIds) => {
     const Ids = event.participants?.map(p => p.team.teamId);
     const isFavorite = Ids.some(id => favoriteTeamIds?.includes(id));
     const isSelected = selectedTeam && Ids.includes(selectedTeam.teamId);
-    const isUnstarted = event.state === 'unstarted';
+    const isUnstarted = new Date(event.start) > new Date();
 
     let style = {
         borderRadius: '6px',
