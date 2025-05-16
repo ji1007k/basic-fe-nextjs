@@ -55,6 +55,17 @@ const MyCalendar = ({ events }) => {
                 eventPropGetter={(event) => eventPropGetter(event, selectedTeam, favoriteTeamIds)}
                 components={{
                     toolbar: CustomToolbar,
+                    event: ({ event }) => {
+                        const isInProgress = event.state === 'inProgress';
+                        return (
+                            <div className="flex items-center">
+                                {isInProgress && (
+                                    <span className="live-badge"></span>
+                                )}
+                                <span>{event.title}</span>
+                            </div>
+                        );
+                    },
                     eventWrapper: CustomEventWrapper,
                     month: {
                         dateHeader: ({ date, label }) => (
