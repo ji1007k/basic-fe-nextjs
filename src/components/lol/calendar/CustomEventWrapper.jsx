@@ -31,7 +31,7 @@ const CustomEventWrapper = ({ event, children }) => {
                 transform: 'translate(-50%, -50%)'
             }}
         >
-            <div className="text-sm">
+            <div className="custom-event-popup text-sm">
                 <div>{format(new Date(event.start), 'yyyy년 M월 d일 HH:mm')}</div>
                 { event.state === 'inProgress' &&
                     <div className="live-badge"></div>
