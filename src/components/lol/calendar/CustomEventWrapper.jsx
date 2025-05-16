@@ -42,7 +42,10 @@ const CustomEventWrapper = ({ event, children }) => {
                         .join(' vs ')}
                     </strong>
                 </div>
-                <div>{event.participants?.map(participant => participant.gameWins).join(" : ")}</div>
+                { event.state === 'unstarted'
+                    ? <div>{event.strategy}</div>
+                    : <div>{event.participants?.map(participant => participant.gameWins).join(" : ")}</div>
+                }
             </div>
         </Popup>
     );
