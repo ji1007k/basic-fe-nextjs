@@ -3,7 +3,7 @@
 import Chat from "@/components/Chat";
 import { useAuth } from "@/context/AuthContext.js";
 import { useRouter } from "next/navigation";
-import MyCalendar from "@components/lol/MyCalendar.js";
+import MyCalendar from "@components/lol/calendar/MyCalendar.jsx";
 import { CalandarProvider } from "@/context/CalandarContext.js";
 import Standings from "@components/lol/Standings.js";
 import {useEffect, useRef, useState} from "react";
