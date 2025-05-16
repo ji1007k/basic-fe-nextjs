@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import Standings from "@components/lol/standings/Standings";
 import Loading from "@components/common/Loading";
 import { apiFetchTournaments } from "@utils/api-lol";
+import {useCalendar} from "@/context/CalendarContext.js";
 
 export default function SectionStandings() {
+    const { selectedLeague, selectedDate } = useCalendar();
     const [tournaments, setTournaments] = useState([]);
     const [activeTournamentId, setActiveTournamentId] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -11,7 +13,7 @@ export default function SectionStandings() {
     useEffect(() => {
         const fetchTournaments = async () => {
             setIsLoading(true);
-            const response = await apiFetchTournaments();
+            const response = await apiFetchTournaments(selectedLeague.id, selectedDate.getFullYear());
             setTournaments(response);
             if (response.length > 0) {
                 const ongoing = response.find(t => t.active);
@@ -20,7 +22,8 @@ export default function SectionStandings() {
             setIsLoading(false);
         };
         fetchTournaments();
-    }, []);
+    }, [selectedLeague, selectedDate]);
+
 
     return isLoading ? (
         <Loading message="토너먼트 불러오는 중..." />

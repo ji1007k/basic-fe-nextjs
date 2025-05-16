@@ -15,7 +15,7 @@ import {useCalendarLogic} from '@/components/lol/calendar/hooks/useCalendarLogic
 import {eventPropGetter} from '@/components/lol/calendar/utils/calendarEventStyles';
 import {formats} from '@/components/lol/calendar/config/formats';
 import LeagueAndTeamSelector from '@components/lol/calendar/LeagueAndTeamSelector';
-import {useCalandar} from "@/context/CalandarContext.js";
+import {useCalendar} from "@/context/CalendarContext.js";
 
 const localizer = dateFnsLocalizer({
     format, parse, startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 0 }), getDay,
@@ -28,11 +28,11 @@ const localizer = dateFnsLocalizer({
 const MyCalendar = ({ events }) => {
     const {
         leagues,
-        currentDate, setCurrentDate,
         currentView, setCurrentView,
         refinedSchedules
     } = useCalendarLogic();
-    const { selectedTeam, favoriteTeamIds } = useCalandar();
+    const { selectedTeam, favoriteTeamIds,
+       selectedDate, setSelectedDate} = useCalendar();
 
     return (
         <div className="calandar-container">
@@ -49,8 +49,8 @@ const MyCalendar = ({ events }) => {
                     day: true,          // 기본 일간 뷰
                     week: CustomVerticalWeekView, // 커스텀 주간 뷰 (요일 세로)
                 }}*/
-                date={currentDate}
-                onNavigate={setCurrentDate}
+                date={selectedDate}
+                onNavigate={setSelectedDate}
                 onView={setCurrentView}
                 eventPropGetter={(event) => eventPropGetter(event, selectedTeam, favoriteTeamIds)}
                 components={{

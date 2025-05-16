@@ -1,23 +1,26 @@
 "use client";
 
-// src/context/CalandarContext.js
+// src/context/CalendarContext.js
 import React, {createContext, useContext, useEffect, useState} from 'react';
 
-const CalandarContext = createContext({
+const CalendarContext = createContext({
     selectedLeague: null,   // 현재 선택된 리그
     selectedTeam: null,     // 현재 선택된 팀
     favoriteTeamIds: [],
+    selectedDate: [],
     setSelectedLeague: () => {},
     setSelectedTeam: () => {},
-    setFavoriteTeamIds: () => {}
+    setFavoriteTeamIds: () => {},
+    setSelectedDate: () => {}
 });
 
-export const useCalandar = () => useContext(CalandarContext);
+export const useCalendar = () => useContext(CalendarContext);
 
 export const CalandarProvider = ({ children }) => {
     const [selectedLeague, setSelectedLeague] = useState(null);
     const [selectedTeam, setSelectedTeam] = useState(null);
     const [favoriteTeamIds, setFavoriteTeamIds] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     useEffect(() => {
         // console.log('selectedTeam 변경됨:', selectedTeam);
@@ -28,12 +31,13 @@ export const CalandarProvider = ({ children }) => {
     }, [favoriteTeamIds]);
 
     return (
-        <CalandarContext.Provider value={{
+        <CalendarContext.Provider value={{
             selectedLeague, setSelectedLeague,
             selectedTeam, setSelectedTeam,
-            favoriteTeamIds, setFavoriteTeamIds
+            favoriteTeamIds, setFavoriteTeamIds,
+            selectedDate, setSelectedDate
         }}>
             {children}
-        </CalandarContext.Provider>
+        </CalendarContext.Provider>
     );
 };

@@ -93,8 +93,8 @@ export async function getFavoritTeamSchedule(favoriteTeamCode) {
     return await response.json();
 }
 
-export async function apiFetchTournaments() {
-    const response = await fetch(`/api/lol/tournaments`, {
+export async function apiFetchTournaments(leagueId, year) {
+    const response = await fetch(`/api/lol/tournaments?leagueId=${leagueId}&year=${year}`, {
         method: 'GET',
     })
 
