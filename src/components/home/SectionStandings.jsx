@@ -12,6 +12,8 @@ export default function SectionStandings() {
 
     useEffect(() => {
         const fetchTournaments = async () => {
+            if (!selectedLeague) return;
+
             setIsLoading(true);
             const response = await apiFetchTournaments(selectedLeague.id, selectedDate.getFullYear());
             setTournaments(response);
