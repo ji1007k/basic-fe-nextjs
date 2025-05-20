@@ -14,7 +14,7 @@ const CustomEventWrapper = ({ event, children }) => {
     return (
         <Popup
             trigger={
-                <div>
+                <div onClick={(e) => e.stopPropagation()}>
                     {children}  {/*refineTeamSchedule > title*/}
                 </div>
             }

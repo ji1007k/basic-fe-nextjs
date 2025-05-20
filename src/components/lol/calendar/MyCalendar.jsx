@@ -16,11 +16,15 @@ import {eventPropGetter} from '@/components/lol/calendar/utils/calendarEventStyl
 import {formats} from '@/components/lol/calendar/config/formats';
 import LeagueAndTeamSelector from '@components/lol/calendar/LeagueAndTeamSelector';
 import {useCalendar} from "@/context/CalendarContext.js";
+import {getMatchesByLeagueIdAndDate} from "@utils/api-lol.js";
+import {getDateRange} from "@utils/date-util.js";
+import MatchListPopup from "@components/lol/calendar/MatchListPopup.jsx";
 
 const localizer = dateFnsLocalizer({
     format, parse, startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 0 }), getDay,
     locales: { ko }
 });
+
 
 /**
  * [React 컴포넌트 파일] 대문자 시작
@@ -29,10 +33,13 @@ const MyCalendar = ({ events }) => {
     const {
         leagues,
         currentView, setCurrentView,
-        refinedSchedules
+        refinedSchedules,
+        popupMatches, setPopupMatches, popupOpen, setPopupOpen,
     } = useCalendarLogic();
-    const { selectedTeam, favoriteTeamIds,
-       selectedDate, setSelectedDate} = useCalendar();
+    const { selectedLeague,
+        selectedTeam, favoriteTeamIds,
+        selectedDate, setSelectedDate
+    } = useCalendar();
 
     return (
         <div className="calandar-container">
@@ -81,7 +88,24 @@ const MyCalendar = ({ events }) => {
                     ),
                 }}
                 selectable
+                onSelectSlot={async (slotInfo) => {
+                    const { startDate, endDate } = getDateRange('day', slotInfo.start);
+                    const response = await getMatchesByLeagueIdAndDate(selectedLeague.id, startDate, endDate);
+
+                    setPopupMatches(response);
+                    setPopupOpen(true);
+                }}
             />
+            {popupOpen && (
+                    <MatchListPopup
+                        open={popupOpen}
+                        onClose={() => setPopupOpen(false)}
+                        matches={popupMatches}
+                        date={selectedDate}
+                    />
+                )
+            }
+
             <LeagueAndTeamSelector leagues={leagues} />
         </div>
     );

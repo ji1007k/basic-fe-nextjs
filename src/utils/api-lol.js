@@ -65,11 +65,25 @@ export async function getAllSchedules() {
     return await response.json();
 }
 
-// TODO 달력에서 조회중인 날짜 기준으로 데이터 조회하도록 수정
-export async function getMatchesByYearAndLeagueId(year, leagueId) {
-    const currentYear = year || new Date().getFullYear();
+// 첫 진입 시 해당년도 전체 경기일정 조회
+/*
+export async function getMatchesByLeagueIdAndYear(leagueId, year) {
+    const response = await fetch(`/api/lol/matches?leagueId=${leagueId}&year=${year}`, {
+        method: 'GET',
+        credentials: 'include'
+    });
 
-    const response = await fetch(`/api/lol/matches?year=${currentYear}&leagueId=${leagueId}`, {
+    if (!response.ok) {
+        throw new Error('경기 일정 조회 실패');
+    }
+
+    return await response.json();
+}
+*/
+
+// 달력에서 선택한 날짜 기준으로 데이터 조회
+export async function getMatchesByLeagueIdAndDate(leagueId, startDate, endDate) {
+    const response = await fetch(`/api/lol/matches?leagueId=${leagueId}&startDate=${startDate}&endDate=${endDate}`, {
         method: 'GET',
         credentials: 'include'
     });

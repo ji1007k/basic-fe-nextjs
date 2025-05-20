@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import Standings from "@components/lol/standings/Standings";
 import Loading from "@components/common/Loading";
 import { apiFetchTournaments } from "@utils/api-lol";
@@ -9,10 +9,16 @@ export default function SectionStandings() {
     const [tournaments, setTournaments] = useState([]);
     const [activeTournamentId, setActiveTournamentId] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const prevLeagueRef = useRef(null);
 
     useEffect(() => {
         const fetchTournaments = async () => {
             if (!selectedLeague) return;
+
+            // 리그 선택값에 변경사항이 없으면 패스
+            if (prevLeagueRef.current === selectedLeague) return;
+
+            prevLeagueRef.current = selectedLeague;
 
             setIsLoading(true);
             const response = await apiFetchTournaments(selectedLeague.id, selectedDate.getFullYear());
