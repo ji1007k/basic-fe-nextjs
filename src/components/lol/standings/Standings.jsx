@@ -38,16 +38,8 @@ const Standings = ({ tournamentId }) => {
     useEffect(() => {
         const stage = standings?.[0]?.stages?.find(stage => stage.id === activeStageId);
         const section = stage?.sections?.[activeSectionIndex];
-        if (section?.rankings) {
-            // 순위별 팀 평탄화 (공동순위 존재할 경우 처리 위함)
-            const flatTeams = section.rankings.flatMap(ranking =>
-                ranking.teams.map(team => ({
-                    rank: ranking.ordinal,
-                    ...team
-                }))
-            );
-
-            setRankings(flatTeams);
+        if (section?.refinedRankings) {
+            setRankings(section.refinedRankings);
         } else {
             setRankings([]);
         }
