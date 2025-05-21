@@ -11,12 +11,17 @@ const Standings = ({ tournamentId }) => {
     const [rankings, setRankings] = useState([]);
     const [rowCount, setRowCount] = useState(0);
 
+    const stages = standings?.[0]?.stages || [];
+    const activeStage = stages.find(stage => stage.id === activeStageId);
+    const sections = activeStage?.sections || [];
+    const activeSection = sections[activeSectionIndex] || null;
+
     useEffect(() => {
         const fetchData = async () => {
             if (!tournamentId) return;
             setIsLoading(true);
             const response = await apiFetchStandings(tournamentId);
-            setStandings(response);
+            setStandings(response?.standings);
             setIsLoading(false);
         };
         fetchData();
@@ -34,7 +39,15 @@ const Standings = ({ tournamentId }) => {
         const stage = standings?.[0]?.stages?.find(stage => stage.id === activeStageId);
         const section = stage?.sections?.[activeSectionIndex];
         if (section?.rankings) {
-            setRankings(section.rankings);
+            // 순위별 팀 평탄화 (공동순위 존재할 경우 처리 위함)
+            const flatTeams = section.rankings.flatMap(ranking =>
+                ranking.teams.map(team => ({
+                    rank: ranking.ordinal,
+                    ...team
+                }))
+            );
+
+            setRankings(flatTeams);
         } else {
             setRankings([]);
         }
@@ -58,12 +71,6 @@ const Standings = ({ tournamentId }) => {
             window.removeEventListener('resize', updateRowCount); // 정리
         };
     }, [rankings]);
-
-    const stages = standings?.[0]?.stages || [];
-    const activeStage = stages.find(stage => stage.id === activeStageId);
-    const sections = activeStage?.sections || [];
-    const activeSection = sections[activeSectionIndex] || null;
-    // const rankings = activeSection?.rankings || [];
 
     if (isLoading) {
         return <Loading message="순위 데이터를 불러오는 중입니다..." />;
@@ -112,17 +119,17 @@ const Standings = ({ tournamentId }) => {
                     }}
                 >
                 {rankings.map((team) => {
-                        const [wins, losses, gameDiff] = team.record?.split(',') ?? [0, 0, 0];
-                        const isSharedRank = rankings.filter(t => t.rank === team.rank).length > 1;
+                    const {wins, losses, gameDiff} = team.record ?? { wins: 0, losses: 0, gameDiff: 0 };
+                    const isSharedRank = rankings.filter(t => t.rank === team.rank).length > 1;
 
                         return (
-                            <div className="team-card" key={team.teamId}>
+                            <div className="team-card" key={team.slug}>
                                 <div className="team-rank-badge">
                                     <span>{team.rank}</span>
                                     {isSharedRank && <span> 공동</span>}
                                 </div>
                                 <div className="team-icon">
-                                    <img src={team.image} alt={team.name} />
+                                    <img src={team.image} title={team.name} alt={team.name} />
                                 </div>
                                 <div className="team-info">
                                     <div className="team-name">{team.code}</div>
@@ -134,7 +141,8 @@ const Standings = ({ tournamentId }) => {
                                 </div>
                             </div>
                         );
-                    })}
+                    })
+                }
                 </div>
             ) : (
                 <div className="no-ranking">표시할 순위 정보가 없습니다.</div>
