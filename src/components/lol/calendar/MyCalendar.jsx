@@ -34,7 +34,7 @@ const MyCalendar = ({ events }) => {
         leagues,
         currentView, setCurrentView,
         refinedSchedules,
-        popupMatches, setPopupMatches, popupOpen, setPopupOpen,
+        popupMatches, setPopupMatches, popupOpen, setPopupOpen, popupDate, setPopupDate,
     } = useCalendarLogic();
     const { selectedLeague,
         selectedTeam, favoriteTeamIds,
@@ -88,12 +88,25 @@ const MyCalendar = ({ events }) => {
                     ),
                 }}
                 selectable
+                longPressThreshold={100} // 터치로 인정할 시간. 기본 250
                 onSelectSlot={async (slotInfo) => {
-                    const { startDate, endDate } = getDateRange('day', slotInfo.start);
-                    const response = await getMatchesByLeagueIdAndDate(selectedLeague.id, startDate, endDate);
+                    if (!slotInfo?.start) return;
 
-                    setPopupMatches(response);
-                    setPopupOpen(true);
+                    const { startDate, endDate } = getDateRange('day', slotInfo.start);
+                    setPopupDate(slotInfo.start);
+
+                    try {
+                        const response = await getMatchesByLeagueIdAndDate(
+                            selectedLeague?.id,
+                            startDate,
+                            endDate
+                        );
+
+                        setPopupMatches(response || []);
+                        setPopupOpen(true);
+                    } catch (err) {
+                        console.error('Error fetching matches:', err);
+                    }
                 }}
             />
             {popupOpen && (
@@ -101,7 +114,7 @@ const MyCalendar = ({ events }) => {
                         open={popupOpen}
                         onClose={() => setPopupOpen(false)}
                         matches={popupMatches}
-                        date={selectedDate}
+                        date={popupDate}
                     />
                 )
             }

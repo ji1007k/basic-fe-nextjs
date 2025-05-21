@@ -23,6 +23,7 @@ export const useCalendarLogic = () => {
     const [leagues, setLeagues] = useState([]);
     const [popupOpen, setPopupOpen] = useState(false);
     const [popupMatches, setPopupMatches] = useState([]);
+    const [popupDate, setPopupDate] = useState(selectedDate || new Date());
     const prevYearRef = useRef(null);
     const prevLeagueRef = useRef(null);
 
@@ -85,6 +86,8 @@ export const useCalendarLogic = () => {
         popupMatches,
         setPopupMatches,
         popupOpen,
-        setPopupOpen
+        setPopupOpen,
+        popupDate,
+        setPopupDate
     };
 };
