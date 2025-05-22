@@ -28,8 +28,9 @@ const localizer = dateFnsLocalizer({
 
 /**
  * [React 컴포넌트 파일] 대문자 시작
+ * 컴포넌트는 명시적으로 함수로 작성 (선언식 함수)
  */
-const MyCalendar = ({ events }) => {
+function MyCalendar ({ events }) {
     const {
         leagues,
         currentView, setCurrentView,
@@ -41,8 +42,19 @@ const MyCalendar = ({ events }) => {
         selectedDate, setSelectedDate
     } = useCalendar();
 
+
+    function CalendarEvent({ event }) {
+        const isInProgress = event.state === 'inProgress';
+        return (
+            <div className="flex items-center">
+                {isInProgress && <span className="live-badge" />}
+                <span>{event.title}</span>
+            </div>
+        );
+    }
+
     return (
-        <div className="calandar-container">
+        <div className="calendar-container">
             <Calendar
                 localizer={localizer}
                 formats={formats}
@@ -62,17 +74,7 @@ const MyCalendar = ({ events }) => {
                 eventPropGetter={(event) => eventPropGetter(event, selectedTeam, favoriteTeamIds)}
                 components={{
                     toolbar: CustomToolbar,
-                    event: ({ event }) => {
-                        const isInProgress = event.state === 'inProgress';
-                        return (
-                            <div className="flex items-center">
-                                {isInProgress && (
-                                    <span className="live-badge"></span>
-                                )}
-                                <span>{event.title}</span>
-                            </div>
-                        );
-                    },
+                    event: CalendarEvent,
                     eventWrapper: CustomEventWrapper,
                     month: {
                         dateHeader: ({ date, label }) => (

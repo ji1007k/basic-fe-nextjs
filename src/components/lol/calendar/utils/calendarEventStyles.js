@@ -37,19 +37,21 @@ export const eventPropGetter = (event, selectedTeam, favoriteTeamIds) => {
             color: '#0d47a1',
             fontWeight: '500',
         });
-    } else if (isUnstarted) {
-        Object.assign(style, {
-            backgroundColor: '#e3f2fd',
-            border: '1px dashed #64b5f6',
-            color: '#1e88e5',
-            fontStyle: 'italic',
-        });
     } else {
-        Object.assign(style, {
-            backgroundColor: '#f0f2f5',
-            border: '1px solid #cfd8dc',
-            color: '#37474f',
-        });
+        if (isUnstarted) {
+            Object.assign(style, {
+                backgroundColor: '#e3f2fd',
+                border: '1px dashed #64b5f6',
+                color: '#1e88e5',
+                fontStyle: 'italic',
+            });
+        } else {
+            Object.assign(style, {
+                backgroundColor: '#f0f2f5',
+                border: '1px solid #cfd8dc',
+                color: '#37474f',
+            });
+        }
     }
 
     return { style };

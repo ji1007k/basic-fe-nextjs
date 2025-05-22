@@ -130,3 +130,22 @@ export async function apiFetchStandings(tournamentId) {
 
     return await response.json();
 }
+
+export async function apiGetMatchHistory(matchIds) {
+    const csrfToken = getCookie("XSRF-TOKEN");
+    const response = await fetch(`/api/lol/matchhistory`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-XSRF-TOKEN': csrfToken
+        },
+        credentials: 'include',
+        body: JSON.stringify(matchIds),
+    });
+
+    if (!response.ok) {
+        throw new Error('순위 조회 실패');
+    }
+
+    return await response.json();
+}
