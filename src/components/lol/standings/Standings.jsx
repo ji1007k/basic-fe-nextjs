@@ -86,6 +86,9 @@ const Standings = ({ tournamentId }) => {
 
     useEffect(() => {
         const fetchMatchHistory = async () => {
+            // csrf 토큰 발급
+            await fetch('/api/csrf', { method: 'GET', credentials: 'include' });
+
             // matchId만 추출
             const matchIds = selectedTeamMatchHistory.map(match => match.matchId);
 
