@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { apiFetchStandings } from "@utils/api-lol.js";
+import {apiFetchStandings, apiGetMatchHistory} from "@utils/api-lol.js";
 import Loading from "@components/common/Loading.js";
+import MatchHistoryPopup from "@components/lol/calendar/MatchHistoryPopup.jsx";
 
 const Standings = ({ tournamentId }) => {
     const [standings, setStandings] = useState([]);
@@ -10,6 +11,12 @@ const Standings = ({ tournamentId }) => {
     const gridContainerRef = useRef(null);
     const [rankings, setRankings] = useState([]);
     const [rowCount, setRowCount] = useState(0);
+
+    // 전적
+    const [matches, setMatches] = useState([]);
+    const [matchHistoryPopupOpen, setMatchHistoryPopupOpen] = useState(false);
+    const [selectedTeam, setSelectedTeam] = useState(null);
+    const [selectedTeamMatchHistory, setSelectedTeamMatchHistory] = useState([]);
 
     const stages = standings?.[0]?.stages || [];
     const activeStage = stages.find(stage => stage.id === activeStageId);
@@ -40,8 +47,10 @@ const Standings = ({ tournamentId }) => {
         const section = stage?.sections?.[activeSectionIndex];
         if (section?.refinedRankings) {
             setRankings(section.refinedRankings);
+            setMatches(section.matches);
         } else {
             setRankings([]);
+            setMatches([]);
         }
     }, [standings, activeStageId, activeSectionIndex]);
 
@@ -63,6 +72,50 @@ const Standings = ({ tournamentId }) => {
             window.removeEventListener('resize', updateRowCount); // 정리
         };
     }, [rankings]);
+
+    function handleTeamCardClick(e, team) {
+        e.stopPropagation();
+        setSelectedTeam(team);
+        setSelectedTeamMatchHistory(matches
+            .filter(match => match.state === 'completed')
+            .filter(match => match
+                .teams.some(t => t.slug === team.slug)
+            )
+        );
+    }
+
+    useEffect(() => {
+        const fetchMatchHistory = async () => {
+            // matchId만 추출
+            const matchIds = selectedTeamMatchHistory.map(match => match.matchId);
+
+            // API 호출
+            const response = await apiGetMatchHistory(matchIds);
+
+            // 응답을 matchId 기준으로 Map으로 변환
+            const matchMap = new Map(response.map(match => [match.matchId, match]));
+
+            // 상태 업데이트
+            setSelectedTeamMatchHistory(prev => {
+                const updated = prev.map(mHistory => {
+                    const match = matchMap.get(mHistory.matchId);
+                    return match
+                        ? { ...mHistory, startTime: match.startTime }
+                        : mHistory;
+                });
+
+                // startTime 기준 내림차순 정렬
+                return updated.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
+            });
+
+
+            setMatchHistoryPopupOpen(true);
+        };
+
+        if (selectedTeam) {
+            fetchMatchHistory();
+        }
+    }, [selectedTeam]);
 
     if (isLoading) {
         return <Loading message="순위 데이터를 불러오는 중입니다..." />;
@@ -115,7 +168,11 @@ const Standings = ({ tournamentId }) => {
                     const isSharedRank = rankings.filter(t => t.rank === team.rank).length > 1;
 
                         return (
-                            <div className="team-card" key={team.slug}>
+                            <div
+                                className="team-card" key={team.slug}
+                                onClick={(e) => handleTeamCardClick(e, team)}
+                                style={{cursor: 'pointer'}}
+                            >
                                 <div className="team-rank-badge">
                                     <span>{team.rank}</span>
                                     {isSharedRank && <span> 공동</span>}
@@ -139,6 +196,15 @@ const Standings = ({ tournamentId }) => {
             ) : (
                 <div className="no-ranking">표시할 순위 정보가 없습니다.</div>
             )}
+            {
+                matchHistoryPopupOpen &&
+                <MatchHistoryPopup
+                    team={selectedTeam}
+                    matches={selectedTeamMatchHistory}
+                    open={matchHistoryPopupOpen}
+                    onClose={() => setMatchHistoryPopupOpen(false)}
+                />
+            }
         </div>
     );
 };

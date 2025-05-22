@@ -2,6 +2,7 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { format } from 'date-fns';
 import {FiX} from "react-icons/fi";
+import {ko} from "date-fns/locale";
 
 // TODO 
 //  - CODE -> SLUG 또는 TEAM_ID 사용
@@ -46,7 +47,7 @@ const CustomEventWrapper = ({ event, children }) => {
                     </button>
 
                     <div className="text-lg font-bold mb-2 border-b py-2">
-                        {format(new Date(event.start), 'yyyy년 M월 d일 HH:mm')}
+                        {format(new Date(event.start), 'yyyy년 M월 d일 (EEE) aaa h:mm', {locale: ko})}
                     </div>
                     { event.state === 'inProgress' &&
                         <div className="live-badge"></div>
