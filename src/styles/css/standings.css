@@ -263,7 +263,8 @@
 .match-history-popup {
     width: 90vw;
     max-width: 460px;
-    height: 80vh;
+    max-height: calc(100% - 150px);
+    height: fit-content;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -358,6 +359,10 @@
 .match-history-popup .label.live {
     background-color: #ef4444;
     color: white;
+    font-weight: bold;
+    animation: fadeBlink 1.5s ease-in-out infinite;
+    font-size: smaller;
+    margin-right: 2px;
 }
 
 .match-history-popup .label.completed {
@@ -452,9 +457,10 @@
 @media (max-width: 500px) {
     .match-history-popup {
         width: 95vw;
-        height: 80vh;
+        max-height: calc(100% - 130px);
+        height: fit-content;
         border-radius: 10px;
-        margin-top: 55px;
+        margin-top: 60px;
     }
 
     .match-history-popup .match-card {
