@@ -328,3 +328,275 @@
     }
 }
 
+
+/**
+    일간 경기 일정 목록 팝업
+ */
+.match-list-popup {
+    width: 90vw;
+    max-width: 460px;
+    max-height: calc(100% - 150px);
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: 50px;
+    transform: translate(-50%, -50%);
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.match-list-popup .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.125rem;
+    font-weight: bold;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.match-list-popup .close-btn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.match-list-popup .popup-body {
+    overflow-y: auto;
+    flex: 1;
+    padding: 8px 16px;
+    background: #f9fafb;
+}
+
+.match-list-popup .match-card {
+    position: relative;
+    border: 2px solid #ccc;
+    background: #fff;
+    padding: 16px;
+    margin: 12px 0;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.match-list-popup .card-badge {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 24px;
+    height: 24px;
+    background: #d1d5db;
+    color: #111827;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.match-list-popup .status-time-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.match-list-popup .status-labels {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: #4b5563;
+}
+
+.match-list-popup .label {
+    padding: 2px 6px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.match-list-popup .label.live {
+    background-color: #ef4444;
+    color: white;
+    font-weight: bold;
+    animation: fadeBlink 1.5s ease-in-out infinite;
+    font-size: smaller;
+    margin-right: 2px;
+}
+
+.match-list-popup .label.unstarted,
+.match-list-popup .label.completed,
+.match-list-popup .label.strategy {
+    background-color: #e5e7eb;
+    color: #111827;
+}
+
+.match-list-popup .vod-btn-wrapper {
+    text-align: right;
+}
+
+.match-list-popup .vod-btn {
+    font-size: 0.875rem;
+    color: #2563eb;
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.match-list-popup .teams-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.match-list-popup .team {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 120px;
+    justify-content: center;
+}
+
+.match-list-popup .team-code {
+    font-size: 1rem;
+    font-weight: 600;
+    width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.match-list-popup .result {
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.match-list-popup .result.win {
+    background-color: #22c55e;
+    color: white;
+}
+
+.match-list-popup .result.lose {
+    background-color: #e5e7eb;
+    color: black;
+}
+
+.match-list-popup .score {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.match-list-popup .popup-footer {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 12px 16px;
+    border-top: 1px solid #ddd;
+}
+
+.match-list-popup .footer-btn {
+    width: 100%;
+    background: #e5e7eb;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background 0.2s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.match-list-popup .footer-btn:hover {
+    background: #d1d5db;
+}
+
+/* 500px 미만 반응형 대응 */
+@media (max-width: 500px) {
+    .match-list-popup {
+        width: 95vw;
+        max-height: calc(100% - 130px);
+        height: fit-content;
+        border-radius: 10px;
+        margin-top: 60px;
+    }
+
+    .match-list-popup .match-card {
+        padding: 10px;
+    }
+
+    .match-list-popup .team {
+        width: 100px;
+        gap: 4px;
+        justify-content: center;
+    }
+
+    .match-list-popup .team-code {
+        width: 50px;
+        font-size: 0.875rem;
+    }
+
+    .match-list-popup .result {
+        font-size: 0.625rem;
+        padding: 2px 6px;
+    }
+
+    .match-list-popup .score {
+        font-size: 0.875rem;
+    }
+
+    .match-list-popup .vod-btn {
+        font-size: 0.75rem;
+    }
+
+    .match-list-popup .popup-header {
+        font-size: 1rem;
+        padding: 10px 12px;
+    }
+
+    .match-list-popup .popup-body {
+        padding: 6px 12px;
+    }
+
+    .match-list-popup .popup-footer {
+        padding: 10px 12px;
+    }
+
+    .match-list-popup .footer-btn {
+        font-size: 0.875rem;
+        padding: 8px;
+    }
+
+    .match-list-popup .card-badge {
+        width: 20px;
+        height: 20px;
+        font-size: 0.625rem;
+    }
+
+    .match-list-popup .status-labels {
+        font-size: 0.6875rem;
+    }
+
+    .match-list-popup .label {
+        font-size: 0.625rem;
+        padding: 1px 5px;
+    }
+}
+

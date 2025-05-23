@@ -17,67 +17,107 @@ const MatchListPopup = ({ open, onClose, matches, date }) => {
     };
 
     return (
-        <Popup open={open}
-               onClose={onClose}
-               modal
-               closeOnDocumentClick={false}
-               contentStyle={contentStyle}
+        <Popup
+            open={open}
+            onClose={onClose}
+            modal
+            closeOnDocumentClick={false}
+            contentStyle={{}} // contentStyle 비워두고 className으로만 조절
         >
             {(close) => (
-                <div className="custom-event-popup text-sm py-2">
-                {/* 상단 우측 닫기 버튼 */}
-                <button
-                    onClick={() => {
-                        close();
-                        onClose();
-                    }}
-                    className="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl"
-                >
-                    <FiX />
-                </button>
+                <div className="match-list-popup">
+                    {/* 상단 제목 */}
+                    <div className="popup-header">
+                        <span>{matchDate} 경기 일정</span>
+                        <button
+                            onClick={() => {
+                                close();
+                                onClose();
+                            }}
+                            className="close-btn"
+                        >
+                            <FiX />
+                        </button>
+                    </div>
 
-                <div className="text-lg font-bold mb-2 border-b py-2">
-                    {format(new Date(date), 'yyyy년 M월 d일 (EEE)', { locale: ko })}
-                </div>
-                {matches.length === 0 ? (
-                    <p>해당 날짜에 경기가 없습니다.</p>
-                ) : (
-                    matches.map((match, idx) => {
-                        const codes = match.participants?.map(p => p.team.code);
-                        return (
-                            <div key={match.id || idx} className="border-b py-2">
-                                { match.state === 'inProgress' &&
-                                    <div className="live-badge inline-flex"></div>
-                                }
-                                <span>{format(new Date(match.startTime), 'HH:mm')}</span>
-                                <div className="font-semibold">
-                                    {codes?.map(code =>
-                                        code === match.winningTeamCode ? `${code}(승)` : code
-                                    ).join(' vs ')}
-                                </div>
-                                <div>
-                                    {new Date(match.startTime) > new Date()
-                                        ? match.strategy
-                                        : match.participants?.map(p => p.gameWins).join(' : ')}
-                                </div>
-                            </div>
-                        );
-                    })
-                )}
+                    <div className="popup-body">
+                        {matches.length === 0 ? (
+                            <p>해당 날짜에 경기가 없습니다.</p>
+                        ) : (
+                            matches.map((match) => {
+                                const isUnstarted = match.state === "unstarted";
+                                const isLive = match.state === "inProgress";
+                                const isCompleted = match.state === "completed";
+                                const [teamA, teamB] = match.participants;
+                                const winner = !isCompleted ? null :
+                                    teamA.outcome === 'win' ? teamA : teamB;
 
-                {/* 하단 닫기 버튼 */}
-                <div className="mt-4 text-center">
-                    <button
-                        onClick={() => {
-                            close();
-                            onClose();
-                        }}
-                        className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded"
-                    >
-                        닫기
-                    </button>
+                                return (
+                                    <div key={match.matchId} className="match-card">
+                                        <div className="status-time-row">
+                                            <div className="status-labels">
+                                                {isUnstarted && <span className="label unstarted">예정</span>}
+                                                {isLive && <span className="label live">LIVE</span>}
+                                                {isCompleted && <span className="label completed">완료</span>}
+                                                <span>{format(new Date(match.startTime), 'HH:mm')}</span>
+                                            </div>
+                                        </div>
+
+                                        {isUnstarted ? (
+                                                <div className="teams-row">
+                                                    <div className="team team-left">
+                                                        <span className="team-code">{teamA.team.code}</span>
+                                                    </div>
+                                                    <div className="label strategy">
+                                                        {match.strategy}
+                                                    </div>
+                                                    <div className="team team-right">
+                                                        <span className="team-code">{teamB.team.code}</span>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="teams-row">
+                                                    <div className="team team-left">
+                                                        <span className="team-code">{teamA.team.code}</span>
+                                                        {isCompleted &&
+                                                            (<span className={`result ${winner?.team.slug === teamA.team.slug ? "win" : "lose"}`}>
+                                                                {winner?.team.slug === teamA.team.slug ? "승" : "패"}
+                                                            </span>)
+                                                        }
+                                                    </div>
+                                                    <div className="score">
+                                                        {teamA.gameWins ?? 0} : {teamB.gameWins ?? 0}
+                                                    </div>
+                                                    <div className="team team-right">
+                                                        {isCompleted &&
+                                                            (<span className={`result ${winner?.team.slug === teamB.team.slug ? "win" : "lose"}`}>
+                                                                {winner?.team.slug === teamB.team.slug ? "승" : "패"}
+                                                            </span>)
+                                                        }
+                                                        <span className="team-code">{teamB.team.code}</span>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                )
+                            })
+                        )}
+                    </div>
+
+                    {/* 하단 닫기 */}
+                    <div className="popup-footer">
+                        <button
+                            onClick={() => {
+                                close();
+                                onClose();
+                            }}
+                            className="footer-btn"
+                        >
+                            닫기
+                        </button>
+                    </div>
                 </div>
-            </div>
             )}
         </Popup>
     );
