@@ -75,50 +75,34 @@ const Standings = ({ tournamentId }) => {
 
     function handleTeamCardClick(e, team) {
         e.stopPropagation();
+
         setSelectedTeam(team);
-        setSelectedTeamMatchHistory(matches
+
+        const filtered = matches
             .filter(match => match.state === 'completed')
-            .filter(match => match
-                .teams.some(t => t.slug === team.slug)
-            )
-        );
+            .filter(match => match.teams.some(t => t.slug === team.slug));
+
+        setSelectedTeamMatchHistory(filtered);
+
+        fetchMatchHistory(filtered.map(m => m.matchId));
     }
 
-    useEffect(() => {
-        const fetchMatchHistory = async () => {
-            // csrf 토큰 발급
-            await fetch('/api/csrf', { method: 'GET', credentials: 'include' });
+    async function fetchMatchHistory(matchIds) {
+        const response = await apiGetMatchHistory(matchIds);
+        const matchMap = new Map(response.map(match => [match.matchId, match]));
 
-            // matchId만 추출
-            const matchIds = selectedTeamMatchHistory.map(match => match.matchId);
-
-            // API 호출
-            const response = await apiGetMatchHistory(matchIds);
-
-            // 응답을 matchId 기준으로 Map으로 변환
-            const matchMap = new Map(response.map(match => [match.matchId, match]));
-
-            // 상태 업데이트
-            setSelectedTeamMatchHistory(prev => {
-                const updated = prev.map(mHistory => {
-                    const match = matchMap.get(mHistory.matchId);
-                    return match
-                        ? { ...mHistory, startTime: match.startTime }
-                        : mHistory;
-                });
-
-                // startTime 기준 내림차순 정렬
-                return updated.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
+        setSelectedTeamMatchHistory(prev => {
+            const updated = prev.map(m => {
+                const match = matchMap.get(m.matchId);
+                return match ? { ...m, startTime: match.startTime } : m;
             });
 
+            return updated.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
+        });
 
-            setMatchHistoryPopupOpen(true);
-        };
+        setMatchHistoryPopupOpen(true);
+    }
 
-        if (selectedTeam) {
-            fetchMatchHistory();
-        }
-    }, [selectedTeam]);
 
     if (isLoading) {
         return <Loading message="순위 데이터를 불러오는 중입니다..." />;
