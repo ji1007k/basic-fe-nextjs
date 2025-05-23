@@ -348,6 +348,9 @@
     border-radius: 12px;
     background-color: #fff;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    touch-action: pan-y; /* 세로 스크롤 허용, 가로 스와이프는 JS에서 처리 */
+    -webkit-user-select: none; /* 터치 드래그 시 텍스트 선택 방지 */
+    user-select: none;
 }
 
 .match-list-popup .popup-header {
