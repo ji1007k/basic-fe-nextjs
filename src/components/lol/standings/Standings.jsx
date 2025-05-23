@@ -7,10 +7,13 @@ const Standings = ({ tournamentId }) => {
     const [standings, setStandings] = useState([]);
     const [activeStageId, setActiveStageId] = useState('');
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
     const gridContainerRef = useRef(null);
     const [rankings, setRankings] = useState([]);
     const [rowCount, setRowCount] = useState(0);
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+
 
     // 전적
     const [matches, setMatches] = useState([]);
@@ -88,6 +91,9 @@ const Standings = ({ tournamentId }) => {
     }
 
     async function fetchMatchHistory(matchIds) {
+        setIsLoadingHistory(true);
+        setMatchHistoryPopupOpen(true);         // 먼저 팝업 오픈
+
         const response = await apiGetMatchHistory(matchIds);
         const matchMap = new Map(response.map(match => [match.matchId, match]));
 
@@ -100,13 +106,14 @@ const Standings = ({ tournamentId }) => {
             return updated.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
         });
 
-        setMatchHistoryPopupOpen(true);
+        setIsLoadingHistory(false);          // 로딩 끝
     }
 
 
     if (isLoading) {
         return <Loading message="순위 데이터를 불러오는 중입니다..." />;
     }
+
 
     return (
         <div className="ranking-container">
@@ -190,6 +197,7 @@ const Standings = ({ tournamentId }) => {
                     matches={selectedTeamMatchHistory}
                     open={matchHistoryPopupOpen}
                     onClose={() => setMatchHistoryPopupOpen(false)}
+                    isLoading={isLoadingHistory}
                 />
             }
         </div>

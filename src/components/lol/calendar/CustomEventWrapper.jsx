@@ -1,8 +1,7 @@
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { format } from 'date-fns';
+import {format} from 'date-fns';
 import {FiX} from "react-icons/fi";
-import {ko} from "date-fns/locale";
 
 // TODO 
 //  - CODE -> SLUG 또는 TEAM_ID 사용
@@ -10,19 +9,7 @@ import {ko} from "date-fns/locale";
 /**
  * 일정 클릭 팝업 이벤트
  */
-const CustomEventWrapper = ({ event, children }) => {
-    const codes = event.participants?.map(participant => participant.team.code);
-
-    const contentStyle = {
-        width: '90vw',
-        maxWidth: '400px',
-        maxHeight: '90vh',
-        overflowY: 'auto',
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)'
-    }
+const CustomEventWrapper = ({ open, event, children }) => {
 
     return (
         <Popup
@@ -31,53 +18,98 @@ const CustomEventWrapper = ({ event, children }) => {
                     {children}  {/*refineTeamSchedule > title*/}
                 </div>
             }
+            open={open}
             modal
             closeOnDocumentClick={false}
-            contentStyle={contentStyle}
+            contentStyle={{}}
         >
             {(close) => (
-                <div className="custom-event-popup text-sm">
-                    {/* 상단 우측 닫기 버튼 */}
-                    <button className="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl"
+                <div className="match-detail-popup">
+                    {/* 상단 제목 */}
+                    <div className="popup-header">
+                        <span>경기 일정 상세</span>
+                        <button
                             onClick={() => {
                                 close();
                             }}
-                    >
-                        <FiX />
-                    </button>
-
-                    <div className="text-lg font-bold mb-2 border-b py-2">
-                        {format(new Date(event.start), 'yyyy년 M월 d일 (EEE) aaa h:mm', {locale: ko})}
+                            className="close-btn"
+                        >
+                            <FiX />
+                        </button>
                     </div>
-                    { event.state === 'inProgress' &&
-                        <div className="live-badge"></div>
-                    }
-                    <div>
-                        <strong>{codes
-                            .map(code => {
-                                return event.winningTeamCode === code
-                                    ? code + '(승)'
-                                    : code;
-                            })
-                            .join(' vs ')}
-                        </strong>
-                    </div>
-                    { new Date(event.start) > new Date()
-                        ? <div>{event.strategy}</div>
-                        : <div>{event.participants?.map(participant => participant.gameWins).join(" : ")}</div>
+
+                    {
+                        (() => {
+                            const isUnstarted = event.state === "unstarted";
+                            const isLive = event.state === "inProgress";
+                            const isCompleted = event.state === "completed";
+                            const [teamA, teamB] = event.participants;
+                            const winner = !isCompleted ? null : teamA.outcome === 'win' ? teamA : teamB;
+
+                            return (
+                                <div className="popup-body">
+                                    <div key={event.matchId} className="match-card">
+                                        <div className="status-time-row">
+                                            <div className="status-labels">
+                                                {isUnstarted && <span className="label unstarted">예정</span>}
+                                                {isLive && <span className="label live">LIVE</span>}
+                                                {isCompleted && <span className="label completed">완료</span>}
+                                                <span>{format(new Date(event.startTime), 'HH:mm')}</span>
+                                            </div>
+                                        </div>
+
+                                        {isUnstarted ? (
+                                            <div className="teams-row">
+                                                <div className="team team-left">
+                                                    <span className="team-code">{teamA.team.code}</span>
+                                                </div>
+                                                <div className="label strategy">{event.strategy}</div>
+                                                <div className="team team-right">
+                                                    <span className="team-code">{teamB.team.code}</span>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="teams-row">
+                                                <div className="team team-left">
+                                                    <span className="team-code">{teamA.team.code}</span>
+                                                    {isCompleted && (
+                                                        <span className={`result ${winner?.team.slug === teamA.team.slug ? "win" : "lose"}`}>
+                                                            {winner?.team.slug === teamA.team.slug ? "승" : "패"}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <div className="score">
+                                                    {teamA.gameWins ?? 0} : {teamB.gameWins ?? 0}
+                                                </div>
+                                                <div className="team team-right">
+                                                    {isCompleted && (
+                                                        <span className={`result ${winner?.team.slug === teamB.team.slug ? "win" : "lose"}`}>
+                                                            {winner?.team.slug === teamB.team.slug ? "승" : "패"}
+                                                        </span>
+                                                    )}
+                                                    <span className="team-code">{teamB.team.code}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })()
                     }
 
-                    {/* 하단 닫기 버튼 */}
-                    <div className="mt-4 text-center">
-                        <button className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded"
-                                onClick={() => {
-                                    close();
-                                }}
+                    {/* 하단 닫기 */}
+                    <div className="popup-footer">
+                        <button
+                            onClick={() => {
+                                close();
+                            }}
+                            className="footer-btn"
                         >
                             닫기
                         </button>
                     </div>
                 </div>
+
             )}
         </Popup>
     );

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, {useState} from 'react';
 import {Calendar, dateFnsLocalizer} from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@/styles/tailwind/lol/calendar.css';
@@ -31,6 +31,7 @@ const localizer = dateFnsLocalizer({
  * 컴포넌트는 명시적으로 함수로 작성 (선언식 함수)
  */
 function MyCalendar ({ events }) {
+    const [isLoading, setIsLoading] = useState(true);
     const {
         leagues,
         currentView, setCurrentView,
@@ -97,6 +98,9 @@ function MyCalendar ({ events }) {
                     const { startDate, endDate } = getDateRange('day', slotInfo.start);
                     setPopupDate(slotInfo.start);
 
+                    setIsLoading(true);
+                    setPopupOpen(true);
+
                     try {
                         const response = await getMatchesByLeagueIdAndDate(
                             selectedLeague?.id,
@@ -105,7 +109,8 @@ function MyCalendar ({ events }) {
                         );
 
                         setPopupMatches(response || []);
-                        setPopupOpen(true);
+
+                        setIsLoading(false);
                     } catch (err) {
                         console.error('Error fetching matches:', err);
                     }
@@ -117,6 +122,7 @@ function MyCalendar ({ events }) {
                         onClose={() => setPopupOpen(false)}
                         matches={popupMatches}
                         date={popupDate}
+                        isLoading={isLoading}
                     />
                 )
             }
