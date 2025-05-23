@@ -5,7 +5,6 @@ import {FiX} from "react-icons/fi";
 
 // TODO 
 //  - CODE -> SLUG 또는 TEAM_ID 사용
-//  - 날짜 칸 클릭 시 해당 날짜의 전체 경기 일정 정보 팝업으로 표시
 /**
  * 일정 클릭 팝업 이벤트
  */

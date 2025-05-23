@@ -4,9 +4,17 @@ import 'reactjs-popup/dist/index.css';
 import { FiX } from 'react-icons/fi';
 import ko from "date-fns/locale/ko";
 import Loading from "@components/common/Loading.js";
+import {useSwipeable} from "react-swipeable";
 
-function MatchListPopup ({ open, onClose, matches, date, isLoading }) {
+function MatchListPopup ({ open, onClose, matches, date, isLoading, onPrevDate, onNextDate }) {
     const matchDate = format(new Date(date), "yyyy년 M월 d일 (EEE)", { locale: ko });
+
+    const handlers = useSwipeable({
+        onSwipedLeft: () => onNextDate(),  // 오른쪽에서 왼쪽으로 스와이프 → 다음 날짜
+        onSwipedRight: () => onPrevDate(), // 왼쪽에서 오른쪽으로 스와이프 → 이전 날짜
+        preventScrollOnSwipe: true,
+        trackMouse: true, // 데스크탑에서도 마우스로 테스트 가능
+    });
 
     return (
         <Popup
@@ -17,7 +25,7 @@ function MatchListPopup ({ open, onClose, matches, date, isLoading }) {
             contentStyle={{}} // contentStyle 비워두고 className으로만 조절
         >
             {(close) => (
-                <div className="match-list-popup">
+                <div className="match-list-popup" {...handlers}>
                     {/* 상단 제목 */}
                     <div className="popup-header">
                         <span>{matchDate} 경기 일정</span>

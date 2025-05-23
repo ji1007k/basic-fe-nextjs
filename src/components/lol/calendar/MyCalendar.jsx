@@ -54,6 +54,39 @@ function MyCalendar ({ events }) {
         );
     }
 
+    // 경기 일정 팝업 핸들러
+    const handlePrevDate = async () => {
+        const newDate = new Date(popupDate);
+        newDate.setDate(newDate.getDate() - 1);
+        await fetchMatchesForDate(newDate);
+    };
+
+    const handleNextDate = async () => {
+        const newDate = new Date(popupDate);
+        newDate.setDate(newDate.getDate() + 1);
+        await fetchMatchesForDate(newDate);
+    };
+
+    const fetchMatchesForDate = async (date) => {
+        const { startDate, endDate } = getDateRange('day', date);
+        setPopupDate(date);
+        setIsLoading(true);
+        setPopupOpen(true);
+
+        try {
+            const response = await getMatchesByLeagueIdAndDate(
+                selectedLeague?.id,
+                startDate,
+                endDate
+            );
+            setPopupMatches(response || []);
+        } catch (err) {
+            console.error('Error fetching matches:', err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <div className="calendar-container">
             <Calendar
@@ -94,26 +127,7 @@ function MyCalendar ({ events }) {
                 longPressThreshold={100} // 터치로 인정할 시간. 기본 250
                 onSelectSlot={async (slotInfo) => {
                     if (!slotInfo?.start) return;
-
-                    const { startDate, endDate } = getDateRange('day', slotInfo.start);
-                    setPopupDate(slotInfo.start);
-
-                    setIsLoading(true);
-                    setPopupOpen(true);
-
-                    try {
-                        const response = await getMatchesByLeagueIdAndDate(
-                            selectedLeague?.id,
-                            startDate,
-                            endDate
-                        );
-
-                        setPopupMatches(response || []);
-
-                        setIsLoading(false);
-                    } catch (err) {
-                        console.error('Error fetching matches:', err);
-                    }
+                    fetchMatchesForDate(slotInfo.start);
                 }}
             />
             {popupOpen && (
@@ -123,6 +137,8 @@ function MyCalendar ({ events }) {
                         matches={popupMatches}
                         date={popupDate}
                         isLoading={isLoading}
+                        onPrevDate={handlePrevDate}
+                        onNextDate={handleNextDate}
                     />
                 )
             }

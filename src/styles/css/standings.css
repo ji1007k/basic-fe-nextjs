@@ -397,6 +397,7 @@
     align-items: center;
     gap: 6px;
     width: 120px;
+    justify-content: center;
 }
 
 .match-history-popup .team-code {
