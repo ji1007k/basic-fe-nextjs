@@ -4,17 +4,8 @@ import 'reactjs-popup/dist/index.css';
 import { FiX } from 'react-icons/fi';
 import ko from "date-fns/locale/ko";
 
-const MatchListPopup = ({ open, onClose, matches, date }) => {
-    const contentStyle = {
-        width: '90vw',
-        maxWidth: '500px',
-        maxHeight: '90vh',
-        overflowY: 'auto',
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)'
-    };
+function MatchListPopup ({ open, onClose, matches, date }) {
+    const matchDate = format(new Date(date), "yyyy년 M월 d일 (EEE)", { locale: ko });
 
     return (
         <Popup
