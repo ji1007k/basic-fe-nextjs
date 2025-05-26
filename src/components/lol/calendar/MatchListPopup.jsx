@@ -12,7 +12,7 @@ function MatchListPopup ({ open, onClose, matches, date, isLoading, onPrevDate, 
     const handlers = useSwipeable({
         onSwipedLeft: () => onNextDate(),  // 오른쪽에서 왼쪽으로 스와이프 → 다음 날짜
         onSwipedRight: () => onPrevDate(), // 왼쪽에서 오른쪽으로 스와이프 → 이전 날짜
-        preventScrollOnSwipe: true,
+        preventScrollOnSwipe: true, // 스와이프가 인식되었을 때만 preventDefault()를 호출해서 브라우저 스크롤을 막음
         trackMouse: true, // 데스크탑에서도 마우스로 테스트 가능
     });
 
@@ -71,6 +71,14 @@ function MatchListPopup ({ open, onClose, matches, date, isLoading, onPrevDate, 
                                                     <span>{format(new Date(match.startTime), 'HH:mm')}</span>
                                                 </div>
                                             </div>
+
+                                            {isLive && (
+                                                <div className="flex justify-center">
+                                                    <div className="label strategy">
+                                                        {match.strategy}
+                                                    </div>
+                                                </div>
+                                            )}
 
                                             {isUnstarted ? (
                                                 <div className="teams-row">

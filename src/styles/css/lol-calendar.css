@@ -72,8 +72,12 @@
 }
 
 @media (max-width: 500px) {
-    .rbc-calendar {
+    .calendar-wrapper {
         height: calc(100% - 60px) !important;
+    }
+
+    .rbc-calendar {
+        height: 100% !important;
     }
 
     .custom-toolbar {
@@ -101,8 +105,12 @@
     color: #007bff;
 }
 
-.rbc-calendar {
+.calendar-wrapper {
     height: calc(100% - 70px);
+}
+
+.rbc-calendar {
+    height: 100%;
 }
 
 .rbc-calendar .custom-toolbar .label-area {
