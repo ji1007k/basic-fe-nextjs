@@ -6,8 +6,9 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@/styles/tailwind/lol/calendar.css';
 import '@/styles/css/lol-calendar.css';
 
-import {format, getDay, parse, startOfWeek} from 'date-fns';
+import {addDays, addMonths, format, getDay, parse, startOfWeek, subDays, subMonths} from 'date-fns';
 import ko from 'date-fns/locale/ko';
+import {useSwipeable} from 'react-swipeable'
 
 import CustomToolbar from '@components/lol/calendar/CustomToolbar';
 import CustomEventWrapper from '@components/lol/calendar/CustomEventWrapper';
@@ -44,6 +45,7 @@ function MyCalendar ({ events }) {
     } = useCalendar();
 
 
+    // 경기 일정 타이틀 (ex. T1 vs GEN)
     function CalendarEvent({ event }) {
         const isInProgress = event.state === 'inProgress';
         return (
@@ -54,7 +56,30 @@ function MyCalendar ({ events }) {
         );
     }
 
-    // 경기 일정 팝업 핸들러
+    // 월간/일간 달력 스와이프 핸들러
+    const handlers = useSwipeable({
+        onSwipedLeft: () => {
+            if (currentView === 'month') {
+                setSelectedDate(prev => addMonths(prev, 1));
+            } else if (currentView === 'day') {
+                setSelectedDate(prev => addDays(prev, 1));
+            }
+        },
+        onSwipedRight: () => {
+            if (currentView === 'month') {
+                setSelectedDate(prev => subMonths(prev, 1));
+            } else if (currentView === 'day') {
+                setSelectedDate(prev => subDays(prev, 1));
+            }
+        },
+        // preventDefaultTouchmoveEvent: true, // 모든 터치 이동(좌우든 상하든)에 대해 기본 스크롤이 무조건 방지
+        preventScrollOnSwipe: true, // 스와이프가 인식되었을 때만 preventDefault()를 호출해서 브라우저 스크롤을 막음
+        trackMouse: true,
+    });
+
+
+
+    // 일간 경기 일정 목록  팝업 핸들러
     const handlePrevDate = async () => {
         const newDate = new Date(popupDate);
         newDate.setDate(newDate.getDate() - 1);
@@ -89,47 +114,51 @@ function MyCalendar ({ events }) {
 
     return (
         <div className="calendar-container">
-            <Calendar
-                localizer={localizer}
-                formats={formats}
-                events={events || refinedSchedules}
-                startAccessor="start"
-                endAccessor="end"
-                defaultView="month"
-                views={['month', 'week', 'day']}
-                /*views={{
-                    month: true,        // 기본 월간 뷰
-                    day: true,          // 기본 일간 뷰
-                    week: CustomVerticalWeekView, // 커스텀 주간 뷰 (요일 세로)
-                }}*/
-                date={selectedDate}
-                onNavigate={setSelectedDate}
-                onView={setCurrentView}
-                eventPropGetter={(event) => eventPropGetter(event, selectedTeam, favoriteTeamIds)}
-                components={{
-                    toolbar: CustomToolbar,
-                    event: CalendarEvent,
-                    eventWrapper: CustomEventWrapper,
-                    month: {
-                        dateHeader: ({ date, label }) => (
-                            <div style={{ color: date.getDay() === 0 ? 'red' : undefined }}>
+            <div className="calendar-wrapper" {...handlers}>
+                <Calendar
+                    localizer={localizer}
+                    formats={formats}
+                    events={events || refinedSchedules}
+                    startAccessor="start"
+                    endAccessor="end"
+                    defaultView="month"
+                    views={['month', 'week', 'day']}
+                    /*views={{
+                        month: true,            // 기본 월간 뷰
+                        day: CustomDayView,     // TODO 커스텀 일간 뷰
+                        week: true,             // 기본 주간 뷰
+                    }}*/
+                    date={selectedDate}
+                    onNavigate={setSelectedDate}
+                    onView={setCurrentView}
+                    eventPropGetter={(event) => eventPropGetter(event, selectedTeam, favoriteTeamIds)}
+                    components={{
+                        toolbar: CustomToolbar,
+                        event: CalendarEvent,
+                        eventWrapper: CustomEventWrapper,
+                        month: {
+                            dateHeader: ({ date, label }) => (
+                                <div style={{ color: date.getDay() === 0 ? 'red' : undefined }}>
+                                    {label}
+                                </div>
+                            ),
+                        },
+                        header: ({ date, label }) => (
+                            <div style={{ color: date.getDay() === 0 ? 'red' : 'inherit' }}>
                                 {label}
                             </div>
                         ),
-                    },
-                    header: ({ date, label }) => (
-                        <div style={{ color: date.getDay() === 0 ? 'red' : 'inherit' }}>
-                            {label}
-                        </div>
-                    ),
-                }}
-                selectable
-                longPressThreshold={100} // 터치로 인정할 시간. 기본 250
-                onSelectSlot={async (slotInfo) => {
-                    if (!slotInfo?.start) return;
-                    fetchMatchesForDate(slotInfo.start);
-                }}
-            />
+                    }}
+                    selectable
+                    longPressThreshold={100} // 터치로 인정할 시간. 기본 250
+                    onSelectSlot={async (slotInfo) => {
+                        if (!slotInfo?.start) return;
+                        fetchMatchesForDate(slotInfo.start);
+                    }}
+                />
+            </div>
+
+            {/* 일간 경기 일정 목록 팝업 */}
             {popupOpen && (
                     <MatchListPopup
                         open={popupOpen}
@@ -143,6 +172,7 @@ function MyCalendar ({ events }) {
                 )
             }
 
+            {/* 리그&팀 필터 버튼 */}
             <LeagueAndTeamSelector leagues={leagues} />
         </div>
     );

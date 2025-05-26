@@ -62,6 +62,14 @@ const CustomEventWrapper = ({ open, event, children }) => {
                                             </div>
                                         </div>
 
+                                        {isLive && (
+                                            <div className="flex justify-center">
+                                                <div className="label strategy">
+                                                    {event.strategy}
+                                                </div>
+                                            </div>
+                                        )}
+
                                         {isUnstarted ? (
                                             <div className="teams-row">
                                                 <div className="team team-left">
