@@ -67,7 +67,7 @@ function MatchListPopup ({ open, onClose, matches, date, isLoading, onPrevDate, 
                                                 <div className="status-labels">
                                                     {isUnstarted && <span className="label unstarted">예정</span>}
                                                     {isLive && <span className="label live">LIVE</span>}
-                                                    {isCompleted && <span className="label completed">완료</span>}
+                                                    {isCompleted && <span className="label completed">종료</span>}
                                                     <span>{format(new Date(match.startTime), 'HH:mm')}</span>
                                                 </div>
                                             </div>

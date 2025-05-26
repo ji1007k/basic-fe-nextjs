@@ -54,13 +54,10 @@ function MatchHistoryPopup({ team, matches, open, onClose, isLoading }) {
                                             borderColor: winner?.code === team.code ? "#4ade80" : "#f87171",
                                         }}
                                     >
-                                        <div className="card-badge">{index + 1}</div>
-
                                         {/* 상태 + 시간 + 영상 */}
                                         <div className="status-time-row">
                                             <div className="status-labels">
-                                                {isLive && <span className="label live">LIVE</span>}
-                                                {isCompleted && <span className="label completed">완료</span>}
+                                                <div className="label num-badge">{index + 1}</div>
                                                 <span>{matchTime}</span>
                                             </div>
                                             {hasVod && (
