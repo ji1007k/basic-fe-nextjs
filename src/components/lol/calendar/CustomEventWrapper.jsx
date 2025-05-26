@@ -42,8 +42,13 @@ const CustomEventWrapper = ({ open, event, children }) => {
                             const isUnstarted = event.state === "unstarted";
                             const isLive = event.state === "inProgress";
                             const isCompleted = event.state === "completed";
-                            const [teamA, teamB] = event.participants;
-                            const winner = !isCompleted ? null : teamA.outcome === 'win' ? teamA : teamB;
+
+                            const participants = [...event.participants];
+                            if (participants.length === 1) participants.push({ ...participants[0] });
+                            const [teamA, teamB] = participants;
+                            const winner = !isCompleted ? null :
+                                teamA.outcome === 'win' ? teamA : teamB;
+
 
                             return (
                                 <div className="popup-body">

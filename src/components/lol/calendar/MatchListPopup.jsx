@@ -53,9 +53,13 @@ function MatchListPopup ({ open, onClose, matches, date, isLoading, onPrevDate, 
                                     const isUnstarted = match.state === "unstarted";
                                     const isLive = match.state === "inProgress";
                                     const isCompleted = match.state === "completed";
-                                    const [teamA, teamB] = match.participants;
+
+                                    const participants = [...match.participants];
+                                    if (participants.length === 1) participants.push({ ...participants[0] });
+                                    const [teamA, teamB] = participants;
                                     const winner = !isCompleted ? null :
                                         teamA.outcome === 'win' ? teamA : teamB;
+
 
                                     return (
                                         <div key={match.matchId} className="match-card">
