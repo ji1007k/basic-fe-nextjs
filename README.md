@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
 
-First, run the development httpsServer:
+로컬 프론트 서버 https://localhost:3000
+로컬 api 서버 http://localhost:8080
+ec2 nginx http 80 요청 -> https 리디렉션
+ec2 api 서버 http://ec2host:8080
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+dev
+- 배포 API 서버에 연결
+wss://localhost:3000/ws/ -> express 프록시 미들웨어 -> wss://ec2host/ws/ -> nginX 리버스 프록시 -> wss://ec2host/chat
+- 로컬 API 서버 연결
+ws://localhost:8080/chat 바로 연결
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+prod
+- 배포 API 서버에 연결
+wss://ec2host/ws/ -> express 프록시 미들웨어 -> wss://ec2host/ws/ -> nginX 리버스 프록시 -> wss://ec2host/chat
 
-You can start editing the page by modifying `app/index.js`. The page auto-updates as you edit the file.
+# EC2 용량 부족 뜰 때
+불필요한 docker 파일 삭제
+docker image prune -a
+docker volumn prune
+docker container prune
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# 파일명 작성 규칙
+👉 컴포넌트: PascalCase.jsx
+👉 Hook / 유틸 / 함수 파일: camelCase.js
