@@ -41,7 +41,7 @@ jobs:
             \"docker pull $REPO_URL:latest\",
             \"docker stop basic-fe || true\",
             \"docker rm basic-fe || true\",
-            \"docker run -d --name basic-fe -p 3000:3000 $REPO_URL:latest\",
+            \"docker run --memory=128m --memory-swap=256m -d --name basic-fe -p 3000:3000 $REPO_URL:latest\",
             \"docker ps\"
           ]"
 
