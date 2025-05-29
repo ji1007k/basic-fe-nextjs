@@ -3,6 +3,8 @@ import {apiFetchStandings, apiGetMatchHistory} from "@utils/api-lol.js";
 import Loading from "@components/common/Loading.js";
 import MatchHistoryPopup from "@components/lol/calendar/MatchHistoryPopup.jsx";
 
+// TODO
+//  - 팀 아이콘 클릭 시 팀&로스터 정보 조회
 const Standings = ({ tournamentId }) => {
     const [standings, setStandings] = useState([]);
     const [activeStageId, setActiveStageId] = useState('');
