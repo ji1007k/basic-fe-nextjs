@@ -10,6 +10,7 @@ const Standings = ({ tournamentId }) => {
     const [activeStageId, setActiveStageId] = useState('');
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
     const gridContainerRef = useRef(null);
+    const [hasMounted, setHasMounted] = useState(false);
     const [rankings, setRankings] = useState([]);
     const [rowCount, setRowCount] = useState(0);
 
@@ -27,6 +28,7 @@ const Standings = ({ tournamentId }) => {
     const activeStage = stages.find(stage => stage.id === activeStageId);
     const sections = activeStage?.sections || [];
     const activeSection = sections[activeSectionIndex] || null;
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,6 +62,8 @@ const Standings = ({ tournamentId }) => {
     }, [standings, activeStageId, activeSectionIndex]);
 
     useEffect(() => {
+        setHasMounted(true);
+
         const updateRowCount = () => {
             const containerWidth = gridContainerRef.current ? gridContainerRef.current.offsetWidth : window.innerWidth; // container의 너비를 확인
             const isMobile = containerWidth <= 450;
@@ -116,6 +120,9 @@ const Standings = ({ tournamentId }) => {
         return <Loading message="순위 데이터를 불러오는 중입니다..." />;
     }
 
+    // hydration mismatch 에러(서버가 만든 초안 HTML != 브라우저 렌더링 결과 HTML) 방지
+    // 아직 브라우저에서 안 열렸으면 아무것도 안 보여줌
+    if (!hasMounted) return null;
 
     return (
         <div className="ranking-container">
