@@ -65,7 +65,7 @@ const CustomEventWrapper = ({ open, event, children }) => {
                                         {isLive && (
                                             <div className="flex justify-center">
                                                 <div className="label strategy">
-                                                    {event.strategy}
+                                                    {`${event.blockName}(${event.strategy})`}
                                                 </div>
                                             </div>
                                         )}
@@ -75,7 +75,7 @@ const CustomEventWrapper = ({ open, event, children }) => {
                                                 <div className="team team-left">
                                                     <span className="team-code">{teamA.team.code}</span>
                                                 </div>
-                                                <div className="label strategy">{event.strategy}</div>
+                                                <div className="label strategy">{`${event.blockName}(${event.strategy})`}</div>
                                                 <div className="team team-right">
                                                     <span className="team-code">{teamB.team.code}</span>
                                                 </div>
