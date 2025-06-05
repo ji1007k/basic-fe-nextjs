@@ -62,7 +62,7 @@ const CustomEventWrapper = ({ open, event, children }) => {
                                             </div>
                                         </div>
 
-                                        {isLive && (
+                                        {(isLive || isCompleted) && (
                                             <div className="flex justify-center">
                                                 <div className="label strategy">
                                                     {`${event.blockName}(${event.strategy})`}

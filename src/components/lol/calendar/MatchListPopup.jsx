@@ -72,7 +72,7 @@ function MatchListPopup ({ open, onClose, matches, date, isLoading, onPrevDate, 
                                                 </div>
                                             </div>
 
-                                            {isLive && (
+                                            {(isLive || isCompleted)  && (
                                                 <div className="flex justify-center">
                                                     <div className="label strategy">
                                                         {`${match.blockName}(${match.strategy})`}
