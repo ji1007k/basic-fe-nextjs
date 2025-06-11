@@ -36,13 +36,16 @@ jobs:
         run: |
           REPO_URL="ghcr.io/${{ github.repository }}"
 
-          COMMANDS="[ 
-            \"echo '${{ secrets.GHCR_PAT }}' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin\",
-            \"docker pull $REPO_URL:latest\",
-            \"docker stop basic-fe || true\",
-            \"docker rm basic-fe || true\",
-            \"docker run --memory=128m --memory-swap=256m -d --name basic-fe -p 3000:3000 $REPO_URL:latest\",
-            \"docker ps\"
+          COMMANDS="[ \
+            \"echo '${{ secrets.GHCR_PAT }}' | sudo docker login ghcr.io -u '${{ github.actor }}' --password-stdin\",  \
+            \"sudo docker pull $REPO_URL:latest\", \
+            \"sudo docker stop basic-fe || true\", \
+            \"sudo docker rm basic-fe || true\", \
+            \"sudo docker run -d --restart=unless-stopped \
+              --memory=128m --memory-swap=256m \
+              --name basic-fe \
+              -p 3000:3000 $REPO_URL:latest\", \
+            \"sudo docker ps\" \
           ]"
 
           CMD_ID=$(aws ssm send-command \
