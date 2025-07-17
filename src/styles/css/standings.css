@@ -143,6 +143,32 @@
     border-color: #333;
 }
 
+/**
+ 순위표 - 섹션 버튼
+ */
+.section-buttons {
+    margin-bottom: 1rem;
+    margin-left: 10px;
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+}
+
+.section-buttons button {
+    cursor: pointer;
+    font-size: 12px;
+    color: #333;
+}
+
+.section-buttons button:hover {
+    font-weight: bolder;
+}
+
+.section-buttons .active {
+    font-weight: bolder;
+    border-bottom: 2px solid #ff5722;
+}
+
 /* 순위표 스타일 */
 
 .team-card {
