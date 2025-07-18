@@ -702,6 +702,6 @@ div.section:not(:first-child) {
 
 
 /* popup */
-.popup-content {
+#popup-root .popup-content {
    width: fit-content !important;
 }
