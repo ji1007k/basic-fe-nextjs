@@ -1,6 +1,6 @@
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import {format} from 'date-fns';
+import format from 'date-fns/format';
 import {FiX} from "react-icons/fi";
 
 // TODO 
