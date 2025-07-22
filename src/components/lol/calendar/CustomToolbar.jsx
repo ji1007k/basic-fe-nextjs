@@ -1,7 +1,6 @@
 import React from 'react';
-import {FaCalendarAlt, FaCalendarWeek, FaCalendarDay, FaChevronLeft, FaChevronRight} from 'react-icons/fa';
-import {format} from 'date-fns';
-import { ko } from 'date-fns/locale';
+import {FaCalendarAlt, FaCalendarDay, FaChevronLeft, FaChevronRight} from 'react-icons/fa';
+import format from 'date-fns/format';
 
 const years = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - 5 + i);
 const months = Array.from({ length: 12 }, (_, i) => i + 1);

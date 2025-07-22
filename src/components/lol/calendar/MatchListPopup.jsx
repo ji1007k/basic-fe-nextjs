@@ -1,5 +1,5 @@
 import Popup from 'reactjs-popup';
-import { format } from 'date-fns';
+import format from 'date-fns/format';
 import 'reactjs-popup/dist/index.css';
 import { FiX } from 'react-icons/fi';
 import ko from "date-fns/locale/ko";

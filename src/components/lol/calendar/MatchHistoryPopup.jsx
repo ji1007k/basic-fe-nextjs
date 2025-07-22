@@ -1,7 +1,7 @@
 import Popup from "reactjs-popup";
 import { FiX } from "react-icons/fi";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
+import format from "date-fns/format";
+import ko from "date-fns/locale/ko";
 import Loading from "@components/common/Loading.js";
 
 function MatchHistoryPopup({ team, matches, open, onClose, isLoading }) {
