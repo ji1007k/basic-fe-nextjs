@@ -45,7 +45,7 @@ export default function Header() {
                 {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                 <div>
                     {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-                    <Link href="/" className="main-link">JIKIM.GG</Link>
+                    <Link href="/" className="main-link">JILoL.gg</Link>
                     {/*<a> 태그는 브라우저의 기본 HTML 동작을 따르기 때문에, Next.js가 제공하는 라우팅 기능 (next/link)을 우회함
                         -> basePath 적용 안됨*/}
                     <a href="/api/swagger-ui/index.html" className="api-docs-link">API Docs</a>
