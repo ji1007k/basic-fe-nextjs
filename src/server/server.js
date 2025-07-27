@@ -19,10 +19,11 @@ const useRemoteAPI = process.env.USE_REMOTE_API === 'true';
 const API_URL = useRemoteAPI ? process.env.API_URL_PROD : process.env.API_URL_LOCAL;
 const WS_URL = useRemoteAPI ? process.env.WS_URL_PROD : process.env.WS_URL_LOCAL;
 
-console.log("Mode: ", process.env.NODE_ENV);
-console.log(`Loaded .env.local and ${envFile}`);
-console.log("API Server: ", API_URL);
-console.log("WebSocket URL: ", WS_URL);
+console.log("======================================================");
+console.log("=== Mode: ", process.env.NODE_ENV);
+console.log(`=== Loaded .env.local and ${envFile}`);
+console.log("=== API Server: ", API_URL);
+console.log("=== WebSocket URL: ", WS_URL);
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });  // dev 값이 true 인 경우, Next.js 자체가 파일 감시(HMR 포함)를 수행 (Nextjs 영역만)
@@ -57,17 +58,21 @@ const proxyOptions = {
     target: API_URL, // API 서버
     changeOrigin: true,  // 프록시 요청의 Origin 헤더를 타겟 서버의 도메인으로 바꿈
     logLevel: 'debug',  // 로그 레벨을 설정하여 프록시 로그 확인 가능,
+    secure: false,  // SSL 인증서 검증 비활성화 (로컬 개발용)
+    agent: new https.Agent({ rejectUnauthorized: false }),  // 자체 서명 SSL 허용
 };
 
-if (API_URL.startsWith("https")) {
+if (API_URL.startsWith("https") && useRemoteAPI) {
+    console.log("=== /api prefix 포함 요청 설정");
+
     Object.assign(proxyOptions, {
         pathRewrite: (path, req) => {
             return req.originalUrl; // req.originalUrl는 "/api/auth/login"을 포함함.
         },
-        secure: false,  // SSL 인증서 검증 비활성화 (로컬 개발용)
-        agent: new https.Agent({ rejectUnauthorized: false }),  // 자체 서명 SSL 허용
     });
 } else {
+    console.log("=== Swagger UI 페이지 요청 외 /api prefix 제거 후 요청 설정");
+
     Object.assign(proxyOptions, {
         pathRewrite: (path, req) => {
             // swagger 관련 요청에선 그대로 사용
@@ -92,11 +97,11 @@ const wsProxyOptions = {
     target: WS_URL,         // 실제 WebSocket 서버 주소
     pathFilter: '/ws/',     // 프록시할 경로
     ws: true,               // WebSocket 연결을 처리
+    secure: false,          // SSL 인증서 검증 비활성화 (로컬 개발용)
 }
 
 if (useRemoteAPI) {
     Object.assign(wsProxyOptions, {
-        secure: false,                              // SSL 인증서 검증 비활성화 (로컬 개발용)
         pathRewrite: (path, req) => req.originalUrl  // 원래 경로 그대로 사용 (배포 서버)
     });
 } else {
@@ -145,6 +150,8 @@ app.prepare().then(() => {
             console.log(`🚀 [HTTP] Server running at http://localhost:${PORT}${basePath}`);
         });
     }
+
+    console.log("======================================================");
 });
 
 
