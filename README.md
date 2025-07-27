@@ -1,7 +1,7 @@
 
 
 로컬 프론트 서버 https://localhost:3000
-로컬 api 서버 http://localhost:8080
+로컬 api 서버 https://localhost:8080
 ec2 nginx http 80 요청 -> https 리디렉션
 ec2 api 서버 http://ec2host:8080
 
