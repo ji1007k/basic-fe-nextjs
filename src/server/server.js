@@ -56,24 +56,42 @@ server.use("/api", (req, res, next) => {
 // 🔥 **프록시 설정** (배포환경에서 비활성화)
 const proxyOptions = {
     target: API_URL, // API 서버
-    changeOrigin: true,  // 프록시 요청의 Origin 헤더를 타겟 서버의 도메인으로 바꿈
+    changeOrigin: true,  // 프록시 요청의 Host 헤더를 타겟 서버의 도메인으로 바꿈
     logLevel: 'debug',  // 로그 레벨을 설정하여 프록시 로그 확인 가능,
     secure: false,  // SSL 인증서 검증 비활성화 (로컬 개발용)
     agent: new https.Agent({ rejectUnauthorized: false }),  // 자체 서명 SSL 허용
 };
 
-if (API_URL.startsWith("https") && useRemoteAPI) {
-    console.log("=== /api prefix 포함 요청 설정");
+// Express가 직접 응답 처리 → 브라우저 입장에서는 Express 서버가 보낸 것
+const onProxyRes = (proxyRes, req, res) => {
+    console.log("=== Express가 대신 쿠키 설정");
 
-    Object.assign(proxyOptions, {
+    const setCookie = proxyRes.headers['set-cookie'];
+    if (setCookie) {
+        res.setHeader('Set-Cookie', setCookie);
+        delete proxyRes.headers['set-cookie'];
+    }
+    // proxyRes.pipe(res);  // 수동으로 응답 전달
+}
+
+if (useRemoteAPI) { // EC2 배포 서버에 요청할 때 (Nginx 리버스 프록시 거침)
+    console.log("=== /api prefix 포함 프록시 설정");
+
+    const remoteAPIProxyOptions = {
         pathRewrite: (path, req) => {
             return req.originalUrl; // req.originalUrl는 "/api/auth/login"을 포함함.
         },
-    });
-} else {
-    console.log("=== Swagger UI 페이지 요청 외 /api prefix 제거 후 요청 설정");
+    }
 
-    Object.assign(proxyOptions, {
+    if (dev) {  // 개발환경 전용
+        remoteAPIProxyOptions.onProxyRes = onProxyRes;
+    }
+
+    Object.assign(proxyOptions, remoteAPIProxyOptions);
+} else {    // 로컬 개발용 서버에 요청할 때 (서버 직접 요청)
+    console.log("=== Swagger UI 페이지 요청 외 /api prefix 제거 프록시 설정");
+
+    const localAPIProxyOptions = {
         pathRewrite: (path, req) => {
             // swagger 관련 요청에선 그대로 사용
             if (["swagger", "/v3/api-docs"].some(keyword => path.includes(keyword))) {
@@ -82,7 +100,13 @@ if (API_URL.startsWith("https") && useRemoteAPI) {
             // 그 외 url에서 api 제거
             return path.replace(/^\/api/, "");
         }
-    });
+    }
+
+    if (dev) {  // 개발환경 전용
+        localAPIProxyOptions.onProxyRes = onProxyRes;
+    }
+
+    Object.assign(proxyOptions, localAPIProxyOptions);
 }
 
 server.use(
