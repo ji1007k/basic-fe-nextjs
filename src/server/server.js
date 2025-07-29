@@ -60,6 +60,7 @@ const proxyOptions = {
     logLevel: 'debug',  // 로그 레벨을 설정하여 프록시 로그 확인 가능,
     secure: false,  // SSL 인증서 검증 비활성화 (로컬 개발용)
     agent: new https.Agent({ rejectUnauthorized: false }),  // 자체 서명 SSL 허용
+    selfHandleResponse: false,  // 자동 응답 처리 비활성화 (기본)
 };
 
 // Express가 직접 응답 처리 → 브라우저 입장에서는 Express 서버가 보낸 것
@@ -177,6 +178,3 @@ app.prepare().then(() => {
 
     console.log("======================================================");
 });
-
-
-
