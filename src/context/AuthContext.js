@@ -87,11 +87,11 @@ export const AuthProvider = ({ children }) => {
         return () => window.removeEventListener('keydown', handler);
     }, []);
 
-    const devLogin = async () => {
+    const devLogin = async (username = 'admin', password = 'admin') => {
         try {
-            const result = await apiLogin("admin", "admin");
+            const result = await apiLogin(username, password);
             if (result.success) {
-                login(result.userId, "admin", result.expirationTime);
+                login(result.userId, username, result.expirationTime);
                 router.push(result.mainPageUrl);
             }
         } catch (err) {
@@ -100,7 +100,9 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ userId, username, expirationTime, login, logout, refreshToken, devLogin }}>
+        <AuthContext.Provider value={{
+            userId, username, expirationTime,
+            login, logout, refreshToken, devLogin }}>
             {children}
         </AuthContext.Provider>
     );
