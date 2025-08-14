@@ -25,7 +25,7 @@ export default function ChatButton() {
 
     // 트리플 클릭 실행 -> 관리자 로그인 (토큰 만료 x)
     const handleTripleClick = () => {
-        const restPwd = prompt("pwd 입력:", null);
+        const restPwd = prompt("pwd 입력:", "");
         if (!restPwd) return; // 취소 시 종료
         devLogin("jikim", "jikim" + restPwd); // 개발용 계정
     };
