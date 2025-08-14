@@ -3,7 +3,7 @@ import { useAuth } from '@/context/AuthContext';
 import { logout as apiLogout } from "@/utils/api.js";
 
 export default function TokenExpiration() {
-    const { expirationTime, refreshToken, logout } = useAuth();
+    const { expirationTime, refreshToken, logout, username } = useAuth();
     const [timeLeft, setTimeLeft] = useState(null);
 
     // 만료 시간 계산
@@ -13,8 +13,12 @@ export default function TokenExpiration() {
             const interval = setInterval(() => {
                 const timeRemaining = expirationDate - new Date();
                 if (timeRemaining <= 0) {
-                    setTimeLeft(0);  // 토큰 만료
-                    handleLogout();
+                    if (username === 'jikim') {
+                        refreshToken(); // 토큰 자동 갱신
+                    } else {
+                        setTimeLeft(0);  // 토큰 만료
+                        handleLogout();
+                    }
                 } else {
                     const minutes = Math.floor(timeRemaining / 60000);
                     const seconds = Math.floor((timeRemaining % 60000) / 1000);
