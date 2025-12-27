@@ -75,7 +75,8 @@ const onProxyRes = (proxyRes, req, res) => {
     // proxyRes.pipe(res);  // 수동으로 응답 전달
 }
 
-if (useRemoteAPI) { // EC2 배포 서버에 요청할 때 (Nginx 리버스 프록시 거침)
+const useReverseProxy = process.env.USE_REVERSE_PROXY === 'true';
+if (useReverseProxy) { // Nginx 리버스 프록시 배포 서버 요청 시
     console.log("=== /api prefix 포함 프록시 설정");
 
     const remoteAPIProxyOptions = {
@@ -125,7 +126,7 @@ const wsProxyOptions = {
     secure: false,          // SSL 인증서 검증 비활성화 (로컬 개발용)
 }
 
-if (useRemoteAPI) {
+if (useReverseProxy) {
     Object.assign(wsProxyOptions, {
         pathRewrite: (path, req) => req.originalUrl  // 원래 경로 그대로 사용 (배포 서버)
     });
