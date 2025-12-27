@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import express from "express";
+import * as http from "node:http";
 import * as https from "node:https";
 import dotenv from 'dotenv';
 import nextConfig from "../../next.config.mjs";
@@ -54,12 +55,16 @@ server.use("/api", (req, res, next) => {
 
 // ==========================================
 // 🔥 **프록시 설정** (배포환경에서 비활성화)
+const isHttps = API_URL.startsWith('https');
+
 const proxyOptions = {
     target: API_URL, // API 서버
     changeOrigin: true,  // 프록시 요청의 Host 헤더를 타겟 서버의 도메인으로 바꿈
     logLevel: 'debug',  // 로그 레벨을 설정하여 프록시 로그 확인 가능,
     secure: false,  // SSL 인증서 검증 비활성화 (로컬 개발용)
-    agent: new https.Agent({ rejectUnauthorized: false }),  // 자체 서명 SSL 허용
+    agent: isHttps
+        ? new https.Agent({ rejectUnauthorized: false })      // 자체 서명 SSL 허용
+        : new http.Agent(),
     selfHandleResponse: false,  // 자동 응답 처리 비활성화 (기본)
 };
 
