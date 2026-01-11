@@ -80,6 +80,7 @@ export const useCalendarLogic = () => {
 
     return {
         leagues,
+        setLeagues, // 👈 추가됨
         currentView,
         setCurrentView,
         refinedSchedules,

@@ -34,7 +34,7 @@ const localizer = dateFnsLocalizer({
 function MyCalendar ({ events }) {
     const [isLoading, setIsLoading] = useState(true);
     const {
-        leagues,
+        leagues, setLeagues, // 👈 setLeagues 추가
         currentView, setCurrentView,
         refinedSchedules,
         popupMatches, setPopupMatches, popupOpen, setPopupOpen, popupDate, setPopupDate,
@@ -173,7 +173,7 @@ function MyCalendar ({ events }) {
             }
 
             {/* 리그&팀 필터 버튼 */}
-            <LeagueAndTeamSelector leagues={leagues} />
+            <LeagueAndTeamSelector leagues={leagues} setLeagues={setLeagues} /> {/* 👈 setLeagues 전달 */}
         </div>
     );
 };
