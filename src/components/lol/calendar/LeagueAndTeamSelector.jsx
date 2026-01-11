@@ -3,10 +3,12 @@ import {useCalendar} from "@/context/CalendarContext.js";
 import {useAuth} from "@/context/AuthContext.js";
 import FavoriteTeamButton from "@components/lol/calendar/FavoriteTeamButton.jsx";
 import LeagueDropdown from "@components/lol/calendar/LeagueDropdown.jsx";
+import LeagueOrderModal from "@components/lol/calendar/LeagueOrderModal.jsx";
 
-const LeagueAndTeamSelector = ({ leagues }) => {
+const LeagueAndTeamSelector = ({ leagues, setLeagues }) => {
     const [rawTeams, setRawTeams] = useState([]); // 👈 fetch 결과만 보관
     const [teams, setTeams] = useState([]);       // 👈 정렬된 최종 데이터
+    const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
     const {selectedLeague, setSelectedLeague, favoriteTeamIds} = useCalendar();
     const {userId} = useAuth();
@@ -16,6 +18,7 @@ const LeagueAndTeamSelector = ({ leagues }) => {
     useEffect(() => {
         const fetchTeams = async () => {
             try {
+                if (!selectedLeague) return;
                 const res = await fetch(`/api/lol/teams?leagueId=${selectedLeague.id}`);
                 const data = await res.json();
                 setRawTeams(data); // fetch만 담당
@@ -54,13 +57,31 @@ const LeagueAndTeamSelector = ({ leagues }) => {
         team => !favoriteTeamIds.includes(team.teamId)
     );
 
+    const handleLeagueUpdate = (newLeagues) => {
+        if (setLeagues) {
+            setLeagues(newLeagues);
+        }
+    };
+
     return (
         <div className="team-selector-wrapper">
-            <LeagueDropdown
-                leagues={leagues}
-                selectedLeague={selectedLeague}
-                onChange={setSelectedLeague}
-            />
+            <div className="league-selector-container" style={{ display: 'flex', alignItems: 'center' }}>
+                <LeagueDropdown
+                    leagues={leagues}
+                    selectedLeague={selectedLeague}
+                    onChange={setSelectedLeague}
+                />
+                {userId && (
+                    <button
+                        className="league-setting-btn"
+                        onClick={() => setIsOrderModalOpen(true)}
+                        title="리그 순서 설정"
+                        style={{ marginLeft: '8px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
+                    >
+                        ⚙️
+                    </button>
+                )}
+            </div>
 
             {userId && (
                 <div
@@ -83,6 +104,13 @@ const LeagueAndTeamSelector = ({ leagues }) => {
                     ))}
                 </div>
             </div>
+
+            <LeagueOrderModal
+                isOpen={isOrderModalOpen}
+                onClose={() => setIsOrderModalOpen(false)}
+                leagues={leagues}
+                onUpdate={handleLeagueUpdate}
+            />
         </div>
     );
 };

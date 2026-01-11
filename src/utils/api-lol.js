@@ -146,3 +146,20 @@ export async function apiGetMatchHistory(matchIds) {
 
     return await response.json();
 }
+
+export async function apiUpdateLeagueOrders(leagueIds) {
+    const csrfToken = getCookie("XSRF-TOKEN");
+    const response = await fetch(`/api/lol/leagues/orders`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "X-XSRF-TOKEN": csrfToken,
+        },
+        body: JSON.stringify(leagueIds),
+        credentials: "include",
+    });
+
+    if (!response.ok) {
+        throw new Error(await response.text());
+    }
+}
