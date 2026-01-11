@@ -26,7 +26,8 @@ const LeagueOrderModal = ({ isOpen, onClose, leagues, onUpdate }) => {
 
     const handleSave = async () => {
         try {
-            const leagueIds = orderedLeagues.map(l => l.leagueId);
+            // 백엔드 LeagueDto의 @JsonProperty("id")가 leagueId에 매핑되어 있으므로, 프론트에서는 id를 사용해야 함
+            const leagueIds = orderedLeagues.map(l => l.id);
             await apiUpdateLeagueOrders(leagueIds);
             onUpdate(orderedLeagues); // 부모 컴포넌트에 변경된 목록 전달
             onClose();
@@ -39,96 +40,48 @@ const LeagueOrderModal = ({ isOpen, onClose, leagues, onUpdate }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content league-order-modal">
-                <h3>리그 순서 설정</h3>
-                <ul className="league-order-list">
-                    {orderedLeagues.map((league, index) => (
-                        <li key={league.leagueId} className="league-order-item">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={league.image} alt={league.name} className="league-icon" />
-                            <span className="league-name">{league.name}</span>
-                            <div className="order-controls">
-                                <button onClick={() => moveUp(index)} disabled={index === 0}>▲</button>
-                                <button onClick={() => moveDown(index)} disabled={index === orderedLeagues.length - 1}>▼</button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-                <div className="modal-actions">
-                    <button onClick={handleSave} className="save-btn">저장</button>
+        <>
+            <div className="modal-overlay" onClick={onClose}></div>
+            <div className="league-order-modal">
+                <div className="modal-header">
+                    <h3>리그 순서 설정</h3>
+                    <button onClick={onClose} className="close-btn">&times;</button>
+                </div>
+                
+                <div className="modal-body">
+                    <ul className="league-order-list">
+                        {orderedLeagues.map((league, index) => (
+                            <li key={league.id} className="league-order-item">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={league.image} alt={league.name} className="league-icon" />
+                                <span className="league-name">{league.name}</span>
+                                <div className="order-controls">
+                                    <button 
+                                        onClick={() => moveUp(index)} 
+                                        disabled={index === 0}
+                                        className="control-btn"
+                                    >
+                                        ▲
+                                    </button>
+                                    <button 
+                                        onClick={() => moveDown(index)} 
+                                        disabled={index === orderedLeagues.length - 1}
+                                        className="control-btn"
+                                    >
+                                        ▼
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div className="modal-footer">
                     <button onClick={onClose} className="cancel-btn">취소</button>
+                    <button onClick={handleSave} className="save-btn">저장</button>
                 </div>
             </div>
-            <style jsx>{`
-                .modal-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.5);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 1000;
-                }
-                .modal-content {
-                    background: white;
-                    padding: 20px;
-                    border-radius: 8px;
-                    width: 400px;
-                    max-height: 80vh;
-                    overflow-y: auto;
-                    color: #333;
-                }
-                .league-order-list {
-                    list-style: none;
-                    padding: 0;
-                    margin: 20px 0;
-                }
-                .league-order-item {
-                    display: flex;
-                    align-items: center;
-                    padding: 10px;
-                    border-bottom: 1px solid #eee;
-                }
-                .league-icon {
-                    width: 30px;
-                    height: 30px;
-                    margin-right: 10px;
-                }
-                .league-name {
-                    flex-grow: 1;
-                }
-                .order-controls button {
-                    margin-left: 5px;
-                    padding: 2px 8px;
-                    cursor: pointer;
-                }
-                .modal-actions {
-                    display: flex;
-                    justify-content: flex-end;
-                    gap: 10px;
-                }
-                .save-btn {
-                    background-color: #0070f3;
-                    color: white;
-                    border: none;
-                    padding: 8px 16px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                }
-                .cancel-btn {
-                    background-color: #ccc;
-                    color: white;
-                    border: none;
-                    padding: 8px 16px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                }
-            `}</style>
-        </div>
+        </>
     );
 };
 
