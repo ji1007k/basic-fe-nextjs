@@ -83,3 +83,15 @@ export async function refreshToken() {
 
     return await response.json();
 }
+
+export async function fetchCsrfToken() {
+    try {
+        // 백엔드 CsrfTokenController가 /csrf 경로에 매핑되어 있음
+        await fetch("/api/csrf", {
+            method: "GET",
+            credentials: "include"
+        });
+    } catch (e) {
+        console.error("CSRF 토큰 발급 실패", e);
+    }
+}
