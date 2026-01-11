@@ -40,6 +40,14 @@ const LeagueDropdown = ({ leagues, selectedLeague, onChange, onOpenSettings }) =
 
             {isOpen && (
                 <ul className="dropdown-menu">
+                    {/* 설정 버튼 (최상단 고정) */}
+                    {onOpenSettings && (
+                        <li className="dropdown-settings-item" onClick={handleSettingsClick}>
+                            <span style={{ marginRight: '5px' }}>⚙️</span>
+                            <span>순서 설정</span>
+                        </li>
+                    )}
+                    
                     {leagues.map(league => (
                         <li key={league.id} onClick={() => handleSelect(league)}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -47,13 +55,6 @@ const LeagueDropdown = ({ leagues, selectedLeague, onChange, onOpenSettings }) =
                             <span>{league.name}</span>
                         </li>
                     ))}
-                    {/* 설정 버튼 추가 */}
-                    {onOpenSettings && (
-                        <li className="dropdown-settings-item" onClick={handleSettingsClick} style={{ borderTop: '1px solid #eee', marginTop: '5px', paddingTop: '5px', justifyContent: 'center', color: '#666' }}>
-                            <span style={{ marginRight: '5px' }}>⚙️</span>
-                            <span>순서 설정</span>
-                        </li>
-                    )}
                 </ul>
             )}
         </div>
