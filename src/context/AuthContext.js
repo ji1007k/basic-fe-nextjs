@@ -2,7 +2,7 @@
 
 // src/context/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { refreshToken as refreshTokenApi, login as apiLogin } from "@/utils/api";
+import { refreshToken as refreshTokenApi, login as apiLogin, fetchCsrfToken } from "@/utils/api";
 import {useRouter} from "next/navigation.js"; // API 로직 분리된 곳에서 import
 
 // TODO userid, username 객체로 합치기
@@ -65,6 +65,9 @@ export const AuthProvider = ({ children }) => {
 
     // 로그인 상태 초기화
     useEffect(() => {
+        // CSRF 토큰 발급
+        fetchCsrfToken();
+
         const storedUserId = localStorage.getItem('userId');
         const storedUsername = localStorage.getItem('username');
         const storedExpirationTime = localStorage.getItem('expirationTime');
