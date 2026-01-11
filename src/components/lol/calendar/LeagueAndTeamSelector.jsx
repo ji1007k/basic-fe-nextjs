@@ -70,17 +70,8 @@ const LeagueAndTeamSelector = ({ leagues, setLeagues }) => {
                     leagues={leagues}
                     selectedLeague={selectedLeague}
                     onChange={setSelectedLeague}
+                    onOpenSettings={userId ? () => setIsOrderModalOpen(true) : null} // 👈 설정 버튼 핸들러 전달
                 />
-                {userId && (
-                    <button
-                        className="league-setting-btn"
-                        onClick={() => setIsOrderModalOpen(true)}
-                        title="리그 순서 설정"
-                        style={{ marginLeft: '8px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
-                    >
-                        ⚙️
-                    </button>
-                )}
             </div>
 
             {userId && (
