@@ -986,3 +986,21 @@
     background: rgba(0, 0, 0, 0.5);
     z-index: 1000;
 }
+
+.dropdown-settings-item {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #333;
+    border-bottom: 1px solid #555;
+    margin-top: 0 !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    justify-content: center;
+    color: #ccc !important;
+}
+
+.dropdown-settings-item:hover {
+    background-color: #444;
+    color: #fff !important;
+}
